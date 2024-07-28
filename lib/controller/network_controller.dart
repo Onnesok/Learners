@@ -29,7 +29,7 @@ class NetworkController extends GetxController {
               onWillPop: () async => false, // Disable back button
               child: AlertDialog(
                 title: Image.asset(
-                  'assets/simple_icons/logo.png',
+                  'assets/icon/logo.png',
                   fit: BoxFit.contain,
                   height: 50,
                 ),
