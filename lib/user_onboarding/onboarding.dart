@@ -25,7 +25,7 @@ List<UnbordingContent> contents = [
   UnbordingContent(
     title: 'Catch your dream with learners',
     image: 'assets/onboarding/ob3_im.svg',
-    description: "Dreams are not far. catch it with learners app.",
+    description: "Conquer your dreams and build your future with learners app.",
   ),
 ];
 

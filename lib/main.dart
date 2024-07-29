@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:learners/home_page.dart';
 import 'package:learners/network_page/NoInternet.dart';
+import 'package:learners/user_onboarding/login_page.dart';
 import 'package:learners/user_onboarding/onboarding.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:learners/controller/dependency_injection.dart';
@@ -36,7 +37,7 @@ Future<void> main() async {
       ),
       navigatorKey: navigatorKey,
       home: onboardingShown
-          ? home_page()
+          ? login()
           : Onboarding(),
     ),
     );
