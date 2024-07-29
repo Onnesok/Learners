@@ -29,8 +29,8 @@ class NetworkController extends GetxController {
               onWillPop: () async => false, // Disable back button
               child: AlertDialog(
                 title: Image.asset(
-                  'assets/icon/logo.png',
-                  fit: BoxFit.contain,
+                  'assets/icon/logo1.png',
+                  fit: BoxFit.cover,
                   height: 50,
                 ),
                 content: Text('Please connect to the internet.....',

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:learners/home_page.dart';
 import 'package:learners/user_onboarding/registration.dart';
 
@@ -33,7 +34,7 @@ class _loginState extends State<login> {
         width: MediaQuery.of(context).size.width,
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: AssetImage('assets/images/login.png'),
+            image: AssetImage('assets/images/login1.png'),
             fit: BoxFit.cover,
           ),
         ),
@@ -52,23 +53,6 @@ class _loginState extends State<login> {
                 SizedBox(height: 6,),
                 Container(
                   margin: EdgeInsets.only(left: 20, right: 20),
-               /*   padding: EdgeInsets.only(
-                    left: MediaQuery.of(context).size.width/2 - 50,
-                    right: MediaQuery.of(context).size.width/2 - 50,
-                    top: MediaQuery.of(context).size.height/4,
-                    bottom: MediaQuery.of(context).size.height/4,
-                  ),*/
-                  /*decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12.0),
-                    color: Colors.white,
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.2),
-                        offset: Offset(0, 4),
-                        blurRadius: 10,
-                      ),
-                    ],
-                  ),*/
                   child: Column(
                     children: [
                       Container(
@@ -123,7 +107,7 @@ class _loginState extends State<login> {
                         alignment: Alignment.centerRight,
                         child: TextButton(
                           onPressed: () {
-                            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => registration()));
+                            Fluttertoast.showToast(msg: 'Not implemented yet', gravity: ToastGravity.TOP);
                           },
                           child: Text(
                             'Forgot password',
