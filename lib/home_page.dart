@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:learners/home_contents.dart';
+import 'package:learners/profile/profile_page.dart';
 
 class home_page extends StatefulWidget {
   const home_page({super.key});
@@ -15,7 +16,7 @@ class _home_pageState extends State<home_page> {
     home_contents(),
     Text('Dashboard'),
     Text('AI help'),
-    Text('Profile Page'), // Added fourth page here
+    Profile(),
   ];
 
   void _onItemTapped(int index) {
