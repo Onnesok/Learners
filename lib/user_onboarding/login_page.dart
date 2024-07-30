@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:learners/home_page.dart';
-import 'package:learners/user_onboarding/registration.dart';
+import 'package:leprep/home_page.dart';
+import 'package:leprep/user_onboarding/registration.dart';
 
 class login extends StatefulWidget {
   const login({super.key});

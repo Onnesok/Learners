@@ -1,6 +1,6 @@
-# learners
+# leprep
 
-Learners is a LLM app for our 370 database management  system project.
+leprep is a LLM app for our 370 database management  system project.
 
 ## Getting Started
 

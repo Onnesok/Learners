@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:learners/user_onboarding/login_page.dart';
+import 'package:leprep/user_onboarding/login_page.dart';
 
 class UnbordingContent {
   String image;
@@ -13,19 +13,19 @@ class UnbordingContent {
 
 List<UnbordingContent> contents = [
   UnbordingContent(
-    title: 'Empower your mind with learners',
+    title: 'Empower your mind with leprep',
     image: 'assets/onboarding/ob1_im.svg',
     description: "Grow together in a like minded community",
   ),
   UnbordingContent(
-    title: 'Build your career with learners',
+    title: 'Build your career with leprep',
     image: 'assets/onboarding/ob2_im.svg',
     description: "Learn the secrets of industry to get a boost.",
   ),
   UnbordingContent(
-    title: 'Catch your dream with learners',
+    title: 'Catch your dream with leprep',
     image: 'assets/onboarding/ob3_im.svg',
-    description: "Conquer your dreams and build your future with learners app.",
+    description: "Conquer your dreams and build your future with leprep app.",
   ),
 ];
 

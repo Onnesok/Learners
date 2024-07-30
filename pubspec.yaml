@@ -1,5 +1,5 @@
-name: learners
-description: Learners is a LLM app for our 370 database management  system project.
+name: leprep
+description: leprep is a LLM app for our 370 database management  system project.
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev

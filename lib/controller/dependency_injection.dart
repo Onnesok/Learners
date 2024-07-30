@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:learners/controller/network_controller.dart';
+import 'package:leprep/controller/network_controller.dart';
 
 class DependencyInjection {
 

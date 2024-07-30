@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:learners/user_onboarding/login_page.dart';
+import 'package:leprep/user_onboarding/login_page.dart';
 
 class registration extends StatefulWidget {
   const registration({super.key});

@@ -1,11 +1,11 @@
 {
-    "name": "learners",
-    "short_name": "learners",
+    "name": "leprep",
+    "short_name": "leprep",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "Learners is a LLM app for our 370 database management  system project.",
+    "description": "leprep is a LLM app for our 370 database management  system project.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
