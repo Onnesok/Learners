@@ -55,8 +55,11 @@ class _ProfilePageState extends State<ProfilePage> {
       await _prefs.remove('gender');
       await _prefs.remove('profile_image');
 
+      final profileProvider = Provider.of<ProfileProvider>(context, listen: false);
+      profileProvider.updateImage(null);
+
       Navigator.of(context, rootNavigator: true).pushReplacement(
-        MaterialPageRoute(builder: (context) => login()),
+        MaterialPageRoute(builder: (context) => login(),),
       );
 
       ScaffoldMessenger.of(context).showSnackBar(
@@ -115,32 +118,8 @@ class _ProfilePageState extends State<ProfilePage> {
     if (pickedFile != null) {
       Provider.of<ProfileProvider>(context, listen: false).updateImage(File(pickedFile.path));
       await _prefs.setString('profile_image', pickedFile.path);
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Row(
-            children: [
-              Icon(Icons.check_circle, color: Colors.white),
-              SizedBox(width: 10),
-              Text(
-                'Profile picture updated',
-                style: TextStyle(color: Colors.white, fontSize: 16),
-                textAlign: TextAlign.center,
-              ),
-            ],
-          ),
-          backgroundColor: Colors.black,
-          duration: Duration(seconds: 2),
-          behavior: SnackBarBehavior.floating,
-          margin: EdgeInsets.only(
-            bottom: MediaQuery.of(context).size.height - 200,
-            left: 30,
-            right: 30,
-          ),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-          ),
-        ),
-      );
+
+      Fluttertoast.showToast(msg: 'Profile picture updated', gravity: ToastGravity.TOP);
     }
   }
 
@@ -179,7 +158,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       backgroundColor: Colors.orange,
                       backgroundImage: profileProvider.pickedImage != null
                           ? FileImage(profileProvider.pickedImage!)
-                          : AssetImage('assets/icon/logo1.png') as ImageProvider,
+                          : AssetImage('assets/images/demo.jpg') as ImageProvider,
                     ),
                   ),
                 ),
