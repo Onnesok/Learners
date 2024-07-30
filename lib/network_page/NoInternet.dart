@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:leprep/home_page.dart';
+import 'package:learners/home_page.dart';
 
 class NoInternet extends StatefulWidget {
   @override

@@ -2,12 +2,12 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
-import 'package:leprep/home_page.dart';
-import 'package:leprep/network_page/NoInternet.dart';
-import 'package:leprep/user_onboarding/login_page.dart';
-import 'package:leprep/user_onboarding/onboarding.dart';
+import 'package:learners/home_page.dart';
+import 'package:learners/network_page/NoInternet.dart';
+import 'package:learners/user_onboarding/login_page.dart';
+import 'package:learners/user_onboarding/onboarding.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:leprep/controller/dependency_injection.dart';
+import 'package:learners/controller/dependency_injection.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 

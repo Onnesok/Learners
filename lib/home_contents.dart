@@ -14,7 +14,7 @@ class _home_contentsState extends State<home_contents> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "leprep",
+          "learners",
           style: TextStyle(
             color: Colors.black87,
             fontWeight: FontWeight.bold,
