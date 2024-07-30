@@ -12,13 +12,6 @@ class home_page extends StatefulWidget {
 class _home_pageState extends State<home_page> {
   int _selectedIndex = 0;
 
-  static const List<Widget> _widgetOptions = <Widget>[
-    home_contents(),
-    Text('Dashboard'),
-    Text('AI help'),
-    Profile(),
-  ];
-
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
@@ -27,13 +20,20 @@ class _home_pageState extends State<home_page> {
 
   @override
   Widget build(BuildContext context) {
+    final List<Widget> _widgetOptions = <Widget>[
+      home_contents(onTabChange: _onItemTapped),
+      Text('Dashboard'),
+      Text('AI help'),
+      Profile(),
+    ];
+
     return Scaffold(
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
-      bottomNavigationBar: new Theme(
+      bottomNavigationBar: Theme(
         data: Theme.of(context).copyWith(
-            canvasColor: Colors.orange[700],
+          canvasColor: Colors.orange[700],
         ),
         child: ClipRRect(
           borderRadius: BorderRadius.vertical(top: Radius.circular(8)),
@@ -66,4 +66,3 @@ class _home_pageState extends State<home_page> {
     );
   }
 }
-

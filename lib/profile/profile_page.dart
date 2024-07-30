@@ -4,9 +4,11 @@ import 'package:learners/user_onboarding/login_page.dart';
 import 'dart:io';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:provider/provider.dart';
+import 'profile_provider.dart';
 
 class Profile extends StatefulWidget {
-  const Profile({Key? key});
+  const Profile({Key? key}) : super(key: key);
 
   @override
   State<Profile> createState() => _ProfileState();
@@ -29,8 +31,6 @@ class _ProfileState extends State<Profile> {
   }
 }
 
-
-
 class ProfilePage extends StatefulWidget {
   @override
   _ProfilePageState createState() => _ProfilePageState();
@@ -39,32 +39,27 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   bool _isLoggedInWithGoogle = false;
   final ImagePicker _imagePicker = ImagePicker();
-  File? _pickedImage;
   late SharedPreferences _prefs;
-  String _fname = 'No';
-  String _lname = 'Name';
 
   @override
   void initState() {
     super.initState();
     _loadData();
   }
+
   void _signOut() async {
     try {
-      // await _auth.signOut();
-      // await GoogleSignIn().signOut();
-      //Fluttertoast.showToast(msg: 'Logged out successfully');
-      // Remove specific keys from SharedPreferences
       await _prefs.remove('first name');
       await _prefs.remove('last name');
       await _prefs.remove('email');
       await _prefs.remove('gender');
       await _prefs.remove('profile_image');
 
-      // Navigate to the login page and remove the bottom navigation bar
-      Navigator.of(context, rootNavigator: true).pushReplacement(MaterialPageRoute(builder: (context) => new login()));
+      Navigator.of(context, rootNavigator: true).pushReplacement(
+        MaterialPageRoute(builder: (context) => login()),
+      );
 
-      ScaffoldMessenger.of(context).showSnackBar(    //hmmmmm cant use snackbar as it's stacking the screen... or snacking :V
+      ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Row(
             children: [
@@ -88,67 +83,38 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
         ),
       );
-
     } catch (e) {
       Fluttertoast.showToast(msg: 'Error signing out: $e', gravity: ToastGravity.TOP);
       print("Error signing out: $e");
     }
   }
 
-
-
   Future<void> _loadData() async {
     _prefs = await SharedPreferences.getInstance();
     final String? fname = _prefs.getString('first name');
     final String? lname = _prefs.getString('last name');
 
-    ////// ok checking if user is a googler
-    // final user = _auth.currentUser;
-    // if (user != null && user.providerData.any((info) => info.providerId == 'google.com')) {
-    //   setState(() {
-    //     _isLoggedInWithGoogle = true;
-    //   });
-    // }
-
-    if (fname != null) {
-      setState(() {
-        _fname = fname;
-      });
-    }
-    if (lname != null) {
-      setState(() {
-        _lname = lname;
-      });
+    if (fname != null && lname != null) {
+      Provider.of<ProfileProvider>(context, listen: false).updateName(fname, lname);
     }
 
-    // Load the image after loading the data
-    await _loadImage();
+    _loadImage();
   }
-
 
   Future<void> _loadImage() async {
     final String? imagePath = _prefs.getString('profile_image');
     if (imagePath != null) {
-      setState(() {
-        _pickedImage = File(imagePath);
-      });
+      Provider.of<ProfileProvider>(context, listen: false).updateImage(File(imagePath));
     } else {
-      setState(() {
-        _pickedImage = null; // Reset _pickedImage if imagePath is null
-      });
+      Provider.of<ProfileProvider>(context, listen: false).updateImage(null);
     }
   }
 
-
   Future<void> _selectImage() async {
     final pickedFile = await _imagePicker.pickImage(source: ImageSource.gallery);
-
     if (pickedFile != null) {
-      setState(() {
-        _pickedImage = File(pickedFile.path);
-      });
+      Provider.of<ProfileProvider>(context, listen: false).updateImage(File(pickedFile.path));
       await _prefs.setString('profile_image', pickedFile.path);
-      //Fluttertoast.showToast(msg: "profile updated");
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Row(
@@ -156,8 +122,8 @@ class _ProfilePageState extends State<ProfilePage> {
               Icon(Icons.check_circle, color: Colors.white),
               SizedBox(width: 10),
               Text(
-                'profile picture updated',
-                style: TextStyle(color: Colors.white, fontSize: 16,),
+                'Profile picture updated',
+                style: TextStyle(color: Colors.white, fontSize: 16),
                 textAlign: TextAlign.center,
               ),
             ],
@@ -180,37 +146,22 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Future<void> _editProfile() async {
     Fluttertoast.showToast(msg: "Not done yet");
-    // await Navigator.push(
-    //   context,
-    //   MaterialPageRoute(builder: (context) => EditProfilePage()),
-    // );
-
-    // Reload data after editing profile
     _loadData();
   }
 
   Future<void> _changepass() async {
     Fluttertoast.showToast(msg: "Not done yet");
-    // await Navigator.push(
-    //   context,
-    //   MaterialPageRoute(builder: (context) => ChangePassword()),
-    // );
-
     _loadData();
   }
 
   Future<void> _address() async {
     Fluttertoast.showToast(msg: "Not done yet");
-    // await Navigator.push(
-    //   context,
-    //   MaterialPageRoute(builder: (context) => Address()),
-    // );
-
     _loadData();
   }
 
   @override
   Widget build(BuildContext context) {
+    final profileProvider = Provider.of<ProfileProvider>(context);
     return Scaffold(
       body: SingleChildScrollView(
         scrollDirection: Axis.vertical,
@@ -219,29 +170,18 @@ class _ProfilePageState extends State<ProfilePage> {
             Stack(
               alignment: Alignment.bottomRight,
               children: [
-                FutureBuilder<void>(
-                  future: _loadImage(),
-                  builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return Center(child: CircularProgressIndicator());
-                    } else if (snapshot.hasError) {
-                      return Center(child: Text('Error loading image'));
-                    } else {
-                      return GestureDetector(
-                        onTap: _selectImage,
-                        child: Container(
-                          padding: EdgeInsets.all(20.0),
-                          child: CircleAvatar(
-                            radius: 50,
-                            backgroundColor: Colors.orange,
-                            backgroundImage: _pickedImage != null
-                                ? FileImage(_pickedImage!)
-                                : AssetImage('assets/icon/logo1.png') as ImageProvider,
-                          ),
-                        ),
-                      );
-                    }
-                  },
+                GestureDetector(
+                  onTap: _selectImage,
+                  child: Container(
+                    padding: EdgeInsets.all(20.0),
+                    child: CircleAvatar(
+                      radius: 50,
+                      backgroundColor: Colors.orange,
+                      backgroundImage: profileProvider.pickedImage != null
+                          ? FileImage(profileProvider.pickedImage!)
+                          : AssetImage('assets/icon/logo1.png') as ImageProvider,
+                    ),
+                  ),
                 ),
                 GestureDetector(
                   onTap: _selectImage,
@@ -263,22 +203,15 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
             SizedBox(height: 5),
             Text(
-              _fname + " " + _lname,
+              profileProvider.fname + " " + profileProvider.lname,
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 10.0),
             Divider(),
-            ListTileItem(icon: Icons.person_outline_rounded, text: 'Edit profile', onTap: _editProfile,),
-            if (!_isLoggedInWithGoogle) ListTileItem(icon: Icons.lock_outline, text: 'Change Password', onTap: _changepass,),
-            ListTileItem(icon: Icons.location_on_outlined, text: 'Address', onTap: _address,),
-/*            ListTileItem(icon: Icons.notifications_none_outlined, text: 'Notification'),
-            ListTileItem(icon: Icons.monetization_on_outlined, text: 'payment'),
-            ListTileItem(icon: Icons.security_outlined, text: 'Security'),
-            ListTileItem(icon: Icons.translate_outlined, text: 'Language'),
-            ListTileItem(icon: Icons.privacy_tip_outlined, text: 'Privacy Policy'),
-            ListTileItem(icon: Icons.help_outline_outlined, text: 'Help Center'),
-            ListTileItem(icon: Icons.share_outlined, text: 'Invite Friends'),*/
-            ListTileItem(icon: Icons.logout, text: 'Logout', onTap: _signOut,),
+            ListTileItem(icon: Icons.person_outline_rounded, text: 'Edit profile', onTap: _editProfile),
+            if (!_isLoggedInWithGoogle) ListTileItem(icon: Icons.lock_outline, text: 'Change Password', onTap: _changepass),
+            ListTileItem(icon: Icons.location_on_outlined, text: 'Address', onTap: _address),
+            ListTileItem(icon: Icons.logout, text: 'Logout', onTap: _signOut),
           ],
         ),
       ),
@@ -302,18 +235,14 @@ class ListTileItem extends StatelessWidget {
     return ListTile(
       leading: Icon(
         icon,
-        color: text == 'Logout'
-            ? Colors.red
-            : Colors.black87.withOpacity(0.7),
+        color: text == 'Logout' ? Colors.red : Colors.black87.withOpacity(0.7),
       ),
       title: Row(
         children: [
           Expanded(
             child: Text(
               text,
-              style: TextStyle(
-                color: text == 'Logout' ? Colors.red : Colors.black,
-              ),
+              style: TextStyle(color: text == 'Logout' ? Colors.red : Colors.black),
             ),
           ),
           if (text != 'Logout') Icon(Icons.arrow_forward_ios),

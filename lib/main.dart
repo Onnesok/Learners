@@ -8,13 +8,14 @@ import 'package:learners/user_onboarding/login_page.dart';
 import 'package:learners/user_onboarding/onboarding.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:learners/controller/dependency_injection.dart';
+import 'package:provider/provider.dart';
+import 'package:learners/profile/profile_provider.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 Future<void> main() async {
   DependencyInjection.init();
   WidgetsFlutterBinding.ensureInitialized();
-
 
   // Check initial connectivity
   ConnectivityResult connectivityResult = await Connectivity().checkConnectivity();
@@ -27,31 +28,24 @@ Future<void> main() async {
     DeviceOrientation.portraitDown,
   ]);
 
-
-
+  Widget initialPage;
   if (connectivityResult != ConnectivityResult.none) {
-    runApp(GetMaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primaryColor: Colors.teal,
-      ),
-      navigatorKey: navigatorKey,
-      home: onboardingShown
-          ? login()
-          : Onboarding(),
-    ),
-    );
-  } else{
-    runApp(GetMaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: NoInternet(),
-    ));
+    initialPage = onboardingShown ? login() : Onboarding();
+  } else {
+    initialPage = NoInternet();
   }
+
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => ProfileProvider(),
+      child: GetMaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          primaryColor: Colors.orange,
+        ),
+        navigatorKey: navigatorKey,
+        home: initialPage,
+      ),
+    ),
+  );
 }
-
-
-
-
-
-
-
