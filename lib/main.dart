@@ -1,7 +1,9 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_gemini/flutter_gemini.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
+import 'package:learners/chat/consts.dart';
 import 'package:learners/home_page.dart';
 import 'package:learners/network_page/NoInternet.dart';
 import 'package:learners/user_onboarding/login_page.dart';
@@ -14,6 +16,7 @@ import 'package:learners/profile/profile_provider.dart';
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 Future<void> main() async {
+  Gemini.init(apiKey: GEMINI_API_KEY);
   DependencyInjection.init();
   WidgetsFlutterBinding.ensureInitialized();
 
