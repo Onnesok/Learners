@@ -1,5 +1,9 @@
+import 'dart:convert';
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:learners/user_onboarding/login_page.dart';
+import 'package:http/http.dart' as http;
 
 class registration extends StatefulWidget {
   const registration({super.key});
@@ -11,16 +15,50 @@ class registration extends StatefulWidget {
 class _registrationState extends State<registration> {
 
   bool passEnable = true;
+  bool cpassEnable = true;
   bool isPasswordcorrect = true;
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
-  final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _confirmPasswordController = TextEditingController();
+
+  Future<void> insert_record() async{
+    if(_firstNameController.text != "" && _lastNameController.text != "" && _emailController.text != "" && _passwordController.text != "") {
+      try{
+        String uri = "http://10.0.2.2/learners_api/sign_up.php";
+        var res = await http.post(Uri.parse(uri), body: {
+          "fname": _firstNameController.text,
+          "lname": _lastNameController.text,
+          "email": _emailController.text,
+          "password": _passwordController.text
+        }
+        );
+        
+        var response = jsonDecode(res.body);
+        if(response["success"] == "true") {
+          print("Record insertedd");
+        }
+        else {
+          print(response);
+        }
+      } catch(e) {
+        print(e);
+      }
+    }
+    else {
+      print("please fill all fields");
+    }
+  }
 
   void _togglePasswordVisibility() {
     setState(() {
       passEnable = !passEnable;
+    });
+  }
+  void _toggleConfirmPasswordVisibility() {
+    setState(() {
+      cpassEnable = !cpassEnable;
     });
   }
 
@@ -60,12 +98,6 @@ class _registrationState extends State<registration> {
               SizedBox(height: 6,),
               Container(
                 margin: EdgeInsets.only(left: 20, right: 20),
-                /*   padding: EdgeInsets.only(
-                    left: MediaQuery.of(context).size.width/2 - 50,
-                    right: MediaQuery.of(context).size.width/2 - 50,
-                    top: MediaQuery.of(context).size.height/4,
-                    bottom: MediaQuery.of(context).size.height/4,
-                  ),*/
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12.0),
                   color: Colors.white,
@@ -188,8 +220,8 @@ class _registrationState extends State<registration> {
                     Container(
                       margin: EdgeInsets.only(left: 40, right: 40, bottom: 20, top: 0),
                       child: TextFormField(
-                        controller: _passwordController,
-                        obscureText: passEnable,
+                        controller: _confirmPasswordController,
+                        obscureText: cpassEnable,
                         decoration: InputDecoration(
                           focusedBorder: UnderlineInputBorder(
                             borderSide: BorderSide(
@@ -199,8 +231,8 @@ class _registrationState extends State<registration> {
                           labelStyle: TextStyle(color: Colors.black.withOpacity(0.6)),
                           hintText: "Confirm password",
                           suffixIcon: IconButton(
-                            onPressed: _togglePasswordVisibility,
-                            icon: Icon(passEnable
+                            onPressed: _toggleConfirmPasswordVisibility,
+                            icon: Icon(cpassEnable
                                 ? Icons.visibility_off
                                 : Icons.remove_red_eye),
                             color: Colors.black38,
@@ -229,7 +261,9 @@ class _registrationState extends State<registration> {
                             ),
                             padding: EdgeInsets.all(18),
                           ),
-                          onPressed: () {},
+                          onPressed: () {
+                            insert_record();
+                          },
                           child: Text(
                             "Sign Up",
                             style: TextStyle(fontSize: 18, letterSpacing: .4),
@@ -265,3 +299,11 @@ class _registrationState extends State<registration> {
     );
   }
 }
+
+
+//
+// Prepared Statements: Use prepare, bind_param, and execute to prevent SQL injection.
+// Check for Existing User: Query the database to ensure the email isn’t already registered.
+// Password Hashing: Hash passwords using password_hash for added security.
+// Input Validation: Validate the email format.
+// Error Handling: Provide specific error messages for better debugging.
