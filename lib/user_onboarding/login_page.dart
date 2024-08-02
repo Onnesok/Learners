@@ -1,7 +1,9 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:learners/home_page.dart';
 import 'package:learners/user_onboarding/registration.dart';
+import 'package:http/http.dart' as http;
 
 class login extends StatefulWidget {
   const login({super.key});
@@ -11,20 +13,46 @@ class login extends StatefulWidget {
 }
 
 class _loginState extends State<login> {
-
+  final _formKey = GlobalKey<FormState>();
   bool passEnable = true;
   bool isPasswordcorrect = true;
-  final TextEditingController _firstNameController = TextEditingController();
-  final TextEditingController _lastNameController = TextEditingController();
-  final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+
+  Future<void> login(String email, String password) async {
+    const String uri = "http://10.0.2.2/learners_api/login.php";
+
+    try {
+      // Make the POST request
+      var response = await http.post(
+        Uri.parse(uri),
+        body: {
+          'email': email,
+          'password': password,
+        },
+      );
+      var jsonResponse = jsonDecode(response.body);
+      if (jsonResponse['success'] == 'true') {
+        print(jsonResponse);
+        Fluttertoast.showToast(msg: jsonResponse['message']);
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => home_page()));
+      } else {
+        print(jsonResponse);
+        Fluttertoast.showToast(msg: jsonResponse['message']);
+      }
+    } catch (e) {
+      print("Error: $e");
+      Fluttertoast.showToast(msg: 'An error occurred');
+    }
+  }
 
   void _togglePasswordVisibility() {
     setState(() {
       passEnable = !passEnable;
     });
   }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -39,18 +67,23 @@ class _loginState extends State<login> {
           ),
         ),
         child: Center(
+          child: Form(
+            key: _formKey,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+
                 Text(
-                    "Welcome Back!",
-                    style: TextStyle(
-                      fontSize: 34,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.orange,
-                    ),
+                  "Welcome Back!",
+                  style: TextStyle(
+                    fontSize: 34,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.orange,
+                  ),
                 ),
+
                 SizedBox(height: 6,),
+
                 Container(
                   margin: EdgeInsets.only(left: 20, right: 20),
                   child: Column(
@@ -61,15 +94,22 @@ class _loginState extends State<login> {
                           controller: _emailController,
                           keyboardType: TextInputType.emailAddress,
                           decoration: InputDecoration(
-                            labelStyle: TextStyle(color: Colors.black.withOpacity(0.6)),
                             hintText: "Email",
-                            focusColor: Colors.amber,
                             focusedBorder: UnderlineInputBorder(
                               borderSide: BorderSide(color: Colors.amber),
                             ),
                           ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return "Please enter your email";
+                            } else if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
+                              return "Please enter a valid email";
+                            }
+                            return null;
+                          },
                         ),
                       ),
+
                       Container(
                         margin: EdgeInsets.only(left: 40, right: 40, bottom: 0, top: 0),
                         child: TextFormField(
@@ -81,8 +121,7 @@ class _loginState extends State<login> {
                                 color: isPasswordcorrect ? Colors.amber : Colors.red,
                               ),
                             ),
-                            labelStyle: TextStyle(color: Colors.black.withOpacity(0.6)),
-                            hintText: "password",
+                            hintText: "Password",
                             suffixIcon: IconButton(
                               onPressed: _togglePasswordVisibility,
                               icon: Icon(passEnable
@@ -92,29 +131,34 @@ class _loginState extends State<login> {
                             ),
                           ),
                           validator: (value) {
-                            if (value!.length < 8 || isPasswordcorrect == false){
-                              return "please enter correct password";
+                            if (value == null || value.isEmpty) {
+                              return "Please enter your password";
+                            } else if (value.length < 8) {
+                              return "Password must be at least 8 characters long";
                             }
                             return null;
                           },
                         ),
                       ),
 
-
-                      //////////// button ///////////////
                       Container(
                         margin: EdgeInsets.only(right: 30),
                         alignment: Alignment.centerRight,
                         child: TextButton(
                           onPressed: () {
                             Fluttertoast.showToast(msg: 'Not implemented yet', gravity: ToastGravity.TOP);
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(builder: (context) => home_page()),
+                            );
                           },
                           child: Text(
                             'Forgot password',
-                            style: TextStyle(color: Colors.amber, fontWeight: FontWeight.bold),
+                            style: TextStyle(color: Colors.orange, fontWeight: FontWeight.bold),
                           ),
                         ),
                       ),
+
                       Center(
                         child: Container(
                           margin: EdgeInsets.only(top: 20, right: 20, left: 20),
@@ -123,7 +167,7 @@ class _loginState extends State<login> {
                             width: MediaQuery.of(context).size.width * 0.6,
                             child: ElevatedButton(
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.amber,
+                                backgroundColor: Colors.amber[800],
                                 elevation: 2,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(16),
@@ -131,7 +175,9 @@ class _loginState extends State<login> {
                                 padding: EdgeInsets.all(18),
                               ),
                               onPressed: () {
-                                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => home_page()));
+                                if (_formKey.currentState!.validate()) {
+                                  login(_emailController.text, _passwordController.text);
+                                }
                               },
                               child: Text(
                                 "Sign In",
@@ -141,7 +187,8 @@ class _loginState extends State<login> {
                           ),
                         ),
                       ),
-                      Padding(
+
+                      Container(
                         padding: EdgeInsets.all(10),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -153,7 +200,11 @@ class _loginState extends State<login> {
                               },
                               child: Text(
                                 'Sign Up',
-                                style: TextStyle(color: Colors.amber, letterSpacing: 1),
+                                style: TextStyle(
+                                    color: Colors.orange,
+                                    letterSpacing: 1,
+                                    fontWeight: FontWeight.bold
+                                ),
                               ),
                             ),
                           ],
@@ -164,6 +215,7 @@ class _loginState extends State<login> {
                 ),
               ],
             ),
+          ),
         ),
       ),
     );

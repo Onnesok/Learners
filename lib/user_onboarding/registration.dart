@@ -13,7 +13,6 @@ class registration extends StatefulWidget {
 
 class _registrationState extends State<registration> {
   final _formKey = GlobalKey<FormState>();
-
   bool passEnable = true;
   bool cpassEnable = true;
   bool isPasswordcorrect = true;
@@ -25,23 +24,34 @@ class _registrationState extends State<registration> {
   final TextEditingController _confirmPasswordController = TextEditingController();
 
   Future<void> insert_record() async {
+
     if (_formKey.currentState!.validate()) {
       try {
-        String uri = "http://10.0.2.2/learners_api/sign_up.php";
-        var res = await http.post(Uri.parse(uri), body: {
-          "fname": _firstNameController.text,
-          "lname": _lastNameController.text,
-          "email": _emailController.text,
-          "password": _passwordController.text
+        // make POST request
+        const String uri = "http://10.0.2.2/learners_api/sign_up.php";
+        var response = await http.post(
+            Uri.parse(uri),
+            body: {
+              "fname": _firstNameController.text,
+              "lname": _lastNameController.text,
+              "email": _emailController.text,
+              "password": _passwordController.text
         });
 
-        var response = jsonDecode(res.body);
-        if (response["success"] == "true") {
+        var jsonResponse = jsonDecode(response.body);
+        if (jsonResponse["success"] == "true") {
           Fluttertoast.showToast(msg: "Registration successful");
+          Fluttertoast.showToast(msg: "Please login");
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (context) => login()
+            ),
+          );
           print("Record inserted");
         } else {
-          Fluttertoast.showToast(msg: "${response['message']}");
-          print(response);
+          Fluttertoast.showToast(msg: "${jsonResponse['message']}");
+          print(jsonResponse);
         }
       } catch (e) {
         print(e);
@@ -277,7 +287,7 @@ class _registrationState extends State<registration> {
                               width: MediaQuery.of(context).size.width * 0.6,
                               child: ElevatedButton(
                                 style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.amber,
+                                  backgroundColor: Colors.amber[800],
                                   elevation: 2,
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(16),
@@ -286,13 +296,6 @@ class _registrationState extends State<registration> {
                                 ),
                                 onPressed: () {
                                   insert_record();
-                                  Fluttertoast.showToast(msg: "Please login");
-                                  Navigator.pushReplacement(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => login()
-                                      ),
-                                  );
                                 },
                                 child: Text(
                                   "Sign Up",
@@ -324,8 +327,9 @@ class _registrationState extends State<registration> {
                                   child: Text(
                                     'Sign In',
                                     style: TextStyle(
-                                      color: Colors.amber,
+                                      color: Colors.orange,
                                       letterSpacing: 1,
+                                      fontWeight: FontWeight.bold,
                                     ),
                                   ),
                                 ),
