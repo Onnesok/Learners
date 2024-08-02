@@ -16,38 +16,55 @@ class ProfileProvider with ChangeNotifier {
     _loadProfile();
   }
 
-  Future<void> _loadProfile() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final String? fname = prefs.getString('first name');
-    final String? lname = prefs.getString('last name');
-    final String? imagePath = prefs.getString('profile_image');
 
-    _fname = fname ?? 'No';
-    _lname = lname ?? 'Name';
-    if (imagePath != null) {
-      _pickedImage = File(imagePath);
+  Future<void> _loadProfile() async {
+    try {
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      final String? fname = prefs.getString('first name');
+      final String? lname = prefs.getString('last name');
+      final String? imagePath = prefs.getString('profile_image');
+
+      _fname = fname ?? 'No';
+      _lname = lname ?? 'Name';
+      if (imagePath != null && File(imagePath).existsSync()) {
+        _pickedImage = File(imagePath);
+      } else {
+        _pickedImage = null;
+      }
+      notifyListeners();
+    } catch (e) {
+      print('Error loading profile: $e');
     }
-    notifyListeners();
   }
+
 
   Future<void> updateImage(File? newImage) async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    if (newImage != null) {
-      await prefs.setString('profile_image', newImage.path);
-      _pickedImage = newImage;
-    } else {
-      await prefs.remove('profile_image');
-      _pickedImage = null;
+    try {
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      if (newImage != null) {
+        await prefs.setString('profile_image', newImage.path);
+        _pickedImage = newImage;
+      } else {
+        await prefs.remove('profile_image');
+        _pickedImage = null;
+      }
+      notifyListeners();
+    } catch (e) {
+      print('Error updating image: $e');
     }
-    notifyListeners();
   }
 
+
   Future<void> updateName(String fname, String lname) async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString('first name', fname);
-    await prefs.setString('last name', lname);
-    _fname = fname;
-    _lname = lname;
-    notifyListeners();
+    try {
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setString('first name', fname);
+      await prefs.setString('last name', lname);
+      _fname = fname;
+      _lname = lname;
+      notifyListeners();
+    } catch (e) {
+      print('Error updating names: $e');
+    }
   }
 }

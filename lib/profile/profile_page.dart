@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:learners/profile/edit_profile.dart';
 import 'package:learners/user_onboarding/login_page.dart';
 import 'dart:io';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -49,14 +50,9 @@ class _ProfilePageState extends State<ProfilePage> {
 
   void _signOut() async {
     try {
-      await _prefs.remove('first name');
-      await _prefs.remove('last name');
-      await _prefs.remove('email');
-      await _prefs.remove('gender');
-      await _prefs.remove('profile_image');
-
       final profileProvider = Provider.of<ProfileProvider>(context, listen: false);
       profileProvider.updateImage(null);
+      profileProvider.updateName("No", "Name");
 
       Navigator.of(context, rootNavigator: true).pushReplacement(
         MaterialPageRoute(builder: (context) => login(),),
@@ -124,8 +120,8 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Future<void> _editProfile() async {
-    Fluttertoast.showToast(msg: "Not done yet");
-    _loadData();
+    Navigator.push(context, MaterialPageRoute(builder: (context) => EditProfilePage()));
+    //_loadData();
   }
 
   Future<void> _changepass() async {
