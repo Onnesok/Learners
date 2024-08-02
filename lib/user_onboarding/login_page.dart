@@ -20,7 +20,8 @@ class _loginState extends State<login> {
   final TextEditingController _passwordController = TextEditingController();
 
   Future<void> login(String email, String password) async {
-    const String uri = "http://10.0.2.2/learners_api/login.php";
+    //const String uri = "http://10.0.2.2/learners_api/login.php";
+    const String uri = "http://192.168.1.13/learners_api/login.php";
 
     try {
       // Make the POST request

@@ -28,7 +28,8 @@ class _registrationState extends State<registration> {
     if (_formKey.currentState!.validate()) {
       try {
         // make POST request
-        const String uri = "http://10.0.2.2/learners_api/sign_up.php";
+        //const String uri = "http://10.0.2.2/learners_api/sign_up.php";
+        const String uri = "http://192.168.1.13/learners_api/sign_up.php";
         var response = await http.post(
             Uri.parse(uri),
             body: {
