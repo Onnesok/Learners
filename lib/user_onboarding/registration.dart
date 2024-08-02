@@ -1,7 +1,6 @@
 import 'dart:convert';
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:learners/user_onboarding/login_page.dart';
 import 'package:http/http.dart' as http;
 
@@ -13,41 +12,42 @@ class registration extends StatefulWidget {
 }
 
 class _registrationState extends State<registration> {
+  final _formKey = GlobalKey<FormState>();
 
   bool passEnable = true;
   bool cpassEnable = true;
   bool isPasswordcorrect = true;
+
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController = TextEditingController();
 
-  Future<void> insert_record() async{
-    if(_firstNameController.text != "" && _lastNameController.text != "" && _emailController.text != "" && _passwordController.text != "") {
-      try{
+  Future<void> insert_record() async {
+    if (_formKey.currentState!.validate()) {
+      try {
         String uri = "http://10.0.2.2/learners_api/sign_up.php";
         var res = await http.post(Uri.parse(uri), body: {
           "fname": _firstNameController.text,
           "lname": _lastNameController.text,
           "email": _emailController.text,
           "password": _passwordController.text
-        }
-        );
-        
+        });
+
         var response = jsonDecode(res.body);
-        if(response["success"] == "true") {
-          print("Record insertedd");
-        }
-        else {
+        if (response["success"] == "true") {
+          Fluttertoast.showToast(msg: "Registration successful");
+          print("Record inserted");
+        } else {
+          Fluttertoast.showToast(msg: "${response['message']}");
           print(response);
         }
-      } catch(e) {
+      } catch (e) {
         print(e);
       }
-    }
-    else {
-      print("please fill all fields");
+    } else {
+      print("Please fill all fields correctly");
     }
   }
 
@@ -56,6 +56,7 @@ class _registrationState extends State<registration> {
       passEnable = !passEnable;
     });
   }
+
   void _toggleConfirmPasswordVisibility() {
     setState(() {
       cpassEnable = !cpassEnable;
@@ -65,225 +66,270 @@ class _registrationState extends State<registration> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        height: MediaQuery.of(context).size.height,
-        width: MediaQuery.of(context).size.width,
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('assets/images/registration.png'),
-            fit: BoxFit.cover,
+      resizeToAvoidBottomInset: true,
+
+      body: SafeArea(
+        child: Container(
+          height: MediaQuery.of(context).size.height - MediaQuery.of(context).viewInsets.bottom,
+          width: MediaQuery.of(context).size.width,
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage('assets/images/registration.png'),
+              fit: BoxFit.cover,
+            ),
           ),
-        ),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                "Welcome!",
-                style: TextStyle(
-                  fontSize: 34,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
-              ),
-              SizedBox(height: 2,),
-              Text(
-                "Please Create Your Account",
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
-              ),
-              SizedBox(height: 6,),
-              Container(
-                margin: EdgeInsets.only(left: 20, right: 20),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12.0),
-                  color: Colors.white,
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.2),
-                      offset: Offset(0, 4),
-                      blurRadius: 10,
-                    ),
-                  ],
-                ),
+
+          child: Center(
+            child: SingleChildScrollView(
+              child: Form(
+                key: _formKey,
                 child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Container(
-                      margin: EdgeInsets.only(left: 40, right: 40, bottom: 0, top: 40),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: TextFormField(
-                              controller: _firstNameController,
-                              decoration: InputDecoration(
-                                labelStyle: TextStyle(color: Colors.black.withOpacity(0.6)),
-                                hintText: 'First Name',
-                                floatingLabelBehavior: FloatingLabelBehavior.always,
-                                border: UnderlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: _firstNameController.text.isNotEmpty
-                                        ? Colors.red
-                                        : Colors.amber,
-                                  ),
-                                ),
-                                focusedBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.amber),
-                                ),
-                              ),
-                              validator: (value) {
-                                if (value!.isEmpty) {
-                                  return 'Please enter First Name';
-                                }
-                                return null;
-                              },
-                            ),
-                          ),
 
-                          SizedBox(width: 10.0),
-                          Expanded(
-                            child: TextFormField(
-                              controller: _lastNameController,
-                              decoration: InputDecoration(
-                                labelStyle: TextStyle(color: Colors.black.withOpacity(0.6)),
-                                floatingLabelBehavior: FloatingLabelBehavior.always,
-                                hintText: "Last Name",
-                                border: UnderlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: _lastNameController.text.isNotEmpty
-                                        ? Colors.red
-                                        : Colors.amber,
-                                  ),
-                                ),
-                                focusedBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.amber),
-                                ),
-                              ),
-                              validator: (value) {
-                                if (value!.isEmpty) {
-                                  return 'Please enter Last Name';
-                                }
-                                return null;
-                              },
-                            ),
+                    Text(
+                      "Welcome!",
+                      style: TextStyle(
+                        fontSize: 34,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+
+                    SizedBox(height: 2),
+
+                    Text(
+                      "Please Create Your Account",
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+
+                    SizedBox(height: 6),
+
+                    Container(
+                      margin: EdgeInsets.only(left: 20, right: 20),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12.0),
+                        color: Colors.white,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.2),
+                            offset: Offset(0, 4),
+                            blurRadius: 10,
                           ),
                         ],
                       ),
-                    ),
-
-                    Container(
-                      margin: EdgeInsets.only(left: 40, right: 40, bottom: 0, top: 0),
-                      child: TextFormField(
-                        controller: _emailController,
-                        keyboardType: TextInputType.emailAddress,
-                        decoration: InputDecoration(
-                          labelStyle: TextStyle(color: Colors.black.withOpacity(0.6)),
-                          hintText: "Email",
-                          focusColor: Colors.amber,
-                          focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: Colors.amber),
-                          ),
-                        ),
-                      ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(left: 40, right: 40, bottom: 0, top: 0),
-                      child: TextFormField(
-                        controller: _passwordController,
-                        obscureText: passEnable,
-                        decoration: InputDecoration(
-                          focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(
-                              color: isPasswordcorrect ? Colors.amber : Colors.red,
-                            ),
-                          ),
-                          labelStyle: TextStyle(color: Colors.black.withOpacity(0.6)),
-                          hintText: "password",
-                          suffixIcon: IconButton(
-                            onPressed: _togglePasswordVisibility,
-                            icon: Icon(passEnable
-                                ? Icons.visibility_off
-                                : Icons.remove_red_eye),
-                            color: Colors.black38,
-                          ),
-                        ),
-                        validator: (value) {
-                          if (value!.length < 8 || isPasswordcorrect == false){
-                            return "please enter correct password";
-                          }
-                          return null;
-                        },
-                      ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(left: 40, right: 40, bottom: 20, top: 0),
-                      child: TextFormField(
-                        controller: _confirmPasswordController,
-                        obscureText: cpassEnable,
-                        decoration: InputDecoration(
-                          focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(
-                              color: isPasswordcorrect ? Colors.amber : Colors.red,
-                            ),
-                          ),
-                          labelStyle: TextStyle(color: Colors.black.withOpacity(0.6)),
-                          hintText: "Confirm password",
-                          suffixIcon: IconButton(
-                            onPressed: _toggleConfirmPasswordVisibility,
-                            icon: Icon(cpassEnable
-                                ? Icons.visibility_off
-                                : Icons.remove_red_eye),
-                            color: Colors.black38,
-                          ),
-                        ),
-                        validator: (value) {
-                          if (value!.length < 8 || isPasswordcorrect == false){
-                            return "please enter correct password";
-                          }
-                          return null;
-                        },
-                      ),
-                    ),
-
-                    //////////// button ///////////////
-                    Center(
-                      child: SizedBox(
-                        height: 60,
-                        width: MediaQuery.of(context).size.width * 0.6,
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.amber,
-                            elevation: 2,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(16),
-                            ),
-                            padding: EdgeInsets.all(18),
-                          ),
-                          onPressed: () {
-                            insert_record();
-                          },
-                          child: Text(
-                            "Sign Up",
-                            style: TextStyle(fontSize: 18, letterSpacing: .4),
-                          ),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.all(10),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                      child: Column(
                         children: [
-                          Text("Already have an account?", style: TextStyle(letterSpacing: .6, wordSpacing: 2, fontSize: 14),),
-                          TextButton(
-                            onPressed: () {
-                              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => login()));
-                            },
-                            child: Text(
-                              'Sign In',
-                              style: TextStyle(color: Colors.amber, letterSpacing: 1),
+                          Container(
+                            margin: EdgeInsets.only(left: 40, right: 40, bottom: 0, top: 40),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: TextFormField(
+                                    controller: _firstNameController,
+                                    decoration: InputDecoration(
+                                      hintText: 'First Name',
+                                      border: UnderlineInputBorder(
+                                        borderSide: BorderSide(
+                                          color: _firstNameController.text.isNotEmpty
+                                              ? Colors.red
+                                              : Colors.amber,
+                                        ),
+                                      ),
+                                      focusedBorder: UnderlineInputBorder(
+                                        borderSide: BorderSide(color: Colors.amber),
+                                      ),
+                                    ),
+                                    validator: (value) {
+                                      if (value == null || value.isEmpty) {
+                                        return 'Please enter your First Name';
+                                      } else if (RegExp(r'\d').hasMatch(value)) {
+                                        return "please enter valid name";
+                                      }
+                                      return null;
+                                    },
+                                  ),
+                                ),
+
+                                SizedBox(width: 10.0),
+
+                                Expanded(
+                                  child: TextFormField(
+                                    controller: _lastNameController,
+                                    decoration: InputDecoration(
+                                      hintText: "Last Name",
+                                      border: UnderlineInputBorder(
+                                        borderSide: BorderSide(
+                                          color: _lastNameController.text.isNotEmpty
+                                              ? Colors.red
+                                              : Colors.amber,
+                                        ),
+                                      ),
+                                      focusedBorder: UnderlineInputBorder(
+                                        borderSide: BorderSide(color: Colors.amber),
+                                      ),
+                                    ),
+                                    validator: (value) {
+                                      if (value == null || value.isEmpty) {
+                                        return 'Please enter your Last Name';
+                                      } else if (RegExp(r'\d').hasMatch(value)) {
+                                        return "please enter valid name";
+                                      }
+                                      return null;
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+
+                          Container(
+                            margin: EdgeInsets.only(left: 40, right: 40, bottom: 0, top: 0),
+                            child: TextFormField(
+                              controller: _emailController,
+                              keyboardType: TextInputType.emailAddress,
+                              decoration: InputDecoration(
+                                hintText: "Email",
+                                focusedBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.amber),
+                                ),
+                              ),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please enter your Email';
+                                } else if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
+                                  return 'Please enter a valid Email';
+                                }
+                                return null;
+                              },
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(left: 40, right: 40, bottom: 0, top: 0),
+                            child: TextFormField(
+                              controller: _passwordController,
+                              obscureText: passEnable,
+                              decoration: InputDecoration(
+                                focusedBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: isPasswordcorrect ? Colors.amber : Colors.red,
+                                  ),
+                                ),
+                                labelStyle: TextStyle(color: Colors.black.withOpacity(0.6)),
+                                hintText: "Password",
+                                suffixIcon: IconButton(
+                                  onPressed: _togglePasswordVisibility,
+                                  icon: Icon(passEnable
+                                      ? Icons.visibility_off
+                                      : Icons.remove_red_eye),
+                                  color: Colors.black38,
+                                ),
+                              ),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please enter your Password';
+                                } else if (value.length < 8) {
+                                  return 'Password must be at least 8 characters long';
+                                }
+                                return null;
+                              },
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(left: 40, right: 40, bottom: 20, top: 0),
+                            child: TextFormField(
+                              controller: _confirmPasswordController,
+                              obscureText: cpassEnable,
+                              decoration: InputDecoration(
+                                focusedBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: isPasswordcorrect ? Colors.amber : Colors.red,
+                                  ),
+                                ),
+                                labelStyle: TextStyle(color: Colors.black.withOpacity(0.6)),
+                                hintText: "Confirm Password",
+                                suffixIcon: IconButton(
+                                  onPressed: _toggleConfirmPasswordVisibility,
+                                  icon: Icon(cpassEnable
+                                      ? Icons.visibility_off
+                                      : Icons.remove_red_eye),
+                                  color: Colors.black38,
+                                ),
+                              ),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please confirm your Password';
+                                } else if (value != _passwordController.text) {
+                                  return 'Passwords do not match';
+                                }
+                                return null;
+                              },
+                            ),
+                          ),
+                          Center(
+                            child: SizedBox(
+                              height: 60,
+                              width: MediaQuery.of(context).size.width * 0.6,
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.amber,
+                                  elevation: 2,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(16),
+                                  ),
+                                  padding: EdgeInsets.all(18),
+                                ),
+                                onPressed: () {
+                                  insert_record();
+                                  Fluttertoast.showToast(msg: "Please login");
+                                  Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => login()
+                                      ),
+                                  );
+                                },
+                                child: Text(
+                                  "Sign Up",
+                                  style: TextStyle(fontSize: 18, letterSpacing: .4),
+                                ),
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.all(10),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  "Already have an account?",
+                                  style: TextStyle(
+                                    letterSpacing: .6,
+                                    wordSpacing: 2,
+                                    fontSize: 14,
+                                  ),
+                                ),
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(builder: (context) => login()),
+                                    );
+                                  },
+                                  child: Text(
+                                    'Sign In',
+                                    style: TextStyle(
+                                      color: Colors.amber,
+                                      letterSpacing: 1,
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         ],
@@ -292,18 +338,10 @@ class _registrationState extends State<registration> {
                   ],
                 ),
               ),
-            ],
+            ),
           ),
         ),
       ),
     );
   }
 }
-
-
-//
-// Prepared Statements: Use prepare, bind_param, and execute to prevent SQL injection.
-// Check for Existing User: Query the database to ensure the email isn’t already registered.
-// Password Hashing: Hash passwords using password_hash for added security.
-// Input Validation: Validate the email format.
-// Error Handling: Provide specific error messages for better debugging.
