@@ -120,7 +120,7 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Future<void> _editProfile() async {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => EditProfilePage()));
+    Navigator.push(context, MaterialPageRoute(builder: (context) => edit_profile()));
     //_loadData();
   }
 
