@@ -5,6 +5,7 @@ import 'package:flutter_gemini/flutter_gemini.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:learners/home/category/category_fetch.dart';
 import 'package:learners/chat/consts.dart';
+import 'package:learners/home/popular_courses/popular_courses_fetch.dart';
 import 'package:learners/network_page/NoInternet.dart';
 import 'package:learners/user_onboarding/login_page.dart';
 import 'package:learners/user_onboarding/onboarding.dart';
@@ -43,6 +44,7 @@ Future<void> main() async {
       providers: [
         ChangeNotifierProvider(create: (context) => ProfileProvider()),
         ChangeNotifierProvider(create: (context) => CategoryProvider()),
+        ChangeNotifierProvider(create: (context) => PopularCourseProvider()),
       ],
       child: GetMaterialApp(
         debugShowCheckedModeBanner: false,
