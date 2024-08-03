@@ -2,8 +2,10 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:learners/home_page.dart';
+import 'package:learners/profile/profile_provider.dart';
 import 'package:learners/user_onboarding/registration.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 
 class login extends StatefulWidget {
   const login({super.key});
@@ -23,27 +25,41 @@ class _loginState extends State<login> {
     //const String uri = "http://10.0.2.2/learners_api/login.php";
     const String uri = "http://192.168.1.13/learners_api/login.php";
 
-    try {
-      // Make the POST request
-      var response = await http.post(
-        Uri.parse(uri),
-        body: {
-          'email': email,
-          'password': password,
-        },
-      );
-      var jsonResponse = jsonDecode(response.body);
+    final body = {
+      'email': email,
+      'password': password,
+    };
+    // Send the POST request
+    final response = await http.post(
+      Uri.parse(uri),
+      body: body,
+    );
+
+    if (response.statusCode == 200) {
+      final jsonResponse = json.decode(response.body);
+
       if (jsonResponse['success'] == 'true') {
-        print(jsonResponse);
-        Fluttertoast.showToast(msg: jsonResponse['message']);
+        final user = jsonResponse['user'];
+        final String firstName = user['fname'];
+        final String lastName = user['lname'];
+        final String userEmail = user['email'];
+
+        // Handle user profile data
+        final profileProvider = Provider.of<ProfileProvider>(context, listen: false);
+        await profileProvider.updateName(firstName, lastName);
+        Fluttertoast.showToast(msg: "welcome $firstName");
         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => home_page()));
+
+        print('First Name: $firstName');
+        print('Last Name: $lastName');
+        print('Email: $userEmail');
       } else {
-        print(jsonResponse);
-        Fluttertoast.showToast(msg: jsonResponse['message']);
+        Fluttertoast.showToast(msg: "${jsonResponse['message']}");
+        print('Error: ${jsonResponse['message']}');
       }
-    } catch (e) {
-      print("Error: $e");
-      Fluttertoast.showToast(msg: 'An error occurred');
+    } else {
+      Fluttertoast.showToast(msg: "Error failed to login");
+      print('Failed to login. Status code: ${response.statusCode}');
     }
   }
 
@@ -52,8 +68,6 @@ class _loginState extends State<login> {
       passEnable = !passEnable;
     });
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -73,7 +87,6 @@ class _loginState extends State<login> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-
                 Text(
                   "Welcome Back!",
                   style: TextStyle(
@@ -82,15 +95,16 @@ class _loginState extends State<login> {
                     color: Colors.orange,
                   ),
                 ),
-
-                SizedBox(height: 6,),
-
+                SizedBox(
+                  height: 6,
+                ),
                 Container(
                   margin: EdgeInsets.only(left: 20, right: 20),
                   child: Column(
                     children: [
                       Container(
-                        margin: EdgeInsets.only(left: 40, right: 40, bottom: 0, top: 0),
+                        margin: EdgeInsets.only(
+                            left: 40, right: 40, bottom: 0, top: 0),
                         child: TextFormField(
                           controller: _emailController,
                           keyboardType: TextInputType.emailAddress,
@@ -103,23 +117,26 @@ class _loginState extends State<login> {
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return "Please enter your email";
-                            } else if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
+                            } else if (!RegExp(r'^[^@]+@[^@]+\.[^@]+')
+                                .hasMatch(value)) {
                               return "Please enter a valid email";
                             }
                             return null;
                           },
                         ),
                       ),
-
                       Container(
-                        margin: EdgeInsets.only(left: 40, right: 40, bottom: 0, top: 0),
+                        margin: EdgeInsets.only(
+                            left: 40, right: 40, bottom: 0, top: 0),
                         child: TextFormField(
                           controller: _passwordController,
                           obscureText: passEnable,
                           decoration: InputDecoration(
                             focusedBorder: UnderlineInputBorder(
                               borderSide: BorderSide(
-                                color: isPasswordcorrect ? Colors.amber : Colors.red,
+                                color: isPasswordcorrect
+                                    ? Colors.amber
+                                    : Colors.red,
                               ),
                             ),
                             hintText: "Password",
@@ -141,25 +158,28 @@ class _loginState extends State<login> {
                           },
                         ),
                       ),
-
                       Container(
                         margin: EdgeInsets.only(right: 30),
                         alignment: Alignment.centerRight,
                         child: TextButton(
                           onPressed: () {
-                            Fluttertoast.showToast(msg: 'Not implemented yet', gravity: ToastGravity.TOP);
+                            Fluttertoast.showToast(
+                                msg: 'Not implemented yet',
+                                gravity: ToastGravity.TOP);
                             Navigator.pushReplacement(
                               context,
-                              MaterialPageRoute(builder: (context) => home_page()),
+                              MaterialPageRoute(
+                                  builder: (context) => home_page()),
                             );
                           },
                           child: Text(
                             'Forgot password',
-                            style: TextStyle(color: Colors.orange, fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                                color: Colors.orange,
+                                fontWeight: FontWeight.bold),
                           ),
                         ),
                       ),
-
                       Center(
                         child: Container(
                           margin: EdgeInsets.only(top: 20, right: 20, left: 20),
@@ -177,35 +197,44 @@ class _loginState extends State<login> {
                               ),
                               onPressed: () {
                                 if (_formKey.currentState!.validate()) {
-                                  login(_emailController.text, _passwordController.text);
+                                  login(_emailController.text,
+                                      _passwordController.text);
                                 }
                               },
                               child: Text(
                                 "Sign In",
-                                style: TextStyle(fontSize: 18, letterSpacing: .4),
+                                style:
+                                    TextStyle(fontSize: 18, letterSpacing: .4),
                               ),
                             ),
                           ),
                         ),
                       ),
-
                       Container(
                         padding: EdgeInsets.all(10),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text("Don't have an account?", style: TextStyle(letterSpacing: .6, wordSpacing: 2, fontSize: 14),),
+                            Text(
+                              "Don't have an account?",
+                              style: TextStyle(
+                                  letterSpacing: .6,
+                                  wordSpacing: 2,
+                                  fontSize: 14),
+                            ),
                             TextButton(
                               onPressed: () {
-                                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => registration()));
+                                Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => registration()));
                               },
                               child: Text(
                                 'Sign Up',
                                 style: TextStyle(
                                     color: Colors.orange,
                                     letterSpacing: 1,
-                                    fontWeight: FontWeight.bold
-                                ),
+                                    fontWeight: FontWeight.bold),
                               ),
                             ),
                           ],

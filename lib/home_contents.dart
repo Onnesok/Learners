@@ -365,7 +365,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                         ),
                         SizedBox(width: 10,),
                         Text(
-                          "ID: 56165",
+                          "Status: User",
                           style: TextStyle(
                             color: Colors.black87,
                             fontSize: 12,
