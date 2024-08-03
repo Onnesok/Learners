@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:learners/chat/chat_page.dart';
-import 'package:learners/home_contents.dart';
+import 'package:learners/home/home_contents.dart';
 import 'package:learners/profile/profile_page.dart';
 
 class home_page extends StatefulWidget {

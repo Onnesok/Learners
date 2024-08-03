@@ -1,19 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:learners/home/custom_appbar.dart';
+import 'package:learners/home/home_contents.dart';
 import 'package:provider/provider.dart';
 import 'package:learners/profile/profile_provider.dart';
+import 'package:learners/category/category_page.dart';
+import 'package:learners/home/searchbar.dart';
 
-class Category {
-  final String name;
-  final String image;
-  final int courseCount;
-
-  Category({
-    required this.name,
-    required this.image,
-    required this.courseCount,
-  });
-}
 
 class PopularCourse {
   final String title;
@@ -25,34 +18,6 @@ class PopularCourse {
   });
 }
 
-
-final List<Category> categories = [
-  Category(
-    name: 'Programming',
-    image: 'assets/images/programming.png',
-    courseCount: 10,
-  ),
-  Category(
-    name: 'UI/UX',
-    image: 'assets/images/designer.png',
-    courseCount: 8,
-  ),
-  Category(
-    name: 'Marketing',
-    image: 'assets/images/marketing.png',
-    courseCount: 12,
-  ),
-  Category(
-    name: 'Management',
-    image: 'assets/images/management.png',
-    courseCount: 12,
-  ),
-  Category(
-    name: 'Robotics',
-    image: 'assets/images/robotics.png',
-    courseCount: 12,
-  ),
-];
 
 final List<PopularCourse> popularCourses = [
   PopularCourse(
@@ -86,8 +51,16 @@ class _home_contentsState extends State<home_contents> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    final categoryProvider = Provider.of<CategoryProvider>(context, listen: false);
+    categoryProvider.fetchCategories();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final profileProvider = Provider.of<ProfileProvider>(context);
+    final categoryProvider = Provider.of<CategoryProvider>(context);
 
     return Scaffold(
       appBar: PreferredSize(
@@ -102,7 +75,7 @@ class _home_contentsState extends State<home_contents> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SearchBar(),
+            Search_bar(),
 
             SizedBox(height: 10,),
 
@@ -143,7 +116,7 @@ class _home_contentsState extends State<home_contents> {
               child: SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: Row(
-                  children: categories.map((category) {
+                  children: categoryProvider.categories.map((category) {
                     return Container(
                       width: MediaQuery.of(context).size.width * 0.24,
                       margin: EdgeInsets.symmetric(horizontal: 10,),
@@ -272,150 +245,5 @@ class _home_contentsState extends State<home_contents> {
   }
 }
 
-class SearchBar extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(left: 20, right: 20, top: 20),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(30),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.3),
-            spreadRadius: 2,
-            blurRadius: 5,
-            offset: Offset(0, 3),
-          ),
-        ],
-      ),
-      child: TextField(
-        decoration: InputDecoration(
-          hintText: 'Search for courses',
-          hintStyle: TextStyle(color: Colors.red[400]),
-          prefixIcon: Icon(Icons.search, color: Colors.red),
-          contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(30),
-            borderSide: BorderSide.none,
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(30),
-            borderSide: BorderSide(color: Colors.orange),
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(30),
-            borderSide: BorderSide.none,
-          ),
-          filled: true,
-          fillColor: Colors.transparent,
-        ),
-      ),
-    );
-  }
-}
 
-class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
-  final Function(int) onTabChange;
-  final ProfileProvider profileProvider;
 
-  CustomAppBar({required this.onTabChange, required this.profileProvider});
-
-  @override
-  Size get preferredSize => Size.fromHeight(70.0);
-
-  @override
-  Widget build(BuildContext context) {
-    return AppBar(
-      title: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            "learners",
-            style: TextStyle(
-              color: Colors.black87,
-              fontWeight: FontWeight.bold,
-              fontSize: 28,
-              fontFamily: "shadow",
-            ),
-          ),
-          GestureDetector(
-            onTap: () => onTabChange(3),
-            child: Row(
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Text(
-                      profileProvider.fullName,
-                      style: TextStyle(
-                        color: Colors.black87,
-                        fontSize: 16,
-                      ),
-                    ),
-                    Row(
-                      children: [
-                        Transform.rotate(
-                          angle: 3 * 3.14159 / 2,
-                          child: Icon(
-                            Icons.arrow_back_ios_outlined,
-                            color: Colors.black87,
-                            size: 12,
-                          ),
-                        ),
-                        SizedBox(width: 10,),
-                        Text(
-                          "Status: User",
-                          style: TextStyle(
-                            color: Colors.black87,
-                            fontSize: 12,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-                SizedBox(width: 10,),
-                CircleAvatar(
-                  radius: 20,
-                  backgroundColor: Colors.orange,
-                  backgroundImage: profileProvider.pickedImage != null
-                      ? FileImage(profileProvider.pickedImage!)
-                      : AssetImage('assets/images/demo.jpg') as ImageProvider,
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-      backgroundColor: Colors.orange[800],
-      shadowColor: Colors.transparent,
-      shape: const CustomAppBarShape(multi: 0.08),
-    );
-  }
-}
-
-class CustomAppBarShape extends ContinuousRectangleBorder {
-  final double multi;
-  const CustomAppBarShape({this.multi = 0.1});
-  @override
-  Path getOuterPath(Rect rect, {TextDirection? textDirection}) {
-    double height = rect.height;
-    double width = rect.width;
-    var path = Path();
-    path.lineTo(0, height + width * multi);
-    path.arcToPoint(
-      Offset(width * multi, height),
-      radius: Radius.circular(width * multi),
-    );
-    path.lineTo(width * (1 - multi), height);
-    path.arcToPoint(
-      Offset(width, height + width * multi),
-      radius: Radius.circular(width * multi),
-    );
-    path.lineTo(width, 0);
-    path.close();
-
-    return path;
-  }
-}

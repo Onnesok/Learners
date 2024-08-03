@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_gemini/flutter_gemini.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
+import 'package:learners/category/category_page.dart';
 import 'package:learners/chat/consts.dart';
-import 'package:learners/home_page.dart';
 import 'package:learners/network_page/NoInternet.dart';
 import 'package:learners/user_onboarding/login_page.dart';
 import 'package:learners/user_onboarding/onboarding.dart';
@@ -39,8 +39,11 @@ Future<void> main() async {
   }
 
   runApp(
-    ChangeNotifierProvider(
-      create: (context) => ProfileProvider(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => ProfileProvider()),
+        ChangeNotifierProvider(create: (context) => CategoryProvider()),
+      ],
       child: GetMaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
