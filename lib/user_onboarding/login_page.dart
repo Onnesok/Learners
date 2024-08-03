@@ -44,15 +44,12 @@ class _loginState extends State<login> {
         final String lastName = user['lname'];
         final String userEmail = user['email'];
 
-        // Handle user profile data
+        // Handle data here bro :)
         final profileProvider = Provider.of<ProfileProvider>(context, listen: false);
         await profileProvider.updateName(firstName, lastName);
+        await profileProvider.storeEmail(userEmail);
         Fluttertoast.showToast(msg: "welcome $firstName");
         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => home_page()));
-
-        print('First Name: $firstName');
-        print('Last Name: $lastName');
-        print('Email: $userEmail');
       } else {
         Fluttertoast.showToast(msg: "${jsonResponse['message']}");
         print('Error: ${jsonResponse['message']}');

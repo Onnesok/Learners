@@ -18,6 +18,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
     final profileProvider = Provider.of<ProfileProvider>(context, listen: false);
     _fnameController.text = profileProvider.fname;
     _lnameController.text = profileProvider.lname;
+    _emailController.text = profileProvider.email;
   }
 
   @override
@@ -42,7 +43,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     decoration: InputDecoration(
                       labelStyle: TextStyle(color: Colors.black.withOpacity(0.6)),
                       labelText: 'First Name',
-                      hintText: 'First Name', // Add this line
+                      hintText: 'First Name',
                       floatingLabelBehavior: FloatingLabelBehavior.always,
                       border: OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.black),

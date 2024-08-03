@@ -6,10 +6,12 @@ class ProfileProvider with ChangeNotifier {
   File? _pickedImage;
   String _fname = 'No';
   String _lname = 'Name';
+  String _email = 'Email not loaded';
 
   File? get pickedImage => _pickedImage;
   String get fname => _fname;
   String get lname => _lname;
+  String get email => _email;
   String get fullName => '$_fname $_lname';
 
   ProfileProvider() {
@@ -22,10 +24,12 @@ class ProfileProvider with ChangeNotifier {
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       final String? fname = prefs.getString('first name');
       final String? lname = prefs.getString('last name');
+      final String? email = prefs.getString('email');
       final String? imagePath = prefs.getString('profile_image');
 
       _fname = fname ?? 'No';
       _lname = lname ?? 'Name';
+      _email = email ?? 'Email not loaded';
       if (imagePath != null && File(imagePath).existsSync()) {
         _pickedImage = File(imagePath);
       } else {
@@ -67,4 +71,16 @@ class ProfileProvider with ChangeNotifier {
       print('Error updating names: $e');
     }
   }
+
+  Future<void> storeEmail(String email) async {
+    try {
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setString('email', email);
+      _email = email;
+      notifyListeners();
+    } catch (e) {
+      print('Error updating email: $e');
+    }
+  }
+
 }
