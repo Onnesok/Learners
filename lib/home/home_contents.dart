@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:learners/home/custom_appbar.dart';
+import 'package:learners/home/enroll_course.dart';
 import 'package:provider/provider.dart';
 import 'package:learners/profile/profile_provider.dart';
 import 'package:learners/home/category/category_fetch.dart';
@@ -80,6 +81,9 @@ class _home_contentsState extends State<home_contents> {
             SizedBox(
               height: 10,
             ),
+
+            /////////////////////////////// Categories of all courses :)   ////////////////////////////
+
             Container(
               height: MediaQuery.of(context).size.height * 0.12,
               child: categoryProvider.categories.isEmpty
@@ -182,6 +186,9 @@ class _home_contentsState extends State<home_contents> {
                 ],
               ),
             ),
+
+            ////////////////////////// These courses are popular within my bros :')   ///////////////////////
+
             popularCourseProvider.courses.isEmpty
                 ? Center(
                     child: Text(
@@ -207,64 +214,69 @@ class _home_contentsState extends State<home_contents> {
                       itemBuilder: (context, index) {
                         final course = popularCourseProvider.courses[index];
 
-                        return Container(
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(10),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.1),
-                                spreadRadius: 5,
-                                blurRadius: 8,
-                                offset: Offset(0, 1),
-                              ),
-                            ],
-                          ),
-                          child: Column(
-                            children: [
-                              Image.asset(
-                                course.image,
-                                width: 100,
-                                height: 100,
-                                fit: BoxFit.cover,
-                              ),
-                              Text(
-                                course.title,
-                                style: TextStyle(
-                                  color: Colors.black87,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
+                        return GestureDetector(
+                          onTap: () {
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => enroll(title: course.title,)));
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(10),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.1),
+                                  spreadRadius: 5,
+                                  blurRadius: 8,
+                                  offset: Offset(0, 1),
                                 ),
-                              ),
-                              Container(
-                                color: Colors.green[200],
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      "${course.stars}",
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.black87,
+                              ],
+                            ),
+                            child: Column(
+                              children: [
+                                Image.asset(
+                                  course.image,
+                                  width: 100,
+                                  height: 100,
+                                  fit: BoxFit.cover,
+                                ),
+                                Text(
+                                  course.title,
+                                  style: TextStyle(
+                                    color: Colors.black87,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                Container(
+                                  color: Colors.green[200],
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        "${course.stars}",
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black87,
+                                        ),
                                       ),
-                                    ),
-                                    Icon(
-                                      Icons.star,
-                                      color: Colors.orange[800],
-                                      size: 14,
-                                    ),
-                                  ],
+                                      Icon(
+                                        Icons.star,
+                                        color: Colors.orange[800],
+                                        size: 14,
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                              ),
-                              Text(
-                                "${course.discount} discount",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w300,
-                                  fontStyle: FontStyle.italic,
+                                Text(
+                                  "${course.discount} discount",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w300,
+                                    fontStyle: FontStyle.italic,
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         );
                       },
