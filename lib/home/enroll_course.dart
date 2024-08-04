@@ -104,7 +104,7 @@ class _enrollState extends State<enroll> with TickerProviderStateMixin {
                       blurRadius: 10.0),
                 ],
               ),
-              child: Padding(
+              child: Container(
                 padding: const EdgeInsets.only(left: 8, right: 8),
                 child: SingleChildScrollView(
                   child: Container(
@@ -305,7 +305,7 @@ class _enrollState extends State<enroll> with TickerProviderStateMixin {
                   onTap: () => Navigator.pop(context),
                   child: const Icon(
                     Icons.arrow_back_ios,
-                    color: Colors.black87,
+                    color: Colors.white,
                   ),
                 ),
               ),
