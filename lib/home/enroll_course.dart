@@ -80,7 +80,7 @@ class _enrollState extends State<enroll> with TickerProviderStateMixin {
               AspectRatio(
                 aspectRatio: 1.2,
                 child: Image.network(
-                  "http://192.168.1.13/learners_api/${widget.image}",
+                  widget.image,
                   fit: BoxFit.cover,
                 ),
               ),

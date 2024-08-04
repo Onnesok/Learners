@@ -126,7 +126,7 @@ class _home_contentsState extends State<home_contents> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Image.network(
-                                      "http://192.168.1.13/learners_api/${category.image}",
+                                      category.image,
                                       width: 40,
                                       height: 40,
                                       fit: BoxFit.cover,
@@ -257,7 +257,7 @@ class _home_contentsState extends State<home_contents> {
                                   child: Container(
                                     width: MediaQuery.of(context).size.width,
                                     child: Image.network(
-                                      "http://192.168.1.13/learners_api/${course.image}",
+                                      course.image,
                                       width: 100,
                                       height: 100,
                                       fit: BoxFit.cover,
