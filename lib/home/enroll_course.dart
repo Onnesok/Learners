@@ -3,8 +3,17 @@ import 'package:fluttertoast/fluttertoast.dart';
 
 class enroll extends StatefulWidget {
   final String title;
+  final String image;
+  final String stars;
+  final String discount;
 
-  const enroll({super.key, required this.title});
+  const enroll({
+    super.key,
+    required this.title,
+    required this.image,
+    required this.stars,
+    required this.discount,
+  });
 
   @override
   State<enroll> createState() => _enrollState();
@@ -18,7 +27,6 @@ class _enrollState extends State<enroll> with TickerProviderStateMixin {
 
   late final AnimationController animationController;
   late final Animation<double> animation;
-
 
   @override
   void initState() {
@@ -60,7 +68,9 @@ class _enrollState extends State<enroll> with TickerProviderStateMixin {
   }
 
   Widget build(BuildContext context) {
-    final double tempHeight = MediaQuery.of(context).size.height - (MediaQuery.of(context).size.width / 1.2) + 24.0;
+    final double tempHeight = MediaQuery.of(context).size.height -
+        (MediaQuery.of(context).size.width / 1.2) +
+        24.0;
     return Material(
       color: Colors.white.withOpacity(0.2),
       child: Stack(
@@ -69,7 +79,10 @@ class _enrollState extends State<enroll> with TickerProviderStateMixin {
             children: <Widget>[
               AspectRatio(
                 aspectRatio: 1.2,
-                child: Image.asset('assets/images/demo.jpg', fit: BoxFit.fill,),
+                child: Image.network(
+                  "http://192.168.1.13/learners_api/${widget.image}",
+                  fit: BoxFit.cover,
+                ),
               ),
             ],
           ),
@@ -97,15 +110,13 @@ class _enrollState extends State<enroll> with TickerProviderStateMixin {
                   child: Container(
                     constraints: BoxConstraints(
                         minHeight: infoHeight,
-                        maxHeight:
-                        tempHeight > infoHeight ? tempHeight : infoHeight),
+                        maxHeight: tempHeight > infoHeight ? tempHeight : infoHeight),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Padding(
-                          padding:
-                          EdgeInsets.only(top: 32.0, left: 18, right: 16),
+                        Container(
+                          padding: EdgeInsets.only(top: 32.0, left: 18, right: 16),
                           child: Text(
                             widget.title,
                             textAlign: TextAlign.left,
@@ -117,14 +128,13 @@ class _enrollState extends State<enroll> with TickerProviderStateMixin {
                             ),
                           ),
                         ),
-                        const Padding(
-                          padding: EdgeInsets.only(
-                              left: 16, right: 16, bottom: 8, top: 16),
+                        Container(
+                          padding: EdgeInsets.only(left: 16, right: 16, bottom: 8, top: 16),
                         ),
                         AnimatedOpacity(
                           duration: const Duration(milliseconds: 500),
                           opacity: opacity1,
-                          child: Padding(
+                          child: Container(
                             padding: const EdgeInsets.all(8),
                             child: Row(
                               children: <Widget>[
@@ -139,11 +149,11 @@ class _enrollState extends State<enroll> with TickerProviderStateMixin {
                           child: AnimatedOpacity(
                             duration: const Duration(milliseconds: 500),
                             opacity: opacity2,
-                            child: const Padding(
-                              padding: EdgeInsets.only(
-                                  left: 16, right: 16, top: 8, bottom: 8),
+                            child: Container(
+                              padding: EdgeInsets.only( left: 16, right: 16, top: 8, bottom: 8),
                               child: Text(
-                                'Here I will give description or any jibrish I want about the course to be shown. development time thing',
+                                'Here I will give description or any jibrish I want about the course to be shown.'
+                                    ' development time thing',
                                 textAlign: TextAlign.justify,
                                 style: TextStyle(
                                   fontWeight: FontWeight.w200,
@@ -160,9 +170,8 @@ class _enrollState extends State<enroll> with TickerProviderStateMixin {
                         AnimatedOpacity(
                           duration: const Duration(milliseconds: 500),
                           opacity: opacity3,
-                          child: Padding(
-                            padding: const EdgeInsets.only(
-                                left: 16, bottom: 16, right: 16),
+                          child: Container(
+                            padding: const EdgeInsets.only(left: 16, bottom: 16, right: 16),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
@@ -172,16 +181,18 @@ class _enrollState extends State<enroll> with TickerProviderStateMixin {
                                   decoration: BoxDecoration(
                                     color: Colors.white,
                                     borderRadius: const BorderRadius.all(
-                                        Radius.circular(16.0)),
+                                        Radius.circular(16.0),
+                                    ),
                                     border: Border.all(
-                                        color: Colors.grey
-                                            .withOpacity(0.2)),
+                                        color: Colors.grey.withOpacity(0.2),
+                                    ),
                                   ),
                                   child: TextButton(
                                     style: TextButton.styleFrom(
                                       shape: RoundedRectangleBorder(
                                           borderRadius:
-                                          BorderRadius.circular(16.0)),
+                                              BorderRadius.circular(16.0),
+                                      ),
                                     ),
                                     onPressed: () {},
                                     child: const Icon(
@@ -212,7 +223,7 @@ class _enrollState extends State<enroll> with TickerProviderStateMixin {
                                         style: TextButton.styleFrom(
                                           shape: RoundedRectangleBorder(
                                             borderRadius:
-                                            BorderRadius.circular(16.0),
+                                                BorderRadius.circular(16.0),
                                           ),
                                           minimumSize: const Size(1000, 48),
                                         ),
@@ -239,7 +250,7 @@ class _enrollState extends State<enroll> with TickerProviderStateMixin {
                         ),
                         SizedBox(
                           height: MediaQuery.of(context).padding.bottom,
-                        )
+                        ),
                       ],
                     ),
                   ),
@@ -290,7 +301,7 @@ class _enrollState extends State<enroll> with TickerProviderStateMixin {
                 color: Colors.transparent,
                 child: InkWell(
                   borderRadius:
-                  BorderRadius.circular(AppBar().preferredSize.height),
+                      BorderRadius.circular(AppBar().preferredSize.height),
                   onTap: () => Navigator.pop(context),
                   child: const Icon(
                     Icons.arrow_back_ios,
@@ -314,9 +325,10 @@ class _enrollState extends State<enroll> with TickerProviderStateMixin {
           borderRadius: const BorderRadius.all(Radius.circular(16.0)),
           boxShadow: <BoxShadow>[
             BoxShadow(
-                color: Colors.grey.withOpacity(0.2),
+                color: Colors.grey.withOpacity(0.4),
                 offset: const Offset(1.1, 1.1),
-                blurRadius: 8.0),
+                spreadRadius: 6,
+                blurRadius: 10.0),
           ],
         ),
         child: Padding(

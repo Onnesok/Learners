@@ -48,10 +48,11 @@ class _home_contentsState extends State<home_contents> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+
             Search_bar(),
-            SizedBox(
-              height: 10,
-            ),
+
+            SizedBox(height: 10,),
+
             Container(
               padding: const EdgeInsets.only(left: 10),
               child: Row(
@@ -62,6 +63,7 @@ class _home_contentsState extends State<home_contents> {
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
                   TextButton(
@@ -73,6 +75,7 @@ class _home_contentsState extends State<home_contents> {
                       style: TextStyle(
                           color: Colors.orange[800],
                           fontWeight: FontWeight.bold),
+                          overflow: TextOverflow.ellipsis,
                     ),
                   ),
                 ],
@@ -94,6 +97,7 @@ class _home_contentsState extends State<home_contents> {
                           color: Colors.black87.withOpacity(0.6),
                           fontWeight: FontWeight.bold,
                           fontSize: 18,
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ),
                     )
@@ -103,9 +107,7 @@ class _home_contentsState extends State<home_contents> {
                         children: categoryProvider.categories.map((category) {
                           return GestureDetector(
                             onTap: () {
-                              Fluttertoast.showToast(
-                                  msg: "Tapped on ${category.name}");
-                              print('Tapped on ${category.name}');
+                              Fluttertoast.showToast(msg: "Tapped on ${category.name}");
                             },
                             child: Container(
                               width: MediaQuery.of(context).size.width * 0.24,
@@ -123,10 +125,11 @@ class _home_contentsState extends State<home_contents> {
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Image.asset(
-                                      category.image,
+                                    Image.network(
+                                      "http://192.168.1.13/learners_api/${category.image}",
                                       width: 40,
                                       height: 40,
+                                      fit: BoxFit.cover,
                                     ),
                                     SizedBox(height: 8),
                                     Text(
@@ -135,6 +138,7 @@ class _home_contentsState extends State<home_contents> {
                                         color: Colors.black87,
                                         fontSize: 14,
                                         fontWeight: FontWeight.w400,
+                                        overflow: TextOverflow.ellipsis,
                                       ),
                                     ),
                                     SizedBox(
@@ -146,6 +150,7 @@ class _home_contentsState extends State<home_contents> {
                                         color: Colors.grey,
                                         fontSize: 11,
                                         fontWeight: FontWeight.w400,
+                                        overflow: TextOverflow.ellipsis,
                                       ),
                                     ),
                                   ],
@@ -170,6 +175,7 @@ class _home_contentsState extends State<home_contents> {
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
                   TextButton(
@@ -180,7 +186,9 @@ class _home_contentsState extends State<home_contents> {
                       "See more",
                       style: TextStyle(
                           color: Colors.orange[800],
-                          fontWeight: FontWeight.bold),
+                          fontWeight: FontWeight.bold,
+                          overflow: TextOverflow.ellipsis,
+                      ),
                     ),
                   ),
                 ],
@@ -197,6 +205,7 @@ class _home_contentsState extends State<home_contents> {
                         color: Colors.black87.withOpacity(0.6),
                         fontWeight: FontWeight.bold,
                         fontSize: 18,
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
                   )
@@ -209,6 +218,7 @@ class _home_contentsState extends State<home_contents> {
                         crossAxisCount: 2,
                         crossAxisSpacing: 30,
                         mainAxisSpacing: 30,
+                        childAspectRatio: 1,
                       ),
                       itemCount: popularCourseProvider.courses.length,
                       itemBuilder: (context, index) {
@@ -216,7 +226,16 @@ class _home_contentsState extends State<home_contents> {
 
                         return GestureDetector(
                           onTap: () {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => enroll(title: course.title,)));
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => enroll(
+                                  title: course.title,
+                                  image: course.image,
+                                  stars: course.stars,
+                                  discount: course.discount,
+                                ),
+                                ),
+                            );
                           },
                           child: Container(
                             decoration: BoxDecoration(
@@ -233,18 +252,26 @@ class _home_contentsState extends State<home_contents> {
                             ),
                             child: Column(
                               children: [
-                                Image.asset(
-                                  course.image,
-                                  width: 100,
-                                  height: 100,
-                                  fit: BoxFit.cover,
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(10),
+                                  child: Container(
+                                    width: MediaQuery.of(context).size.width,
+                                    child: Image.network(
+                                      "http://192.168.1.13/learners_api/${course.image}",
+                                      width: 100,
+                                      height: 100,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
                                 ),
+                                SizedBox(height: 4,),
                                 Text(
                                   course.title,
                                   style: TextStyle(
                                     color: Colors.black87,
                                     fontSize: 16,
                                     fontWeight: FontWeight.bold,
+                                    overflow: TextOverflow.ellipsis,
                                   ),
                                 ),
                                 Container(
@@ -258,6 +285,7 @@ class _home_contentsState extends State<home_contents> {
                                           fontSize: 14,
                                           fontWeight: FontWeight.bold,
                                           color: Colors.black87,
+                                          overflow: TextOverflow.ellipsis,
                                         ),
                                       ),
                                       Icon(
@@ -273,6 +301,7 @@ class _home_contentsState extends State<home_contents> {
                                   style: TextStyle(
                                     fontWeight: FontWeight.w300,
                                     fontStyle: FontStyle.italic,
+                                    overflow: TextOverflow.ellipsis,
                                   ),
                                 ),
                               ],
