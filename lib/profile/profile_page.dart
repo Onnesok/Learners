@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:learners/profile/change_password.dart';
 import 'package:learners/profile/edit_profile.dart';
 import 'package:learners/user_onboarding/login_page.dart';
 import 'dart:io';
@@ -38,7 +39,6 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  bool _isLoggedInWithGoogle = false;
   final ImagePicker _imagePicker = ImagePicker();
   late SharedPreferences _prefs;
 
@@ -121,12 +121,10 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Future<void> _editProfile() async {
     Navigator.push(context, MaterialPageRoute(builder: (context) => edit_profile()));
-    //_loadData();
   }
 
   Future<void> _changepass() async {
-    Fluttertoast.showToast(msg: "Not done yet");
-    _loadData();
+    Navigator.push(context, MaterialPageRoute(builder: (context) => ChangePassword() ), );
   }
 
   Future<void> _address() async {
@@ -184,7 +182,7 @@ class _ProfilePageState extends State<ProfilePage> {
             SizedBox(height: 10.0),
             Divider(),
             ListTileItem(icon: Icons.person_outline_rounded, text: 'Edit profile', onTap: _editProfile),
-            if (!_isLoggedInWithGoogle) ListTileItem(icon: Icons.lock_outline, text: 'Change Password', onTap: _changepass),
+            ListTileItem(icon: Icons.lock_outline, text: 'Change Password', onTap: _changepass),
             ListTileItem(icon: Icons.payments_outlined, text: 'Payment details', onTap: _address),
             ListTileItem(icon: Icons.verified_outlined, text: 'Verify', onTap: _address),
             ListTileItem(icon: Icons.contact_page_outlined, text: 'contact us', onTap: _address),
