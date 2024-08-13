@@ -34,9 +34,9 @@ Future<void> main() async {
 
   Widget initialPage;
   if (connectivityResult != ConnectivityResult.none) {
-    initialPage = onboardingShown ? login() : Onboarding();
+    initialPage = onboardingShown ? const login() : const Onboarding();
   } else {
-    initialPage = NoInternet();
+    initialPage = const NoInternet();
   }
 
   runApp(

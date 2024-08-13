@@ -27,7 +27,7 @@ class _ProfileState extends State<Profile> {
         elevation: 0,
         backgroundColor: Colors.transparent,
       ),
-      body: ProfilePage(),
+      body: const ProfilePage(),
     );
   }
 }
@@ -35,6 +35,8 @@ class _ProfileState extends State<Profile> {
 
 
 class ProfilePage extends StatefulWidget {
+  const ProfilePage({super.key});
+
   @override
   _ProfilePageState createState() => _ProfilePageState();
 }
@@ -49,7 +51,7 @@ class _ProfilePageState extends State<ProfilePage> {
       profileProvider.updateName("No", "Name");
 
       Navigator.of(context, rootNavigator: true).pushReplacement(
-        MaterialPageRoute(builder: (context) => login()),
+        MaterialPageRoute(builder: (context) => const login()),
       );
 
       _showSnackBar('Logged out successfully');
@@ -160,8 +162,8 @@ class _ProfilePageState extends State<ProfilePage> {
 
             const Divider(),
 
-            ListTileItem(icon: Icons.person_outline_rounded, text: 'Edit Profile', onTap: () => _navigateTo(edit_profile())),
-            ListTileItem(icon: Icons.lock_outline, text: 'Change Password', onTap: () => _navigateTo(ChangePassword())),
+            ListTileItem(icon: Icons.person_outline_rounded, text: 'Edit Profile', onTap: () => _navigateTo(const edit_profile())),
+            ListTileItem(icon: Icons.lock_outline, text: 'Change Password', onTap: () => _navigateTo(const ChangePassword())),
             ListTileItem(icon: Icons.school_outlined, text: 'Become Instructor', onTap: () => _showToast('Not done yet')),
             ListTileItem(icon: Icons.verified_outlined, text: 'Verify Profile', onTap: () => _showToast('Not done yet')),
             ListTileItem(icon: Icons.star_border_outlined, text: 'Rate Us', onTap: () => _showToast('Not done yet')),
@@ -181,7 +183,7 @@ class ListTileItem extends StatelessWidget {
   final String text;
   final VoidCallback? onTap;
 
-  ListTileItem({
+  const ListTileItem({super.key, 
     required this.icon,
     required this.text,
     this.onTap,

@@ -6,6 +6,8 @@ import 'profile_provider.dart';
 import 'package:http/http.dart' as http;
 
 class edit_profile extends StatefulWidget {
+  const edit_profile({super.key});
+
   @override
   _edit_profileState createState() => _edit_profileState();
 }
@@ -75,7 +77,7 @@ class _edit_profileState extends State<edit_profile> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Edit Profile"),
+        title: const Text("Edit Profile"),
         backgroundColor: Colors.orange[800],
       ),
       body: Form(
@@ -97,10 +99,10 @@ class _edit_profileState extends State<edit_profile> {
                           labelText: 'First Name',
                           hintText: 'First Name',
                           floatingLabelBehavior: FloatingLabelBehavior.always,
-                          border: OutlineInputBorder(
+                          border: const OutlineInputBorder(
                             borderSide: BorderSide(color: Colors.black),
                           ),
-                          focusedBorder: OutlineInputBorder(
+                          focusedBorder: const OutlineInputBorder(
                             borderSide: BorderSide(color: Colors.orange),
                           ),
                         ),
@@ -115,7 +117,7 @@ class _edit_profileState extends State<edit_profile> {
                       ),
                     ),
 
-                    SizedBox(width: 10.0),
+                    const SizedBox(width: 10.0),
 
                     Expanded(
                       child: TextFormField(
@@ -126,10 +128,10 @@ class _edit_profileState extends State<edit_profile> {
                           floatingLabelBehavior: FloatingLabelBehavior.always,
                           hintText: "Last Name",
                           labelText: 'Last Name',
-                          border: OutlineInputBorder(
+                          border: const OutlineInputBorder(
                             borderSide: BorderSide(color: Colors.black),
                           ),
-                          focusedBorder: OutlineInputBorder(
+                          focusedBorder: const OutlineInputBorder(
                             borderSide: BorderSide(color: Colors.orange),
                           ),
                         ),
@@ -146,7 +148,7 @@ class _edit_profileState extends State<edit_profile> {
                   ],
                 ),
 
-                SizedBox(height: 30,),
+                const SizedBox(height: 30,),
 
                 TextFormField(
                   controller: _emailController,
@@ -157,10 +159,10 @@ class _edit_profileState extends State<edit_profile> {
                     floatingLabelBehavior: FloatingLabelBehavior.always,
                     hintText: "Email Address",
                     labelText: 'Email Address',
-                    border: OutlineInputBorder(
+                    border: const OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.black),
                     ),
-                    focusedBorder: OutlineInputBorder(
+                    focusedBorder: const OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.orange),
                     ),
                   ),
@@ -172,7 +174,7 @@ class _edit_profileState extends State<edit_profile> {
                   },
                 ),
 
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
 
                 TextFormField(
                   controller: _passwordController,
@@ -182,7 +184,7 @@ class _edit_profileState extends State<edit_profile> {
                     floatingLabelBehavior: FloatingLabelBehavior.always,
                     labelText: "Password",
                     hintText: "Confirm Password",
-                    border: OutlineInputBorder(
+                    border: const OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.black),
                     ),
                     focusedBorder: OutlineInputBorder(
@@ -208,10 +210,10 @@ class _edit_profileState extends State<edit_profile> {
                   },
                 ),
 
-                SizedBox(height: 20,),
+                const SizedBox(height: 20,),
 
                 Center(
-                  child: Container(
+                  child: SizedBox(
                     height: 60,
                     width: MediaQuery.of(context).size.width - 100,
                     child: ElevatedButton(
@@ -221,7 +223,7 @@ class _edit_profileState extends State<edit_profile> {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
-                        padding: EdgeInsets.all(20),
+                        padding: const EdgeInsets.all(20),
                       ),
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
@@ -233,7 +235,7 @@ class _edit_profileState extends State<edit_profile> {
                           );
                         }
                       },
-                      child: Text(
+                      child: const Text(
                         "Update",
                         style: TextStyle(fontSize: 18, letterSpacing: .4),
                       ),

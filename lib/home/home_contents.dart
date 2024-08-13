@@ -38,7 +38,7 @@ class _home_contentsState extends State<home_contents> {
 
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(70.0),
+        preferredSize: const Size.fromHeight(70.0),
         child: CustomAppBar(
           onTabChange: widget.onTabChange,
           profileProvider: profileProvider,
@@ -49,16 +49,16 @@ class _home_contentsState extends State<home_contents> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
 
-            Search_bar(),
+            const Search_bar(),
 
-            SizedBox(height: 10,),
+            const SizedBox(height: 10,),
 
             Container(
               padding: const EdgeInsets.only(left: 10),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
+                  const Text(
                     "Category",
                     style: TextStyle(
                       fontSize: 16,
@@ -81,13 +81,13 @@ class _home_contentsState extends State<home_contents> {
                 ],
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
 
             /////////////////////////////// Categories of all courses :)   ////////////////////////////
 
-            Container(
+            SizedBox(
               height: MediaQuery.of(context).size.height * 0.12,
               child: categoryProvider.categories.isEmpty
                   ? Center(
@@ -111,7 +111,7 @@ class _home_contentsState extends State<home_contents> {
                             },
                             child: Container(
                               width: MediaQuery.of(context).size.width * 0.24,
-                              margin: EdgeInsets.symmetric(
+                              margin: const EdgeInsets.symmetric(
                                 horizontal: 10,
                               ),
                               decoration: BoxDecoration(
@@ -131,22 +131,22 @@ class _home_contentsState extends State<home_contents> {
                                       height: 40,
                                       fit: BoxFit.cover,
                                     ),
-                                    SizedBox(height: 8),
+                                    const SizedBox(height: 8),
                                     Text(
                                       category.name,
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                         color: Colors.black87,
                                         fontSize: 14,
                                         fontWeight: FontWeight.w400,
                                         overflow: TextOverflow.ellipsis,
                                       ),
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       height: 6,
                                     ),
                                     Text(
                                       '${category.courseCount} Courses',
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                         color: Colors.grey,
                                         fontSize: 11,
                                         fontWeight: FontWeight.w400,
@@ -162,7 +162,7 @@ class _home_contentsState extends State<home_contents> {
                       ),
                     ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Container(
@@ -170,7 +170,7 @@ class _home_contentsState extends State<home_contents> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
+                  const Text(
                     "Popular courses",
                     style: TextStyle(
                       fontSize: 16,
@@ -210,11 +210,11 @@ class _home_contentsState extends State<home_contents> {
                     ),
                   )
                 : Container(
-                    padding: EdgeInsets.symmetric(horizontal: 20),
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: GridView.builder(
-                      physics: NeverScrollableScrollPhysics(),
+                      physics: const NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2,
                         crossAxisSpacing: 30,
                         mainAxisSpacing: 30,
@@ -246,7 +246,7 @@ class _home_contentsState extends State<home_contents> {
                                   color: Colors.black.withOpacity(0.1),
                                   spreadRadius: 5,
                                   blurRadius: 8,
-                                  offset: Offset(0, 1),
+                                  offset: const Offset(0, 1),
                                 ),
                               ],
                             ),
@@ -254,7 +254,7 @@ class _home_contentsState extends State<home_contents> {
                               children: [
                                 ClipRRect(
                                   borderRadius: BorderRadius.circular(10),
-                                  child: Container(
+                                  child: SizedBox(
                                     width: MediaQuery.of(context).size.width,
                                     child: Image.network(
                                       course.image,
@@ -264,10 +264,10 @@ class _home_contentsState extends State<home_contents> {
                                     ),
                                   ),
                                 ),
-                                SizedBox(height: 4,),
+                                const SizedBox(height: 4,),
                                 Text(
                                   course.title,
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     color: Colors.black87,
                                     fontSize: 16,
                                     fontWeight: FontWeight.bold,
@@ -280,8 +280,8 @@ class _home_contentsState extends State<home_contents> {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Text(
-                                        "${course.stars}",
-                                        style: TextStyle(
+                                        course.stars,
+                                        style: const TextStyle(
                                           fontSize: 14,
                                           fontWeight: FontWeight.bold,
                                           color: Colors.black87,
@@ -298,7 +298,7 @@ class _home_contentsState extends State<home_contents> {
                                 ),
                                 Text(
                                   "${course.discount} discount",
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     fontWeight: FontWeight.w300,
                                     fontStyle: FontStyle.italic,
                                     overflow: TextOverflow.ellipsis,

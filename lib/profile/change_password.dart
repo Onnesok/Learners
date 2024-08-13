@@ -6,6 +6,8 @@ import 'package:learners/profile/profile_provider.dart';
 import 'package:provider/provider.dart';
 
 class ChangePassword extends StatefulWidget {
+  const ChangePassword({super.key});
+
   @override
   _ChangePasswordState createState() => _ChangePasswordState();
 }
@@ -82,7 +84,7 @@ class _ChangePasswordState extends State<ChangePassword> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Change password"),
+        title: const Text("Change password"),
         centerTitle: true,
         backgroundColor: Colors.orange,
       ),
@@ -96,7 +98,7 @@ class _ChangePasswordState extends State<ChangePassword> {
             child: Column(
               children: [
 
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
 
                 TextFormField(
                   controller: _oldPasswordController,
@@ -142,16 +144,16 @@ class _ChangePasswordState extends State<ChangePassword> {
                   },
                 ),
 
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
 
                 TextFormField(
                   controller: _newPasswordController,
                   obscureText: _passEnable2,
                   decoration: InputDecoration(
-                    border: OutlineInputBorder(
+                    border: const OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.black),
                     ),
-                    focusedBorder: OutlineInputBorder(
+                    focusedBorder: const OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.orange),
                     ),
                     floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -182,16 +184,16 @@ class _ChangePasswordState extends State<ChangePassword> {
                   },
                 ),
 
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
 
                 TextFormField(
                   controller: _confirmPasswordController,
                   obscureText: _passEnable3,
                   decoration: InputDecoration(
-                    border: OutlineInputBorder(
+                    border: const OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.black),
                     ),
-                    focusedBorder: OutlineInputBorder(
+                    focusedBorder: const OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.orange),
                     ),
                     floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -220,9 +222,9 @@ class _ChangePasswordState extends State<ChangePassword> {
                   },
                 ),
 
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
 
-                Container(
+                SizedBox(
                   height: 60,
                   width: MediaQuery.of(context).size.width * 0.8,
                   child: ElevatedButton(
@@ -232,7 +234,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(22),
                       ),
-                      padding: EdgeInsets.all(20),
+                      padding: const EdgeInsets.all(20),
                     ),
                     onPressed: () async {
                       if (_formKey.currentState?.validate() ?? false) {
@@ -249,7 +251,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                         //_confirmPasswordController.clear();
                       }
                     },
-                    child: Text(
+                    child: const Text(
                       "Update",
                       style: TextStyle(fontSize: 18, letterSpacing: 1),
                     ),

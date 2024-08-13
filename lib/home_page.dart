@@ -21,23 +21,23 @@ class _home_pageState extends State<home_page> {
 
   @override
   Widget build(BuildContext context) {
-    final List<Widget> _widgetOptions = <Widget>[
+    final List<Widget> widgetOptions = <Widget>[
       home_contents(onTabChange: _onItemTapped),
-      Text('Dashboard'),
-      chat_ai(),
-      Profile(),
+      const Text('Dashboard'),
+      const chat_ai(),
+      const Profile(),
     ];
 
     return Scaffold(
       body: Center(
-        child: _widgetOptions.elementAt(_selectedIndex),
+        child: widgetOptions.elementAt(_selectedIndex),
       ),
       bottomNavigationBar: Theme(
         data: Theme.of(context).copyWith(
           canvasColor: Colors.orange[700],
         ),
         child: ClipRRect(
-          borderRadius: BorderRadius.vertical(top: Radius.circular(8)),
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(8)),
           child: BottomNavigationBar(
             items: const <BottomNavigationBarItem>[
               BottomNavigationBarItem(

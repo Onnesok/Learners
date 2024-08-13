@@ -67,6 +67,7 @@ class _enrollState extends State<enroll> with TickerProviderStateMixin {
     }
   }
 
+  @override
   Widget build(BuildContext context) {
     final double tempHeight = MediaQuery.of(context).size.height -
         (MediaQuery.of(context).size.width / 1.2) +
@@ -116,11 +117,11 @@ class _enrollState extends State<enroll> with TickerProviderStateMixin {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Container(
-                          padding: EdgeInsets.only(top: 32.0, left: 18, right: 16),
+                          padding: const EdgeInsets.only(top: 32.0, left: 18, right: 16),
                           child: Text(
                             widget.title,
                             textAlign: TextAlign.left,
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontWeight: FontWeight.w600,
                               fontSize: 22,
                               letterSpacing: 0.27,
@@ -129,7 +130,7 @@ class _enrollState extends State<enroll> with TickerProviderStateMixin {
                           ),
                         ),
                         Container(
-                          padding: EdgeInsets.only(left: 16, right: 16, bottom: 8, top: 16),
+                          padding: const EdgeInsets.only(left: 16, right: 16, bottom: 8, top: 16),
                         ),
                         AnimatedOpacity(
                           duration: const Duration(milliseconds: 500),
@@ -150,8 +151,8 @@ class _enrollState extends State<enroll> with TickerProviderStateMixin {
                             duration: const Duration(milliseconds: 500),
                             opacity: opacity2,
                             child: Container(
-                              padding: EdgeInsets.only( left: 16, right: 16, top: 8, bottom: 8),
-                              child: Text(
+                              padding: const EdgeInsets.only( left: 16, right: 16, top: 8, bottom: 8),
+                              child: const Text(
                                 'Here I will give description or any jibrish I want about the course to be shown.'
                                     ' development time thing',
                                 textAlign: TextAlign.justify,

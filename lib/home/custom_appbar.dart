@@ -5,10 +5,10 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Function(int) onTabChange;
   final ProfileProvider profileProvider;
 
-  CustomAppBar({required this.onTabChange, required this.profileProvider});
+  const CustomAppBar({super.key, required this.onTabChange, required this.profileProvider});
 
   @override
-  Size get preferredSize => Size.fromHeight(70.0);
+  Size get preferredSize => const Size.fromHeight(70.0);
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +16,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       title: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
+          const Text(
             "learners",
             style: TextStyle(
               color: Colors.black87,
@@ -34,7 +34,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                   children: [
                     Text(
                       profileProvider.fullName,
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: Colors.black87,
                         fontSize: 16,
                       ),
@@ -43,14 +43,14 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                       children: [
                         Transform.rotate(
                           angle: 3 * 3.14159 / 2,
-                          child: Icon(
+                          child: const Icon(
                             Icons.arrow_back_ios_outlined,
                             color: Colors.black87,
                             size: 12,
                           ),
                         ),
-                        SizedBox(width: 10,),
-                        Text(
+                        const SizedBox(width: 10,),
+                        const Text(
                           "Status: User",
                           style: TextStyle(
                             color: Colors.black87,
@@ -61,13 +61,13 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                     ),
                   ],
                 ),
-                SizedBox(width: 10,),
+                const SizedBox(width: 10,),
                 CircleAvatar(
                   radius: 20,
                   backgroundColor: Colors.orange,
                   backgroundImage: profileProvider.pickedImage != null
                       ? FileImage(profileProvider.pickedImage!)
-                      : AssetImage('assets/images/demo.jpg') as ImageProvider,
+                      : const AssetImage('assets/images/demo.jpg') as ImageProvider,
                 ),
               ],
             ),

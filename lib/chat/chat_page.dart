@@ -26,7 +26,7 @@ class _chat_aiState extends State<chat_ai> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           "Learners AI assistant",
           style: TextStyle(
             color: Colors.black87,
@@ -40,7 +40,7 @@ class _chat_aiState extends State<chat_ai> {
       body: Stack(
         children: [
           Container(
-            margin: EdgeInsets.only(bottom: 20),
+            margin: const EdgeInsets.only(bottom: 20),
             child: _buildUi(),
           ),
           if (isLoading)

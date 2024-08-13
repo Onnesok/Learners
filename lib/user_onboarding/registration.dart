@@ -46,7 +46,7 @@ class _registrationState extends State<registration> {
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-                builder: (context) => login()
+                builder: (context) => const login()
             ),
           );
           print("Record inserted");
@@ -83,7 +83,7 @@ class _registrationState extends State<registration> {
         child: Container(
           height: MediaQuery.of(context).size.height - MediaQuery.of(context).viewInsets.bottom,
           width: MediaQuery.of(context).size.width,
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             image: DecorationImage(
               image: AssetImage('assets/images/registration.png'),
               fit: BoxFit.cover,
@@ -99,7 +99,7 @@ class _registrationState extends State<registration> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
 
-                    Text(
+                    const Text(
                       "Welcome!",
                       style: TextStyle(
                         fontSize: 34,
@@ -108,9 +108,9 @@ class _registrationState extends State<registration> {
                       ),
                     ),
 
-                    SizedBox(height: 2),
+                    const SizedBox(height: 2),
 
-                    Text(
+                    const Text(
                       "Please Create Your Account",
                       style: TextStyle(
                         fontSize: 18,
@@ -119,17 +119,17 @@ class _registrationState extends State<registration> {
                       ),
                     ),
 
-                    SizedBox(height: 6),
+                    const SizedBox(height: 6),
 
                     Container(
-                      margin: EdgeInsets.only(left: 20, right: 20),
+                      margin: const EdgeInsets.only(left: 20, right: 20),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(12.0),
                         color: Colors.white,
                         boxShadow: [
                           BoxShadow(
                             color: Colors.black.withOpacity(0.2),
-                            offset: Offset(0, 4),
+                            offset: const Offset(0, 4),
                             blurRadius: 10,
                           ),
                         ],
@@ -137,7 +137,7 @@ class _registrationState extends State<registration> {
                       child: Column(
                         children: [
                           Container(
-                            margin: EdgeInsets.only(left: 40, right: 40, bottom: 0, top: 40),
+                            margin: const EdgeInsets.only(left: 40, right: 40, bottom: 0, top: 40),
                             child: Row(
                               children: [
                                 Expanded(
@@ -152,7 +152,7 @@ class _registrationState extends State<registration> {
                                               : Colors.amber,
                                         ),
                                       ),
-                                      focusedBorder: UnderlineInputBorder(
+                                      focusedBorder: const UnderlineInputBorder(
                                         borderSide: BorderSide(color: Colors.amber),
                                       ),
                                     ),
@@ -167,7 +167,7 @@ class _registrationState extends State<registration> {
                                   ),
                                 ),
 
-                                SizedBox(width: 10.0),
+                                const SizedBox(width: 10.0),
 
                                 Expanded(
                                   child: TextFormField(
@@ -181,7 +181,7 @@ class _registrationState extends State<registration> {
                                               : Colors.amber,
                                         ),
                                       ),
-                                      focusedBorder: UnderlineInputBorder(
+                                      focusedBorder: const UnderlineInputBorder(
                                         borderSide: BorderSide(color: Colors.amber),
                                       ),
                                     ),
@@ -200,11 +200,11 @@ class _registrationState extends State<registration> {
                           ),
 
                           Container(
-                            margin: EdgeInsets.only(left: 40, right: 40, bottom: 0, top: 0),
+                            margin: const EdgeInsets.only(left: 40, right: 40, bottom: 0, top: 0),
                             child: TextFormField(
                               controller: _emailController,
                               keyboardType: TextInputType.emailAddress,
-                              decoration: InputDecoration(
+                              decoration: const InputDecoration(
                                 hintText: "Email",
                                 focusedBorder: UnderlineInputBorder(
                                   borderSide: BorderSide(color: Colors.amber),
@@ -221,7 +221,7 @@ class _registrationState extends State<registration> {
                             ),
                           ),
                           Container(
-                            margin: EdgeInsets.only(left: 40, right: 40, bottom: 0, top: 0),
+                            margin: const EdgeInsets.only(left: 40, right: 40, bottom: 0, top: 0),
                             child: TextFormField(
                               controller: _passwordController,
                               obscureText: passEnable,
@@ -252,7 +252,7 @@ class _registrationState extends State<registration> {
                             ),
                           ),
                           Container(
-                            margin: EdgeInsets.only(left: 40, right: 40, bottom: 20, top: 0),
+                            margin: const EdgeInsets.only(left: 40, right: 40, bottom: 20, top: 0),
                             child: TextFormField(
                               controller: _confirmPasswordController,
                               obscureText: cpassEnable,
@@ -293,12 +293,12 @@ class _registrationState extends State<registration> {
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(16),
                                   ),
-                                  padding: EdgeInsets.all(18),
+                                  padding: const EdgeInsets.all(18),
                                 ),
                                 onPressed: () {
                                   insert_record();
                                 },
-                                child: Text(
+                                child: const Text(
                                   "Sign Up",
                                   style: TextStyle(fontSize: 18, letterSpacing: .4),
                                 ),
@@ -306,11 +306,11 @@ class _registrationState extends State<registration> {
                             ),
                           ),
                           Padding(
-                            padding: EdgeInsets.all(10),
+                            padding: const EdgeInsets.all(10),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Text(
+                                const Text(
                                   "Already have an account?",
                                   style: TextStyle(
                                     letterSpacing: .6,
@@ -322,10 +322,10 @@ class _registrationState extends State<registration> {
                                   onPressed: () {
                                     Navigator.pushReplacement(
                                       context,
-                                      MaterialPageRoute(builder: (context) => login()),
+                                      MaterialPageRoute(builder: (context) => const login()),
                                     );
                                   },
-                                  child: Text(
+                                  child: const Text(
                                     'Sign In',
                                     style: TextStyle(
                                       color: Colors.orange,

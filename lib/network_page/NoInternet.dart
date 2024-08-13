@@ -4,6 +4,8 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:learners/home_page.dart';
 
 class NoInternet extends StatefulWidget {
+  const NoInternet({super.key});
+
   @override
   _NoInternetState createState() => _NoInternetState();
 }
@@ -43,11 +45,11 @@ class _NoInternetState extends State<NoInternet> with TickerProviderStateMixin {
     var connectivityResult = await (Connectivity().checkConnectivity());
     if (connectivityResult != ConnectivityResult.none) {
       Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => home_page())
+          MaterialPageRoute(builder: (context) => const home_page())
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           content: Text('No internet connection. Please try again.'),
         ),
       );
@@ -74,7 +76,7 @@ class ErrorContent extends StatelessWidget {
   final NetworkErrorAnimation animation;
   final VoidCallback onRetry;
 
-  ErrorContent({required AnimationController controller, required this.onRetry})
+  ErrorContent({super.key, required AnimationController controller, required this.onRetry})
       : animation = NetworkErrorAnimation(controller);
 
   @override
@@ -84,7 +86,7 @@ class ErrorContent extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
         CloudCutColoredImage(
-          Container(
+          SizedBox(
             height: MediaQuery.of(context).size.height / 2,
             child: Stack(
               children: <Widget>[
@@ -153,7 +155,7 @@ class ErrorContent extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
-              SizedBox(height: 48),
+              const SizedBox(height: 48),
               Transform(
                 transform: Matrix4.diagonal3Values(
                   animation.sizeTranslation.value * 2,
@@ -161,20 +163,20 @@ class ErrorContent extends StatelessWidget {
                   1.0,
                 ),
                 alignment: Alignment.center,
-                child: AutoSizeText(
+                child: const AutoSizeText(
                   'Ooops!',
                   textAlign: TextAlign.center,
                 ),
               ),
-              SizedBox(height: 16),
-              AutoSizeText(
+              const SizedBox(height: 16),
+              const AutoSizeText(
                 'No internet connection !\nPlease check your connection.',
                 textAlign: TextAlign.center,
               ),
-              SizedBox(height: 30),
+              const SizedBox(height: 30),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  primary: Colors.orange,
+                  backgroundColor: Colors.orange,
                   minimumSize: Size(
                     MediaQuery.of(context).size.width * 0.8,
                     MediaQuery.of(context).size.height * 0.05,
@@ -184,7 +186,7 @@ class ErrorContent extends StatelessWidget {
                   ),
                 ),
                 onPressed: onRetry,
-                child: Text(
+                child: const Text(
                   'Retry',
                   style: TextStyle(
                     fontSize: 16,
@@ -202,7 +204,7 @@ class ErrorContent extends StatelessWidget {
 }
 
 class CloudCutColoredImage extends StatelessWidget {
-  CloudCutColoredImage(this.child);
+  const CloudCutColoredImage(this.child, {super.key});
 
   final Widget child;
 
@@ -211,7 +213,7 @@ class CloudCutColoredImage extends StatelessWidget {
     return ClipPath(
       clipper: CustomShapeClipper(),
       child: DecoratedBox(
-        decoration: BoxDecoration(color: Colors.orange),
+        decoration: const BoxDecoration(color: Colors.orange),
         child: child,
       ),
     );

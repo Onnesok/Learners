@@ -30,6 +30,8 @@ List<UnbordingContent> contents = [
 ];
 
 class Onboarding extends StatefulWidget {
+  const Onboarding({super.key});
+
   @override
   _OnboardingState createState() => _OnboardingState();
 }
@@ -52,7 +54,7 @@ class _OnboardingState extends State<Onboarding> {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (_) => login(),
+          builder: (_) => const login(),
         ),
       );
     }
@@ -101,19 +103,19 @@ class _OnboardingState extends State<Onboarding> {
                             contents[i].image,
                             height: MediaQuery.of(context).size.height * 0.2,
                           ),
-                          SizedBox(height: 20,),
+                          const SizedBox(height: 20,),
                           Align(
                             alignment: Alignment.center,
                             child: Text(
                               textAlign: TextAlign.center,
                               contents[i].title,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 26,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
                           ),
-                          SizedBox(height: 20),
+                          const SizedBox(height: 20),
                           Text(
                             contents[i].description,
                             textAlign: TextAlign.center,
@@ -123,7 +125,7 @@ class _OnboardingState extends State<Onboarding> {
                               color: Colors.black87.withOpacity(0.7),
                             ),
                           ),
-                          SizedBox(height: 100,),
+                          const SizedBox(height: 100,),
                           Container(
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -135,19 +137,11 @@ class _OnboardingState extends State<Onboarding> {
                           ),
                           Container(
                             height: 60,
-                            margin: EdgeInsets.only(top: 40, bottom: 40),
+                            margin: const EdgeInsets.only(top: 40, bottom: 40),
                             width: double.infinity,
                             child: ElevatedButton(
-                              child: Text(
-                                currentIndex == contents.length - 1 ? "Get Started" : "Next",
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white,
-                                ),
-                              ),
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: Color(0xfff3834d),
+                                backgroundColor: const Color(0xfff3834d),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(20),
                                 ),
@@ -158,15 +152,23 @@ class _OnboardingState extends State<Onboarding> {
                                   Navigator.pushReplacement(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (_) => login(),
+                                      builder: (_) => const login(),
                                     ),
                                   );
                                 }
                                 _controller.nextPage(
-                                  duration: Duration(milliseconds: 10),
+                                  duration: const Duration(milliseconds: 10),
                                   curve: Curves.bounceIn,
                                 );
                               },
+                              child: Text(
+                                currentIndex == contents.length - 1 ? "Get Started" : "Next",
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                ),
+                              ),
                             ),
                           ),
                         ],
@@ -186,10 +188,10 @@ class _OnboardingState extends State<Onboarding> {
     return Container(
       height: 8,
       width: currentIndex == index ? 30 : 10,
-      margin: EdgeInsets.only(right: 5),
+      margin: const EdgeInsets.only(right: 5),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
-        color: Color(0xfff3834d),
+        color: const Color(0xfff3834d),
       ),
     );
   }

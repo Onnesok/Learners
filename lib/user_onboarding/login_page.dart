@@ -49,7 +49,7 @@ class _loginState extends State<login> {
         await profileProvider.updateName(firstName, lastName);
         await profileProvider.storeEmail(userEmail);
         Fluttertoast.showToast(msg: "welcome $firstName");
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => home_page()));
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const home_page()));
       } else {
         Fluttertoast.showToast(msg: "${jsonResponse['message']}");
         print('Error: ${jsonResponse['message']}');
@@ -72,7 +72,7 @@ class _loginState extends State<login> {
       body: Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           image: DecorationImage(
             image: AssetImage('assets/images/login1.png'),
             fit: BoxFit.cover,
@@ -84,7 +84,7 @@ class _loginState extends State<login> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
+                const Text(
                   "Welcome Back!",
                   style: TextStyle(
                     fontSize: 34,
@@ -92,20 +92,20 @@ class _loginState extends State<login> {
                     color: Colors.orange,
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 6,
                 ),
                 Container(
-                  margin: EdgeInsets.only(left: 20, right: 20),
+                  margin: const EdgeInsets.only(left: 20, right: 20),
                   child: Column(
                     children: [
                       Container(
-                        margin: EdgeInsets.only(
+                        margin: const EdgeInsets.only(
                             left: 40, right: 40, bottom: 0, top: 0),
                         child: TextFormField(
                           controller: _emailController,
                           keyboardType: TextInputType.emailAddress,
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                             hintText: "Email",
                             focusedBorder: UnderlineInputBorder(
                               borderSide: BorderSide(color: Colors.amber),
@@ -123,7 +123,7 @@ class _loginState extends State<login> {
                         ),
                       ),
                       Container(
-                        margin: EdgeInsets.only(
+                        margin: const EdgeInsets.only(
                             left: 40, right: 40, bottom: 0, top: 0),
                         child: TextFormField(
                           controller: _passwordController,
@@ -156,7 +156,7 @@ class _loginState extends State<login> {
                         ),
                       ),
                       Container(
-                        margin: EdgeInsets.only(right: 30),
+                        margin: const EdgeInsets.only(right: 30),
                         alignment: Alignment.centerRight,
                         child: TextButton(
                           onPressed: () {
@@ -166,10 +166,10 @@ class _loginState extends State<login> {
                             Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => home_page()),
+                                  builder: (context) => const home_page()),
                             );
                           },
-                          child: Text(
+                          child: const Text(
                             'Forgot password',
                             style: TextStyle(
                                 color: Colors.orange,
@@ -179,7 +179,7 @@ class _loginState extends State<login> {
                       ),
                       Center(
                         child: Container(
-                          margin: EdgeInsets.only(top: 20, right: 20, left: 20),
+                          margin: const EdgeInsets.only(top: 20, right: 20, left: 20),
                           child: SizedBox(
                             height: 60,
                             width: MediaQuery.of(context).size.width * 0.6,
@@ -190,7 +190,7 @@ class _loginState extends State<login> {
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(16),
                                 ),
-                                padding: EdgeInsets.all(18),
+                                padding: const EdgeInsets.all(18),
                               ),
                               onPressed: () {
                                 if (_formKey.currentState!.validate()) {
@@ -198,7 +198,7 @@ class _loginState extends State<login> {
                                       _passwordController.text);
                                 }
                               },
-                              child: Text(
+                              child: const Text(
                                 "Sign In",
                                 style:
                                     TextStyle(fontSize: 18, letterSpacing: .4),
@@ -208,11 +208,11 @@ class _loginState extends State<login> {
                         ),
                       ),
                       Container(
-                        padding: EdgeInsets.all(10),
+                        padding: const EdgeInsets.all(10),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text(
+                            const Text(
                               "Don't have an account?",
                               style: TextStyle(
                                   letterSpacing: .6,
@@ -224,9 +224,9 @@ class _loginState extends State<login> {
                                 Navigator.pushReplacement(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => registration()));
+                                        builder: (context) => const registration()));
                               },
-                              child: Text(
+                              child: const Text(
                                 'Sign Up',
                                 style: TextStyle(
                                     color: Colors.orange,
