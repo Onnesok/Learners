@@ -34,7 +34,7 @@ class _chat_aiState extends State<chat_ai> {
             fontWeight: FontWeight.bold,
           ),
         ),
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.orange[700],
         shadowColor: Colors.transparent,
       ),
       body: Stack(

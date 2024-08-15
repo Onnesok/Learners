@@ -87,7 +87,7 @@ class _home_contentsState extends State<home_contents> {
 
             /////////////////////////////// Categories of all courses :)   ////////////////////////////
 
-            SizedBox(
+            Container(
               height: MediaQuery.of(context).size.height * 0.12,
               child: categoryProvider.categories.isEmpty
                   ? Center(
@@ -111,9 +111,8 @@ class _home_contentsState extends State<home_contents> {
                             },
                             child: Container(
                               width: MediaQuery.of(context).size.width * 0.24,
-                              margin: const EdgeInsets.symmetric(
-                                horizontal: 10,
-                              ),
+                              margin: const EdgeInsets.symmetric(horizontal: 10,),
+
                               decoration: BoxDecoration(
                                 border: Border.all(
                                   color: Colors.grey.withOpacity(0.8),
@@ -127,11 +126,13 @@ class _home_contentsState extends State<home_contents> {
                                   children: [
                                     Image.network(
                                       category.image,
-                                      width: 40,
-                                      height: 40,
+                                      //layout builder seems messy at this point and thats why used all the available screen of the device * 1 or 10% of the entire screen
+                                      // Made it same for square value
+                                      width: MediaQuery.of(context).size.width * 0.1,
+                                      height: MediaQuery.of(context).size.width * 0.1,
                                       fit: BoxFit.cover,
                                     ),
-                                    const SizedBox(height: 8),
+                                    const SizedBox(height: 4),
                                     Text(
                                       category.name,
                                       style: const TextStyle(
@@ -141,9 +142,9 @@ class _home_contentsState extends State<home_contents> {
                                         overflow: TextOverflow.ellipsis,
                                       ),
                                     ),
-                                    const SizedBox(
-                                      height: 6,
-                                    ),
+
+                                    const SizedBox(height: 4,),
+
                                     Text(
                                       '${category.courseCount} Courses',
                                       style: const TextStyle(
@@ -162,6 +163,7 @@ class _home_contentsState extends State<home_contents> {
                       ),
                     ),
             ),
+
             const SizedBox(
               height: 10,
             ),
@@ -252,19 +254,33 @@ class _home_contentsState extends State<home_contents> {
                             ),
                             child: Column(
                               children: [
+
                                 ClipRRect(
                                   borderRadius: BorderRadius.circular(10),
-                                  child: SizedBox(
-                                    width: MediaQuery.of(context).size.width,
-                                    child: Image.network(
-                                      course.image,
-                                      width: 100,
-                                      height: 100,
-                                      fit: BoxFit.cover,
-                                    ),
+                                  child: LayoutBuilder(
+                                    builder: (BuildContext context, BoxConstraints constraints) {
+                                      double imageWidth = constraints.maxWidth;
+                                      // for the maxheight and api image is giving mismatch kinda result...
+                                      // so using 50% of the available width as the height
+                                      double imageHeight = constraints.maxWidth * 0.5;
+
+                                      return Container(
+                                        width: imageWidth,
+                                        height: imageHeight,
+                                        child: Image.network(
+                                          course.image,
+                                          width: imageWidth,
+                                          height: imageHeight,
+                                          fit: BoxFit.cover,
+                                        ),
+                                      );
+                                    },
                                   ),
                                 ),
+
+
                                 const SizedBox(height: 4,),
+
                                 Text(
                                   course.title,
                                   style: const TextStyle(
