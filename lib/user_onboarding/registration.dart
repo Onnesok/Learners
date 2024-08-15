@@ -300,7 +300,7 @@ class _registrationState extends State<registration> {
                                 },
                                 child: const Text(
                                   "Sign Up",
-                                  style: TextStyle(fontSize: 18, letterSpacing: .4),
+                                  style: TextStyle(fontSize: 18, letterSpacing: .4, color: Colors.white),
                                 ),
                               ),
                             ),
