@@ -78,7 +78,7 @@ class _edit_profileState extends State<edit_profile> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Edit Profile"),
-        backgroundColor: Colors.orange[800],
+        backgroundColor: Colors.orange[700],
       ),
       body: Form(
         key: _formKey,
@@ -215,15 +215,14 @@ class _edit_profileState extends State<edit_profile> {
                 Center(
                   child: SizedBox(
                     height: 60,
-                    width: MediaQuery.of(context).size.width - 100,
+                    width: MediaQuery.of(context).size.width * 0.8,
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.orange,
                         elevation: 2,
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
+                          borderRadius: BorderRadius.circular(22),
                         ),
-                        padding: const EdgeInsets.all(20),
                       ),
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
@@ -237,7 +236,7 @@ class _edit_profileState extends State<edit_profile> {
                       },
                       child: const Text(
                         "Update",
-                        style: TextStyle(fontSize: 18, letterSpacing: .4),
+                        style: TextStyle(fontSize: 18, letterSpacing: .4, color: Colors.white),
                       ),
                     ),
                   ),

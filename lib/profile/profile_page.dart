@@ -160,7 +160,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
             const SizedBox(height: 10.0),
 
-            const Divider(),
+            const Divider(thickness: 0.3,),
 
             ListTileItem(icon: Icons.person_outline_rounded, text: 'Edit Profile', onTap: () => _navigateTo(const edit_profile())),
             ListTileItem(icon: Icons.lock_outline, text: 'Change Password', onTap: () => _navigateTo(const ChangePassword())),

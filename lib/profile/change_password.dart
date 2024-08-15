@@ -85,8 +85,7 @@ class _ChangePasswordState extends State<ChangePassword> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Change password"),
-        centerTitle: true,
-        backgroundColor: Colors.orange,
+        backgroundColor: Colors.orange[700],
       ),
 
       body: SingleChildScrollView(
@@ -234,7 +233,6 @@ class _ChangePasswordState extends State<ChangePassword> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(22),
                       ),
-                      padding: const EdgeInsets.all(20),
                     ),
                     onPressed: () async {
                       if (_formKey.currentState?.validate() ?? false) {
@@ -253,7 +251,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                     },
                     child: const Text(
                       "Update",
-                      style: TextStyle(fontSize: 18, letterSpacing: 1),
+                      style: TextStyle(fontSize: 18, letterSpacing: 1, color: Colors.white),
                     ),
                   ),
                 ),
