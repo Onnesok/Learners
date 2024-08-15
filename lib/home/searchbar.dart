@@ -23,8 +23,8 @@ class Search_bar extends StatelessWidget {
       child: TextField(
         decoration: InputDecoration(
           hintText: 'Search for courses',
-          hintStyle: TextStyle(color: Colors.red[400]),
-          prefixIcon: const Icon(Icons.search, color: Colors.red),
+          hintStyle: TextStyle(color: Colors.orange[300]),
+          prefixIcon: const Icon(Icons.search, color: Colors.orangeAccent),
           contentPadding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(30),
@@ -32,7 +32,7 @@ class Search_bar extends StatelessWidget {
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(30),
-            borderSide: const BorderSide(color: Colors.orange),
+            borderSide: const BorderSide(color: Colors.white),
           ),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(30),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:learners/chat/chat_page.dart';
+import 'package:learners/dashboard/dashboard.dart';
 import 'package:learners/home/home_contents.dart';
 import 'package:learners/profile/profile_page.dart';
 
@@ -23,7 +24,7 @@ class _home_pageState extends State<home_page> {
   Widget build(BuildContext context) {
     final List<Widget> widgetOptions = <Widget>[
       home_contents(onTabChange: _onItemTapped),
-      const Text('Dashboard'),
+      const dashboard(),
       const chat_ai(),
       const Profile(),
     ];
