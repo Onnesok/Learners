@@ -3,9 +3,11 @@ import 'dart:typed_data';
 
 import 'package:dash_chat_2/dash_chat_2.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_gemini/flutter_gemini.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class chat_ai extends StatefulWidget {
   const chat_ai({super.key});
@@ -20,14 +22,34 @@ class _chat_aiState extends State<chat_ai> {
   bool isLoading = false;
 
   ChatUser currentUser = ChatUser(id: "0", firstName: "user");
-  ChatUser geminiUser = ChatUser(id: "1", firstName: "gemini", profileImage: "https://mir-s3-cdn-cf.behance.net/project_modules/1400/15873842040529.5c5d98aa0bbf8.jpg");
+  ChatUser geminiUser = ChatUser(
+    id: "1",
+    firstName: "AI",
+    profileImage: "https://mir-s3-cdn-cf.behance.net/project_modules/1400/15873842040529.5c5d98aa0bbf8.jpg",
+  );
+
+  @override
+  void initState() {
+    super.initState();
+    _initializeGemini();
+  }
+
+  Future<void> _initializeGemini() async {
+    await dotenv.load(fileName: 'api_key.env');
+    String? apiKey = dotenv.env['GEMINI_API_KEY'];
+    if (apiKey == null || apiKey.isEmpty) {
+      Fluttertoast.showToast(msg: 'API Key is not set.');
+      return;
+    }
+    Gemini.init(apiKey: apiKey);
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          "Learners AI assistant",
+          "Learners AI Assistant",
           style: TextStyle(
             color: Colors.black87,
             fontFamily: "shadow",
@@ -59,17 +81,17 @@ class _chat_aiState extends State<chat_ai> {
       currentUser: currentUser,
       onSend: _sendMessage,
       messages: messages,
-      inputOptions: InputOptions(trailing: [
-        IconButton(
-          onPressed: _sendMediaMessage,
-          icon: const Icon(Icons.image),
-        ),
-      ],
+      inputOptions: InputOptions(
+        trailing: [
+          IconButton(
+            onPressed: _sendMediaMessage,
+            icon: const Icon(Icons.image),
+          ),
+        ],
         alwaysShowSend: true,
       ),
     );
   }
-
 
   void _sendMessage(ChatMessage chatMessage) {
     setState(() {
@@ -85,30 +107,36 @@ class _chat_aiState extends State<chat_ai> {
         ];
       }
       gemini.streamGenerateContent(question, images: images).listen((event) {
-        ChatMessage? lastMessage = messages.firstOrNull;
-        if (lastMessage != null && lastMessage.user == geminiUser) {
-          lastMessage = messages.removeAt(0);
-          String response = event.content?.parts?.fold("", (previous, current) => "$previous ${current.text}") ?? "";
+        String response = event.content?.parts?.fold("", (previous, current) => "$previous ${current.text}") ?? "";
+        if (messages.isNotEmpty && messages.first.user == geminiUser) {
+          ChatMessage? lastMessage = messages.removeAt(0);
           lastMessage.text += response;
           setState(() {
-            messages = [lastMessage!, ...messages];
+            messages = [lastMessage, ...messages];
             isLoading = false;
           });
         } else {
-          String response = event.content?.parts?.fold("", (previous, current) => "$previous ${current.text}") ?? "";
-          ChatMessage message = ChatMessage(user: geminiUser, createdAt: DateTime.now(), text: response);
+          ChatMessage message = ChatMessage(
+            user: geminiUser,
+            createdAt: DateTime.now(),
+            text: response,
+          );
           setState(() {
             messages = [message, ...messages];
             isLoading = false;
           });
         }
+      }).onError((error) {
+        setState(() {
+          isLoading = false;
+        });
+        Fluttertoast.showToast(msg: "An error occurred: $error");
       });
     } catch (e) {
       setState(() {
         isLoading = false;
       });
-      Fluttertoast.showToast(msg: "error");
-      print(e);
+      Fluttertoast.showToast(msg: "An error occurred: $e");
     }
   }
 
@@ -126,3 +154,4 @@ class _chat_aiState extends State<chat_ai> {
     }
   }
 }
+

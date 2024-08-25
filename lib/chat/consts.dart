@@ -1,4 +1,4 @@
-const String GEMINI_API_KEY = "Api key";
+//const String GEMINI_API_KEY = "Api key";
 
 
 
