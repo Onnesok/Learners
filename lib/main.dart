@@ -1,6 +1,7 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_gemini/flutter_gemini.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:learners/home/category/category_fetch.dart';
@@ -17,7 +18,9 @@ import 'package:learners/profile/profile_provider.dart';
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 Future<void> main() async {
-  Gemini.init(apiKey: GEMINI_API_KEY);
+  await dotenv.load(fileName: 'api_key.env');
+  Gemini.init(apiKey: dotenv.env['GEMINI_API_KEY'] ?? '');
+  //Gemini.init(apiKey: GEMINI_API_KEY);
   DependencyInjection.init();
   WidgetsFlutterBinding.ensureInitialized();
 
