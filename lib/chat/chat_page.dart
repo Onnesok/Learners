@@ -47,6 +47,7 @@ class _chat_aiState extends State<chat_ai> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white60,
       appBar: AppBar(
         title: const Text(
           "Learners AI Assistant",
