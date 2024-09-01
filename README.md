@@ -14,13 +14,73 @@ Learners is a LMS or learning management system app designed for students to mak
 
 
 ## Features
-  - Internet Connectivity check on startup and through whole life cycle
-  - course and app data fetch from mysql database
-  - Generative Ai / Gemini integration
-  - Profile screen with user data data fetch and all the other things
-  - Course enrollment for user
-  - Dashboard for users enrolled course and wishlist
-  - Instructor application for users
-  - PDF viewer
+- Internet Connectivity check on startup and through whole life cycle
+- course and app data fetch from mysql database
+- Generative Ai / Gemini integration
+- Profile screen with user data data fetch and all the other things
+- Course enrollment for user
+- Dashboard for users enrolled course and wishlist
+- Instructor application for users
+- PDF viewer
+
+
+
+## Database creation
+
+create categories database
+
+```sql
+CREATE TABLE categories (
+    category_id INT AUTO_INCREMENT PRIMARY KEY, -- Unique identifier for each category
+    title VARCHAR(255) NOT NULL,
+    image VARCHAR(255) NOT NULL,                -- Category Image
+    description TEXT                            -- Description of the category
+);
+
+```
+sample inserts
+```sql
+
+INSERT INTO categories (title, image, description) VALUES
+('Programming', '/assets/images/programming.png', 'Courses related to competitive programming, app development, web dev and more'),
+('UI/UX', '/assets/images/designer.png', 'Courses on UI/UX design'),
+('Digital Marketing', '/assets/images/marketing.png', 'Courses for digital marketing'),
+('Robotics', '/assets/images/robotics.png', 'Courses for Robotics'),
+('Data entry', '/assets/images/management.png', 'Courses for dataentry');
+```
+
+create courses database
+
+```sql
+CREATE TABLE courses (
+    course_id INT AUTO_INCREMENT PRIMARY KEY,    -- Unique identifier for each course
+    title VARCHAR(255) NOT NULL, 
+    instructor_name VARCHAR(255) NOT NULL,
+    duration VARCHAR(255) NOT NULL, 
+    price DECIMAL(10, 2) DEFAULT 0.00,         
+    release_date DATE, 
+    content TEXT,                              -- Content of the course
+    prerequisite TEXT, 
+    rating_count INT DEFAULT 0,                 -- Number of ratings received
+    certificate BOOLEAN DEFAULT FALSE,          -- Indicates if a certificate is provided
+    intro_video VARCHAR(255),                   -- URL of the introductory video
+    image VARCHAR(255),                        -- Course banner
+    stars DECIMAL(2, 1) NOT NULL,              -- Average rating in stars
+    discount VARCHAR(255),                     -- Discount applied to the course
+    category_id INT,                           -- Foreign key referencing the category
+    FOREIGN KEY (category_id) REFERENCES categories(category_id)  -- Foreign key constraint
+);
+
+```
+
+sample inserts
+```sql
+INSERT INTO courses (title, instructor_name, duration, price, release_date, content, prerequisite, rating_count, certificate, intro_video, image, stars, discount, category_id) VALUES
+('Introduction to Flutter', 'John Doe', '10 hours', 0.00, '2024-08-01', 'Course content for Flutter development', 'Basic programming knowledge', 0, FALSE, 'https://youtu.be/df1MDyeAJ_Q?si=at0i7-7aDUW0lfI2', '/assets/images/iron_man.jpg', 5.0, '10%', 1),
+('Advanced App Development', 'Jane Smith', '12 hours', 0.00, '2024-09-01', 'Advanced topics in app development', 'Completion of Introduction to Flutter', 0, FALSE, 'https://youtu.be/df1MDyeAJ_Q?si=at0i7-7aDUW0lfI2', '/assets/images/iron_man.jpg', 4.8, '15%', 1),
+('UX Principles', 'Emily Davis', '8 hours', 0.00, '2024-07-15', 'Basics of UX design', 'None', 0, FALSE, 'https://youtu.be/df1MDyeAJ_Q?si=at0i7-7aDUW0lfI2', '/assets/images/ux_design.jpg', 4.5, 'No', 2),
+('Digital Marketing Basics', 'Alex Johnson', '6 hours', 0.00, '2024-05-20', 'Introduction to digital marketing', 'Basic understanding of social media', 0, FALSE, 'https://youtu.be/df1MDyeAJ_Q?si=at0i7-7aDUW0lfI2', '/assets/images/digital_marketing.jpg', 4.7, '10%', 3);
+
+```
 
 # Working
