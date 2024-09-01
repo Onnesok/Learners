@@ -37,6 +37,7 @@ class _home_contentsState extends State<home_contents> {
     final popularCourseProvider = Provider.of<PopularCourseProvider>(context);
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(70.0),
         child: CustomAppBar(

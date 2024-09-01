@@ -30,6 +30,7 @@ class _home_pageState extends State<home_page> {
     ];
 
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Center(
         child: widgetOptions.elementAt(_selectedIndex),
       ),
