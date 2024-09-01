@@ -47,6 +47,7 @@ dev_dependencies:
 flutter_launcher_icons:
   android: "launcher_icon"
   ios: true
+  adaptive_icon_background: '#fffcce7e'
   image_path: "assets/icon/app_icon1.png"
   min_sdk_android: 21 # android min sdk min:16, default 21
   web:
@@ -69,7 +70,6 @@ flutter:
   assets:
     - assets/icon/
     - assets/images/
-    - assets/vectors/
     - assets/onboarding/
     - api_key.env
 
