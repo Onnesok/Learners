@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:learners/api/api_root.dart';
 
 class PopularCourse {
   final String title;
@@ -32,7 +33,8 @@ class PopularCourseProvider with ChangeNotifier {
   List<PopularCourse> get courses => _courses;
 
   Future<void> fetchPopularCourses() async {
-    const String uri = "http://192.168.0.104/learners_api/popular_courses.php";
+    const String uri = "${api_root}/popular_courses.php";
+
     try {
       final response = await http.get(Uri.parse(uri));
 
