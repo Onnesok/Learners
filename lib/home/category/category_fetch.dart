@@ -30,7 +30,7 @@ class CategoryProvider with ChangeNotifier {
 
   Future<void> fetchCategories() async {
     //const String uri = "http://10.0.2.2/learners_api/login.php";
-    const String uri = "http://192.168.1.13/learners_api/categories.php";
+    const String uri = "http://192.168.0.104/learners_api/categories.php";
     final response = await http.get(Uri.parse(uri));
 
     if (response.statusCode == 200) {
