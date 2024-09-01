@@ -43,14 +43,15 @@ dev_dependencies:
     sdk: flutter
 
 #This is for launcher icon or app icon
+############################################
 flutter_launcher_icons:
   android: "launcher_icon"
   ios: true
-  image_path: "assets/icon/app_icon.png"
+  image_path: "assets/icon/app_icon1.png"
   min_sdk_android: 21 # android min sdk min:16, default 21
   web:
     generate: true
-    image_path: "assets/icon/app_icon.png"
+    image_path: "assets/icon/app_icon1.png"
     background_color: "#hexcode"
     theme_color: "#hexcode"
 ###########################################
