@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:learners/api/api_root.dart';
 import 'package:learners/user_onboarding/login_page.dart';
 import 'package:http/http.dart' as http;
 
@@ -27,9 +28,10 @@ class _registrationState extends State<registration> {
 
     if (_formKey.currentState!.validate()) {
       try {
-        // make POST request
+        // make POST request UWU :D
         //const String uri = "http://10.0.2.2/learners_api/sign_up.php";
-        const String uri = "http://192.168.0.104/learners_api/sign_up.php";
+        const String uri = "${api_root}/sign_up.php";
+
         var response = await http.post(
             Uri.parse(uri),
             body: {
