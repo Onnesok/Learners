@@ -7,6 +7,8 @@ import 'package:learners/user_onboarding/registration.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 
+import '../api/api_root.dart';
+
 class login extends StatefulWidget {
   const login({super.key});
 
@@ -23,8 +25,7 @@ class _loginState extends State<login> {
 
   Future<void> login(String email, String password) async {
     //const String uri = "http://10.0.2.2/learners_api/login.php";
-    const String uri = "http://192.168.0.104/learners_api/login.php";
-
+    const String uri = "${api_root}/login.php";
     final body = {
       'email': email,
       'password': password,
