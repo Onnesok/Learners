@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:learners/api/api_root.dart';
 
 
 class Category {
@@ -30,9 +31,9 @@ class CategoryProvider with ChangeNotifier {
 
   Future<void> fetchCategories() async {
     //const String uri = "http://10.0.2.2/learners_api/login.php";
-    const String uri = "http://192.168.0.104/learners_api/categories.php";
-    final response = await http.get(Uri.parse(uri));
+    const String uri = "${api_root}/categories.php";
 
+    final response = await http.get(Uri.parse(uri));
     if (response.statusCode == 200) {
       final List<dynamic> data = json.decode(response.body);
       _categories = data.map((json) => Category.fromJson(json)).toList();
