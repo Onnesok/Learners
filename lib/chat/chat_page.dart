@@ -24,8 +24,8 @@ class _chat_aiState extends State<chat_ai> {
   ChatUser currentUser = ChatUser(id: "0", firstName: "user");
   ChatUser geminiUser = ChatUser(
     id: "1",
-    firstName: "AI",
-    profileImage: "https://mir-s3-cdn-cf.behance.net/project_modules/1400/15873842040529.5c5d98aa0bbf8.jpg",
+    firstName: "Learners AI",
+    profileImage: "https://raw.githubusercontent.com/Onnesok/Learners/main/assets/icon/app_icon1.png",
   );
 
   @override
