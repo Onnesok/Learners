@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:learners/api/api_root.dart';
 import 'package:learners/profile/profile_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -34,7 +35,7 @@ class _ChangePasswordState extends State<ChangePassword> {
   }
 
   Future<void> updatePassword(String email, String currentPassword, String newPassword) async {
-    const String uri = "http://192.168.0.104/learners_api/change_password.php";
+    const String uri = "${api_root}/change_password.php";
 
     final body = {
       'email': email,

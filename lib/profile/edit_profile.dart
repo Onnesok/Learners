@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:learners/api/api_root.dart';
 import 'package:provider/provider.dart';
 import 'profile_provider.dart';
 import 'package:http/http.dart' as http;
@@ -30,7 +31,7 @@ class _edit_profileState extends State<edit_profile> {
 
   Future<void> updateUserProfile(
       String email, String password, String newFname, String newLname) async {
-    const String uri = "http://192.168.0.104/learners_api/edit_profile.php";
+    const String uri = "${api_root}/edit_profile.php";
 
     final body = {
       'email': email,
