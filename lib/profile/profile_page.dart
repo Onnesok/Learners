@@ -26,6 +26,7 @@ class _ProfileState extends State<Profile> {
         ),
         elevation: 0,
         backgroundColor: Colors.transparent,
+        centerTitle: true,
       ),
       body: const ProfilePage(),
     );
@@ -165,7 +166,7 @@ class _ProfilePageState extends State<ProfilePage> {
             ListTileItem(icon: Icons.person_outline_rounded, text: 'Edit Profile', onTap: () => _navigateTo(const edit_profile())),
             ListTileItem(icon: Icons.lock_outline, text: 'Change Password', onTap: () => _navigateTo(const ChangePassword())),
             ListTileItem(icon: Icons.school_outlined, text: 'Become Instructor', onTap: () => _showToast('Not done yet')),
-            ListTileItem(icon: Icons.verified_outlined, text: 'Verify Profile', onTap: () => _showToast('Not done yet')),
+            ListTileItem(icon: Icons.share_outlined, text: 'Share app', onTap: () => _showToast('Not done yet')),
             ListTileItem(icon: Icons.star_border_outlined, text: 'Rate Us', onTap: () => _showToast('Not done yet')),
             ListTileItem(icon: Icons.contact_page_outlined, text: 'Contact us', onTap: () => _showToast('Not done yet')),
             ListTileItem(icon: Icons.bug_report_outlined, text: 'Report a bug', onTap: () => _showToast('Not done yet')),
@@ -183,7 +184,7 @@ class ListTileItem extends StatelessWidget {
   final String text;
   final VoidCallback? onTap;
 
-  const ListTileItem({super.key, 
+  const ListTileItem({super.key,
     required this.icon,
     required this.text,
     this.onTap,

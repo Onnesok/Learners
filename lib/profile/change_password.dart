@@ -34,7 +34,7 @@ class _ChangePasswordState extends State<ChangePassword> {
   }
 
   Future<void> updatePassword(String email, String currentPassword, String newPassword) async {
-    const String uri = "http://192.168.1.13/learners_api/change_password.php";
+    const String uri = "http://192.168.0.104/learners_api/change_password.php";
 
     final body = {
       'email': email,

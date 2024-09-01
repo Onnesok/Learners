@@ -30,7 +30,7 @@ class _edit_profileState extends State<edit_profile> {
 
   Future<void> updateUserProfile(
       String email, String password, String newFname, String newLname) async {
-    const String uri = "http://192.168.1.13/learners_api/edit_profile.php";
+    const String uri = "http://192.168.0.104/learners_api/edit_profile.php";
 
     final body = {
       'email': email,
