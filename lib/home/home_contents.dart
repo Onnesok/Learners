@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:learners/api/api_root.dart';
 import 'package:learners/home/custom_appbar.dart';
 import 'package:learners/home/enroll_course.dart';
 import 'package:provider/provider.dart';
@@ -126,7 +127,7 @@ class _home_contentsState extends State<home_contents> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Image.network(
-                                      category.image,
+                                      api_root+category.image,
                                       //layout builder seems messy at this point and thats why used all the available screen of the device * 1 or 10% of the entire screen
                                       // Made it same for square value
                                       width: MediaQuery.of(context).size.width * 0.1,
@@ -233,7 +234,7 @@ class _home_contentsState extends State<home_contents> {
                                 context,
                                 MaterialPageRoute(builder: (context) => enroll(
                                   title: course.title,
-                                  image: course.image,
+                                  image: api_root + course.image,
                                   stars: course.stars,
                                   discount: course.discount,
                                 ),
@@ -269,7 +270,7 @@ class _home_contentsState extends State<home_contents> {
                                         width: imageWidth,
                                         height: imageHeight,
                                         child: Image.network(
-                                          course.image,
+                                          api_root + course.image,
                                           width: imageWidth,
                                           height: imageHeight,
                                           fit: BoxFit.cover,

@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:learners/profile/change_password.dart';
 import 'package:learners/profile/edit_profile.dart';
+import 'package:learners/profile/rate_app.dart';
 import 'package:learners/user_onboarding/login_page.dart';
 import 'dart:io';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
+import 'package:share_plus/share_plus.dart';
 import 'profile_provider.dart';
 
 class Profile extends StatefulWidget {
@@ -84,18 +86,18 @@ class _ProfilePageState extends State<ProfilePage> {
         content: Row(
           children: [
             Image.asset(
-              'assets/icon/logo1.png',
+              'assets/icon/app_icon1.png',
               fit: BoxFit.contain,
               height: 30,
             ),
             const SizedBox(width: 10),
             Text(
               message,
-              style: const TextStyle(color: Colors.white, fontSize: 16),
+              style: const TextStyle(color: Colors.black87, fontSize: 16),
             ),
           ],
         ),
-        backgroundColor: Colors.black,
+        backgroundColor: Color(0xfffcce7e),
         duration: const Duration(seconds: 2),
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(
@@ -105,15 +107,19 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
+  void _shareApp() {
+    print("Share option tapped");
+    Share.share(
+      'Check out this amazing platform! Get onboard and start exploring: https://github.com/Onnesok/learners',
+      subject: 'Invite to Join the Platform',
+    );
+  }
 
 
   @override
   Widget build(BuildContext context) {
     final profileProvider = Provider.of<ProfileProvider>(context);
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: SingleChildScrollView(
-
+    return SingleChildScrollView(
         child: Column(
           children: [
 
@@ -168,15 +174,14 @@ class _ProfilePageState extends State<ProfilePage> {
             ListTileItem(icon: Icons.person_outline_rounded, text: 'Edit Profile', onTap: () => _navigateTo(const edit_profile())),
             ListTileItem(icon: Icons.lock_outline, text: 'Change Password', onTap: () => _navigateTo(const ChangePassword())),
             ListTileItem(icon: Icons.school_outlined, text: 'Become Instructor', onTap: () => _showToast('Not done yet')),
-            ListTileItem(icon: Icons.share_outlined, text: 'Share app', onTap: () => _showToast('Not done yet')),
-            ListTileItem(icon: Icons.star_border_outlined, text: 'Rate Us', onTap: () => _showToast('Not done yet')),
+            ListTileItem(icon: Icons.share_outlined, text: 'Share app', color: Colors.orange[800], onTap: () => _shareApp() ),
+            ListTileItem(icon: Icons.star_border_outlined, text: 'Rate Us', onTap: () => _navigateTo(const RatingPage()) ),
             ListTileItem(icon: Icons.contact_page_outlined, text: 'Contact us', onTap: () => _showToast('Not done yet')),
             ListTileItem(icon: Icons.bug_report_outlined, text: 'Report a bug', onTap: () => _showToast('Not done yet')),
             ListTileItem(icon: Icons.logout, text: 'Logout', onTap: _signOut),
           ],
         ),
-      ),
-    );
+      );
   }
 }
 
@@ -185,11 +190,14 @@ class ListTileItem extends StatelessWidget {
   final IconData icon;
   final String text;
   final VoidCallback? onTap;
+  final Color? color;
 
-  const ListTileItem({super.key,
+  const ListTileItem({
+    super.key,
     required this.icon,
     required this.text,
     this.onTap,
+    this.color,
   });
 
   @override
@@ -197,14 +205,16 @@ class ListTileItem extends StatelessWidget {
     return ListTile(
       leading: Icon(
         icon,
-        color: text == 'Logout' ? Colors.red : Colors.black87.withOpacity(0.7),
+        color: color ?? (text == 'Logout' ? Colors.red : Colors.black87.withOpacity(0.7)),
       ),
       title: Row(
         children: [
           Expanded(
             child: Text(
               text,
-              style: TextStyle(color: text == 'Logout' ? Colors.red : Colors.black),
+              style: TextStyle(
+                color: text == 'Logout' ? Colors.red : Colors.black,
+              ),
             ),
           ),
           if (text != 'Logout') const Icon(Icons.arrow_forward_ios),
