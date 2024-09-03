@@ -3,6 +3,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:learners/api/api_root.dart';
 import 'package:learners/home/custom_appbar.dart';
 import 'package:learners/home/enroll_course.dart';
+import 'package:learners/themes/default_theme.dart';
 import 'package:provider/provider.dart';
 import 'package:learners/profile/profile_provider.dart';
 import 'package:learners/home/category/category_fetch.dart';
@@ -60,24 +61,24 @@ class _home_contentsState extends State<home_contents> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text(
-                    "Category",
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
+
+                  Expanded(
+                    child: const Text(
+                      "Category",
+                      style: default_theme.title,
+                      maxLines: 1,
+                      softWrap: false,
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),
+
                   TextButton(
                     onPressed: () {
                       Fluttertoast.showToast(msg: "Not done yet");
                     },
                     child: Text(
                       "See more",
-                      style: TextStyle(
-                          color: Colors.orange[800],
-                          fontWeight: FontWeight.bold),
-                          overflow: TextOverflow.ellipsis,
+                      style: default_theme.titleTextButton,
                     ),
                   ),
                 ],
@@ -95,12 +96,7 @@ class _home_contentsState extends State<home_contents> {
                   ? Center(
                       child: Text(
                         "Categories not available right now",
-                        style: TextStyle(
-                          color: Colors.black87.withOpacity(0.6),
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18,
-                          overflow: TextOverflow.ellipsis,
-                        ),
+                        style: default_theme.header,
                       ),
                     )
                   : SingleChildScrollView(
@@ -145,17 +141,6 @@ class _home_contentsState extends State<home_contents> {
                                       ),
                                     ),
 
-                                    const SizedBox(height: 4,),
-
-                                    // Text(
-                                    //   '${category.courseCount} Courses',
-                                    //   style: const TextStyle(
-                                    //     color: Colors.grey,
-                                    //     fontSize: 11,
-                                    //     fontWeight: FontWeight.w400,
-                                    //     overflow: TextOverflow.ellipsis,
-                                    //   ),
-                                    // ),
                                   ],
                                 ),
                               ),
@@ -169,6 +154,7 @@ class _home_contentsState extends State<home_contents> {
             const SizedBox(
               height: 10,
             ),
+
             Container(
               padding: const EdgeInsets.only(left: 10),
               child: Row(
@@ -176,11 +162,7 @@ class _home_contentsState extends State<home_contents> {
                 children: [
                   const Text(
                     "Popular courses",
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      overflow: TextOverflow.ellipsis,
-                    ),
+                    style: default_theme.title,
                   ),
                   TextButton(
                     onPressed: () {
@@ -188,11 +170,7 @@ class _home_contentsState extends State<home_contents> {
                     },
                     child: Text(
                       "See more",
-                      style: TextStyle(
-                          color: Colors.orange[800],
-                          fontWeight: FontWeight.bold,
-                          overflow: TextOverflow.ellipsis,
-                      ),
+                      style: default_theme.titleTextButton,
                     ),
                   ),
                 ],
@@ -205,12 +183,7 @@ class _home_contentsState extends State<home_contents> {
                 ? Center(
                     child: Text(
                       "Popular courses not available right now",
-                      style: TextStyle(
-                        color: Colors.black87.withOpacity(0.6),
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
-                        overflow: TextOverflow.ellipsis,
-                      ),
+                      style: default_theme.header,
                     ),
                   )
                 : Container(
@@ -237,23 +210,14 @@ class _home_contentsState extends State<home_contents> {
                                   image: api_root + course.image,
                                   stars: course.stars,
                                   discount: course.discount,
+                                  //duration: course.duration,
                                 ),
                                 ),
                             );
                           },
                           child: Container(
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(10),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black.withOpacity(0.1),
-                                  spreadRadius: 5,
-                                  blurRadius: 8,
-                                  offset: const Offset(0, 1),
-                                ),
-                              ],
-                            ),
+                            decoration: default_theme.default_decoration,
+
                             child: Column(
                               children: [
 
@@ -285,12 +249,7 @@ class _home_contentsState extends State<home_contents> {
 
                                 Text(
                                   course.title,
-                                  style: const TextStyle(
-                                    color: Colors.black87,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
+                                  style: default_theme.title,
                                 ),
                                 Container(
                                   color: Colors.green[200],
