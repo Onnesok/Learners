@@ -78,9 +78,10 @@ sample inserts
 INSERT INTO courses (title, instructor_name, duration, price, release_date, content, prerequisite, rating_count, certificate, intro_video, image, stars, discount, category_id) VALUES
 ('Introduction to Flutter', 'John Doe', '10 hours', 0.00, '2024-08-01', 'Course content for Flutter development', 'Basic programming knowledge', 0, FALSE, 'https://youtu.be/df1MDyeAJ_Q?si=at0i7-7aDUW0lfI2', '/assets/images/iron_man.jpg', 5.0, '10%', 1),
 ('Advanced App Development', 'Jane Smith', '12 hours', 0.00, '2024-09-01', 'Advanced topics in app development', 'Completion of Introduction to Flutter', 0, FALSE, 'https://youtu.be/df1MDyeAJ_Q?si=at0i7-7aDUW0lfI2', '/assets/images/iron_man.jpg', 4.8, '15%', 1),
-('UX Principles', 'Emily Davis', '8 hours', 0.00, '2024-07-15', 'Basics of UX design', 'None', 0, FALSE, 'https://youtu.be/df1MDyeAJ_Q?si=at0i7-7aDUW0lfI2', '/assets/images/ux_design.jpg', 4.5, 'No', 2),
-('Digital Marketing Basics', 'Alex Johnson', '6 hours', 0.00, '2024-05-20', 'Introduction to digital marketing', 'Basic understanding of social media', 0, FALSE, 'https://youtu.be/df1MDyeAJ_Q?si=at0i7-7aDUW0lfI2', '/assets/images/digital_marketing.jpg', 4.7, '10%', 3);
-
+('UX Principles', 'Emily Davis', '8 hours', 0.00, '2024-07-15', 'Basics of UX design', 'None', 0, FALSE, 'https://youtu.be/df1MDyeAJ_Q?si=at0i7-7aDUW0lfI2', '/assets/images/apex.jpg', 4.5, 'No', 2),
+('Digital Marketing Basics', 'Alex Johnson', '6 hours', 0.00, '2024-05-20', 'Introduction to digital marketing', 'Basic understanding of social media', 0, FALSE, 'https://youtu.be/df1MDyeAJ_Q?si=at0i7-7aDUW0lfI2', '/assets/images/league1.jpg', 4.7, '10%', 3),
+('Intro to data entry', 'Tony stark', '3 hours', 0.00, '2024-08-01', 'Course content for Data Entry', 'Basic Computer knowledge', 0, FALSE, 'https://youtu.be/df1MDyeAJ_Q?si=at0i7-7aDUW0lfI2', '/assets/images/dataentry.jpg', 5.0, '10%', 5),
+('Introduction to Robotics', 'Ratul Hasan', '60 hours', 0.00, '2024-08-01', 'Course content for Robotics', 'Basic programming knowledge', 0, FALSE, 'https://youtu.be/df1MDyeAJ_Q?si=at0i7-7aDUW0lfI2', '/assets/images/robotics1.jpg', 5.0, '10%', 4);
 ```
 
 # Working
