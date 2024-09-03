@@ -7,7 +7,7 @@ class Category {
   final String category_id;
   final String title;
   final String image;
-  final int description;
+  final String description;
 
   Category({
     required this.category_id,
@@ -18,7 +18,7 @@ class Category {
 
   factory Category.fromJson(Map<String, dynamic> json) {
     return Category(
-      category_id: json['category_id'] ?? 9999,
+      category_id: json['category_id'] ?? "nn",
       title: json['title'] ?? 'Unknown Name',
       image: json['image'] ?? '',
       description : json['description'] ?? "No description provided",
