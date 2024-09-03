@@ -27,7 +27,7 @@ class _ProfileState extends State<Profile> {
           "Profile",
           style: TextStyle(color: Colors.black87),
         ),
-        elevation: 0,
+        scrolledUnderElevation: 0,
         backgroundColor: Colors.transparent,
         centerTitle: true,
       ),
@@ -130,7 +130,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 GestureDetector(
                   onTap: _selectImage,
                   child: Container(
-                    padding: const EdgeInsets.all(20.0),
+                    padding: const EdgeInsets.all(15),
                     child: CircleAvatar(
                       radius: 50,
                       backgroundColor: Colors.orange,
