@@ -8,23 +8,34 @@ class PopularCourse {
   final String image;
   final String stars;
   final String discount;
+  final String categoryTitle;
+  final String instructorName;
+  final String duration;
+  final double price;
 
   PopularCourse({
     required this.title,
     required this.image,
     required this.stars,
     this.discount = "No",
+    required this.categoryTitle,
+    required this.instructorName,
+    required this.duration,
+    required this.price,
   });
 
   factory PopularCourse.fromJson(Map<String, dynamic> json) {
     return PopularCourse(
-      title: json['title'] ?? 'Unknown Title',
-      image: json['image'] ?? '',
+      title: json['course_title'] ?? 'Unknown Title',
+      image: json['course_image'] ?? '',
       stars: json['stars']?.toString() ?? '5',
       discount: json['discount'] ?? 'No',
+      categoryTitle: json['category_title'] ?? 'Unknown Category',
+      instructorName: json['instructor_name'] ?? 'Unknown Instructor',
+      duration: json['duration'] ?? 'Unknown Duration',
+      price: double.tryParse(json['price'].toString()) ?? 0.0,
     );
   }
-
 }
 
 class PopularCourseProvider with ChangeNotifier {

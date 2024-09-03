@@ -109,7 +109,7 @@ class _home_contentsState extends State<home_contents> {
                         children: categoryProvider.categories.map((category) {
                           return GestureDetector(
                             onTap: () {
-                              Fluttertoast.showToast(msg: "Tapped on ${category.name}");
+                              Fluttertoast.showToast(msg: "Tapped on ${category.title}");
                             },
                             child: Container(
                               width: MediaQuery.of(context).size.width * 0.24,
@@ -136,7 +136,7 @@ class _home_contentsState extends State<home_contents> {
                                     ),
                                     const SizedBox(height: 4),
                                     Text(
-                                      category.name,
+                                      category.title,
                                       style: const TextStyle(
                                         color: Colors.black87,
                                         fontSize: 14,
@@ -147,15 +147,15 @@ class _home_contentsState extends State<home_contents> {
 
                                     const SizedBox(height: 4,),
 
-                                    Text(
-                                      '${category.courseCount} Courses',
-                                      style: const TextStyle(
-                                        color: Colors.grey,
-                                        fontSize: 11,
-                                        fontWeight: FontWeight.w400,
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                    ),
+                                    // Text(
+                                    //   '${category.courseCount} Courses',
+                                    //   style: const TextStyle(
+                                    //     color: Colors.grey,
+                                    //     fontSize: 11,
+                                    //     fontWeight: FontWeight.w400,
+                                    //     overflow: TextOverflow.ellipsis,
+                                    //   ),
+                                    // ),
                                   ],
                                 ),
                               ),
