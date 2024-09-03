@@ -8,6 +8,7 @@ import 'package:flutter_gemini/flutter_gemini.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:lottie/lottie.dart';
 
 class chat_ai extends StatefulWidget {
   const chat_ai({super.key});
@@ -68,9 +69,17 @@ class _chat_aiState extends State<chat_ai> {
           ),
           if (isLoading)
             Center(
-              child: CircularProgressIndicator(
-                color: Colors.amber[800],
+              child: SizedBox(
+                width: MediaQuery.of(context).size.width * 0.5,
+                height: MediaQuery.of(context).size.width * 0.5,
+                child: Lottie.asset(
+                  'assets/animation/loader3.json',
+                  repeat: true,
+                ),
               ),
+              // CircularProgressIndicator(
+              //   color: Colors.amber[800],
+              // ),
             ),
         ],
       ),
