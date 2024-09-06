@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:learners/api/api_root.dart';
+import 'package:learners/home/category/category_ui.dart';
 import 'package:learners/home/custom_appbar.dart';
 import 'package:learners/home/enroll_course.dart';
 import 'package:learners/themes/default_theme.dart';
@@ -74,6 +75,11 @@ class _home_contentsState extends State<home_contents> {
 
                   TextButton(
                     onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => category_ui(),
+                        ),
+                      );
                       Fluttertoast.showToast(msg: "Not done yet");
                     },
                     child: Text(
@@ -169,7 +175,7 @@ class _home_contentsState extends State<home_contents> {
                       Fluttertoast.showToast(msg: "Not done yet");
                     },
                     child: Text(
-                      "See more",
+                      "See All Courses",
                       style: default_theme.titleTextButton,
                     ),
                   ),

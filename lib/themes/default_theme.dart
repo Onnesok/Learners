@@ -9,6 +9,7 @@ class default_theme {
   static const Color orangeHomeBar = Color(0xFFC35300);
   static const Color greyDescription = Color(0xFF464646);
   static const Color black = Color(0xFF000000);
+  static const Color white = Color(0xFFFFFFFF);
 
 
 
