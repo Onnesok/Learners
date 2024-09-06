@@ -5,6 +5,7 @@ import 'package:learners/home/category/category_ui.dart';
 import 'package:learners/home/custom_appbar.dart';
 import 'package:learners/home/enroll_course.dart';
 import 'package:learners/themes/default_theme.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:learners/profile/profile_provider.dart';
 import 'package:learners/home/category/category_fetch.dart';
@@ -52,17 +53,17 @@ class _home_contentsState extends State<home_contents> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-
             const Search_bar(),
 
-            const SizedBox(height: 10,),
+            const SizedBox(
+              height: 10,
+            ),
 
             Container(
               padding: const EdgeInsets.only(left: 10),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-
                   Expanded(
                     child: const Text(
                       "Category",
@@ -72,12 +73,12 @@ class _home_contentsState extends State<home_contents> {
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),
-
                   TextButton(
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => category_ui(),
+                        MaterialPageRoute(
+                          builder: (context) => category_ui(),
                         ),
                       );
                       Fluttertoast.showToast(msg: "Not done yet");
@@ -102,7 +103,7 @@ class _home_contentsState extends State<home_contents> {
                   ? Center(
                       child: Text(
                         "Categories not available right now",
-                        style: default_theme.header,
+                        style: default_theme.header_grey,
                       ),
                     )
                   : SingleChildScrollView(
@@ -111,12 +112,14 @@ class _home_contentsState extends State<home_contents> {
                         children: categoryProvider.categories.map((category) {
                           return GestureDetector(
                             onTap: () {
-                              Fluttertoast.showToast(msg: "Tapped on ${category.title}");
+                              Fluttertoast.showToast(
+                                  msg: "Tapped on ${category.title}");
                             },
                             child: Container(
                               width: MediaQuery.of(context).size.width * 0.24,
-                              margin: const EdgeInsets.symmetric(horizontal: 10,),
-
+                              margin: const EdgeInsets.symmetric(
+                                horizontal: 10,
+                              ),
                               decoration: BoxDecoration(
                                 border: Border.all(
                                   color: Colors.grey.withOpacity(0.8),
@@ -129,11 +132,14 @@ class _home_contentsState extends State<home_contents> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Image.network(
-                                      api_root+category.image,
+                                      api_root + category.image,
                                       //layout builder seems messy at this point and thats why used all the available screen of the device * 1 or 10% of the entire screen
                                       // Made it same for square value
-                                      width: MediaQuery.of(context).size.width * 0.1,
-                                      height: MediaQuery.of(context).size.width * 0.1,
+                                      width: MediaQuery.of(context).size.width *
+                                          0.1,
+                                      height:
+                                          MediaQuery.of(context).size.width *
+                                              0.1,
                                       fit: BoxFit.cover,
                                     ),
                                     const SizedBox(height: 4),
@@ -146,7 +152,6 @@ class _home_contentsState extends State<home_contents> {
                                         overflow: TextOverflow.ellipsis,
                                       ),
                                     ),
-
                                   ],
                                 ),
                               ),
@@ -187,9 +192,20 @@ class _home_contentsState extends State<home_contents> {
 
             popularCourseProvider.courses.isEmpty
                 ? Center(
-                    child: Text(
-                      "Popular courses not available right now",
-                      style: default_theme.header,
+                    child: Column(
+                      children: [
+                        Lottie.asset(
+                          'assets/animation/empty.json',
+                          repeat: true,
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Text(
+                          "No Popular courses available",
+                          style: default_theme.header_grey,
+                        ),
+                      ],
                     ),
                   )
                 : Container(
@@ -197,7 +213,8 @@ class _home_contentsState extends State<home_contents> {
                     child: GridView.builder(
                       physics: const NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
-                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2,
                         crossAxisSpacing: 30,
                         mainAxisSpacing: 30,
@@ -210,31 +227,32 @@ class _home_contentsState extends State<home_contents> {
                         return GestureDetector(
                           onTap: () {
                             Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) => enroll(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => enroll(
                                   title: course.title,
                                   image: api_root + course.image,
                                   stars: course.stars,
                                   discount: course.discount,
                                   //duration: course.duration,
                                 ),
-                                ),
+                              ),
                             );
                           },
                           child: Container(
                             decoration: default_theme.default_decoration,
-
                             child: Column(
                               children: [
-
                                 ClipRRect(
                                   borderRadius: BorderRadius.circular(10),
                                   child: LayoutBuilder(
-                                    builder: (BuildContext context, BoxConstraints constraints) {
+                                    builder: (BuildContext context,
+                                        BoxConstraints constraints) {
                                       double imageWidth = constraints.maxWidth;
                                       // for the maxheight and api image is giving mismatch kinda result...
                                       // so using 50% of the available width as the height
-                                      double imageHeight = constraints.maxWidth * 0.5;
+                                      double imageHeight =
+                                          constraints.maxWidth * 0.5;
 
                                       return Container(
                                         width: imageWidth,
@@ -249,10 +267,9 @@ class _home_contentsState extends State<home_contents> {
                                     },
                                   ),
                                 ),
-
-
-                                const SizedBox(height: 4,),
-
+                                const SizedBox(
+                                  height: 4,
+                                ),
                                 Text(
                                   course.title,
                                   style: default_theme.title,

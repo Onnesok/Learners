@@ -20,6 +20,13 @@ class default_theme {
     overflow: TextOverflow.ellipsis,
   );
 
+  static TextStyle header_grey = TextStyle(
+    color: Colors.grey.withOpacity(0.8),
+    fontWeight: FontWeight.bold,
+    fontSize: 18,
+    overflow: TextOverflow.ellipsis,
+  );
+
   static const TextStyle title = TextStyle(
     fontSize: 16,
     color: black,
