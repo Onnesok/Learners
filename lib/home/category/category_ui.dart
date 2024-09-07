@@ -58,10 +58,11 @@ class _category_uiState extends State<category_ui> {
             )
           : GridView.builder(
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
+                  crossAxisCount: 3,
                   crossAxisSpacing: 30,
                   mainAxisSpacing: 30,
-                  childAspectRatio: 1),
+                  childAspectRatio: 1,
+              ),
               itemCount: categoryProvider.categories.length,
               itemBuilder: (context, index) {
                 final category = categoryProvider.categories[index];
