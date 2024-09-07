@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:learners/home/all_courses/all_course_fetch.dart';
 import 'package:learners/home/enroll_course.dart';
 import 'package:learners/themes/default_theme.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
 import '../../api/api_root.dart';
@@ -29,7 +30,25 @@ class _CourseListViewState extends State<CourseListView> {
     final allCourseProvider = Provider.of<AllCourseProvider>(context);
 
     if (allCourseProvider.courses.isEmpty) {
-      return const Center(child: CircularProgressIndicator());
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Lottie.asset(
+              'assets/animation/empty.json',
+              repeat: true,
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            Text(
+              "No courses available",
+              style: default_theme.header_grey,
+            ),
+          ],
+        ),
+      );
     }
 
     return ListView.builder(
@@ -66,8 +85,8 @@ class _CourseListViewState extends State<CourseListView> {
                   borderRadius: BorderRadius.circular(12),
                   child: Image.network(
                     api_root + course.image,
-                    width: MediaQuery.of(context).size.width * 0.4, // Adjust width to cover half of the tile
-                    height: MediaQuery.of(context).size.width * 0.25, // Adjust height accordingly
+                    width: MediaQuery.of(context).size.width * 0.4,
+                    height: MediaQuery.of(context).size.width * 0.25,
                     fit: BoxFit.cover,
                     errorBuilder: (context, error, stackTrace) {
                       return const Icon(Icons.broken_image, size: 50);
