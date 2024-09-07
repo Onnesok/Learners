@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:learners/api/api_root.dart';
+import 'package:learners/home/all_courses/all_course.dart';
 import 'package:learners/home/category/category_ui.dart';
 import 'package:learners/home/custom_appbar.dart';
 import 'package:learners/home/enroll_course.dart';
@@ -81,7 +82,6 @@ class _home_contentsState extends State<home_contents> {
                           builder: (context) => category_ui(),
                         ),
                       );
-                      Fluttertoast.showToast(msg: "Not done yet");
                     },
                     child: Text(
                       "See more",
@@ -102,7 +102,7 @@ class _home_contentsState extends State<home_contents> {
               child: categoryProvider.categories.isEmpty
                   ? Center(
                       child: Text(
-                        "Categories not available right now",
+                        "No categories available",
                         style: default_theme.header_grey,
                       ),
                     )
@@ -177,7 +177,12 @@ class _home_contentsState extends State<home_contents> {
                   ),
                   TextButton(
                     onPressed: () {
-                      Fluttertoast.showToast(msg: "Not done yet");
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => all_course(),
+                        ),
+                      );
                     },
                     child: Text(
                       "See All Courses",
