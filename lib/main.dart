@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_gemini/flutter_gemini.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
+import 'package:learners/dashboard/enrolled_course_provider.dart';
 import 'package:learners/home/all_courses/all_course_fetch.dart';
 import 'package:learners/home/category/category_fetch.dart';
 import 'package:learners/chat/consts.dart';
@@ -47,6 +48,7 @@ Future<void> main() async {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => ProfileProvider()),
+        ChangeNotifierProvider(create: (context) => EnrolledCourseProvider()),
         ChangeNotifierProvider(create: (_) => AllCourseProvider()),
         ChangeNotifierProvider(create: (context) => CategoryProvider()),
         ChangeNotifierProvider(create: (context) => PopularCourseProvider()),
