@@ -22,6 +22,7 @@ class default_theme {
     overflow: TextOverflow.ellipsis,
   );
 
+
   static TextStyle header_grey = TextStyle(
     color: Colors.grey.withOpacity(0.8),
     fontWeight: FontWeight.bold,
