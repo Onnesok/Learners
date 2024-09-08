@@ -3,6 +3,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:learners/profile/change_password.dart';
 import 'package:learners/profile/edit_profile.dart';
 import 'package:learners/profile/rate_app.dart';
+import 'package:learners/profile/report.dart';
 import 'package:learners/user_onboarding/login_page.dart';
 import 'dart:io';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -177,7 +178,7 @@ class _ProfilePageState extends State<ProfilePage> {
             ListTileItem(icon: Icons.share_outlined, text: 'Share app', color: Colors.orange[800], onTap: () => _shareApp() ),
             ListTileItem(icon: Icons.star_border_outlined, text: 'Rate Us', onTap: () => _navigateTo(const RatingPage()) ),
             ListTileItem(icon: Icons.contact_page_outlined, text: 'Contact us', onTap: () => _showToast('Not done yet')),
-            ListTileItem(icon: Icons.bug_report_outlined, text: 'Report a bug', onTap: () => _showToast('Not done yet')),
+            ListTileItem(icon: Icons.bug_report_outlined, text: 'Report a bug', onTap: () => _navigateTo(ReportBugScreen())),
             ListTileItem(icon: Icons.logout, text: 'Logout', onTap: _signOut),
           ],
         ),

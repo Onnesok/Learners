@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:learners/api/api_root.dart';
 import 'package:learners/home/all_courses/all_course.dart';
+import 'package:learners/home/all_courses/all_course_widget.dart';
 import 'package:learners/home/category/category_ui.dart';
 import 'package:learners/home/custom_appbar.dart';
 import 'package:learners/home/enroll_course.dart';
@@ -112,8 +113,13 @@ class _home_contentsState extends State<home_contents> {
                         children: categoryProvider.categories.map((category) {
                           return GestureDetector(
                             onTap: () {
-                              Fluttertoast.showToast(
-                                  msg: "Tapped on ${category.title}");
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      CourseListView(category: category.title),
+                                ),
+                              );
                             },
                             child: Container(
                               width: MediaQuery.of(context).size.width * 0.24,
@@ -180,7 +186,7 @@ class _home_contentsState extends State<home_contents> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => all_course(),
+                          builder: (context) => CourseListView(category: "All"),
                         ),
                       );
                     },

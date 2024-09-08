@@ -10,6 +10,8 @@ class default_theme {
   static const Color greyDescription = Color(0xFF464646);
   static const Color black = Color(0xFF000000);
   static const Color white = Color(0xFFFFFFFF);
+  static const Color grey = Color(0xFF3A5160);
+  static const Color darkGrey = Color(0xFF313A44);
 
 
 
