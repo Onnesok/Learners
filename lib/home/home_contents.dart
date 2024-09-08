@@ -12,6 +12,7 @@ import 'package:learners/profile/profile_provider.dart';
 import 'package:learners/home/category/category_fetch.dart';
 import 'package:learners/home/searchbar.dart';
 import 'package:learners/home/popular_courses/popular_courses_fetch.dart';
+import 'package:animations/animations.dart';
 
 class home_contents extends StatefulWidget {
   final Function(int) onTabChange;
@@ -54,7 +55,43 @@ class _home_contentsState extends State<home_contents> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Search_bar(),
+
+            OpenContainer(
+              closedColor: default_theme.white,
+              closedElevation: 0,
+
+              transitionDuration: const Duration(milliseconds: 500),
+              closedBuilder: (ctx, action) => Container(
+                width: MediaQuery.of(context).size.width,
+                padding: const EdgeInsets.all(16),
+                margin: EdgeInsets.only(top: 12, bottom: 12, left: 20, right: 20),
+
+                decoration: BoxDecoration(
+                  color: default_theme.white,
+                  borderRadius: BorderRadius.circular(30),
+                  boxShadow: [
+                    BoxShadow(
+                      color: default_theme.grey.withOpacity(0.3),
+                      spreadRadius: 2,
+                      blurRadius: 6,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
+                ),
+                child: Row(
+                  children: [
+                    Icon(Icons.search, color: default_theme.orange),
+                    const SizedBox(width: 12),
+                    const Text(
+                      "Search...",
+                      style: TextStyle(color: default_theme.orange),
+                    ),
+                  ],
+                ),
+              ),
+              openBuilder: (ctx, action) => Search_bar(),
+            ),
+
 
             const SizedBox(
               height: 10,
