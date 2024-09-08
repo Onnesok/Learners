@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:learners/api/api_root.dart';
-import 'package:learners/home/all_courses/all_course.dart';
-import 'package:learners/home/all_courses/all_course_widget.dart';
+import 'package:learners/home/all_courses/all_courses.dart';
 import 'package:learners/home/category/category_ui.dart';
 import 'package:learners/home/custom_appbar.dart';
 import 'package:learners/home/enroll_course.dart';
