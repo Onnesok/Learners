@@ -27,7 +27,18 @@ Learners is a LMS or learning management system app designed for students to mak
 
 ## Database creation
 
-create categories database
+Create user database......here user database table is named sign_up
+```sql
+CREATE TABLE sign_up (
+    user_id INT AUTO_INCREMENT PRIMARY KEY,  -- Primary key with auto-increment
+    uemail VARCHAR(40) NOT NULL UNIQUE,      -- Email column with unique constraint
+    ufname VARCHAR(40) NOT NULL,             -- User's first name
+    ulname VARCHAR(40) NOT NULL,             -- User's last name
+    upassword VARCHAR(40) NOT NULL           -- User's password
+);
+```
+
+Now create categories database
 
 ```sql
 CREATE TABLE categories (
@@ -49,7 +60,7 @@ INSERT INTO categories (title, image, description) VALUES
 ('Data entry', '/assets/images/management.png', 'Courses for dataentry');
 ```
 
-create courses database
+Create courses database
 
 ```sql
 CREATE TABLE courses (
@@ -82,6 +93,46 @@ INSERT INTO courses (title, instructor_name, duration, price, release_date, cont
 ('Digital Marketing Basics', 'Alex Johnson', '6 hours', 0.00, '2024-05-20', 'Introduction to digital marketing', 'Basic understanding of social media', 0, FALSE, 'https://youtu.be/df1MDyeAJ_Q?si=at0i7-7aDUW0lfI2', '/assets/images/league1.jpg', 4.7, '10%', 3),
 ('Intro to data entry', 'Tony stark', '3 hours', 0.00, '2024-08-01', 'Course content for Data Entry', 'Basic Computer knowledge', 0, FALSE, 'https://youtu.be/df1MDyeAJ_Q?si=at0i7-7aDUW0lfI2', '/assets/images/dataentry.jpg', 5.0, '10%', 5),
 ('Introduction to Robotics', 'Ratul Hasan', '60 hours', 0.00, '2024-08-01', 'Course content for Robotics', 'Basic programming knowledge', 0, FALSE, 'https://youtu.be/df1MDyeAJ_Q?si=at0i7-7aDUW0lfI2', '/assets/images/robotics1.jpg', 5.0, '10%', 4);
+```
+Create enrollment table
+```sql
+CREATE TABLE enrollment (
+    enrollment_id INT AUTO_INCREMENT PRIMARY KEY,
+    uemail VARCHAR(40) NOT NULL,
+    course_id INT NOT NULL,
+    FOREIGN KEY (uemail) REFERENCES sign_up(uemail),
+    FOREIGN KEY (course_id) REFERENCES courses(course_id),
+    UNIQUE KEY (uemail, course_id)  -- Ensures a user cannot enroll in the same course more than once
+);
+```
+Sample inserts
+
+```sql
+INSERT INTO enrollment (uemail, course_id) VALUES
+('stark@gmail.com', 1),
+('stark@gmail.com', 3),
+('dave@gmail.com', 5);
+```
+
+Now create App rating database
+```sql
+CREATE TABLE app_rating_db (
+    app_rating_db_id INT AUTO_INCREMENT PRIMARY KEY,  -- Primary key with auto-increment
+    uemail VARCHAR(40) NOT NULL,                      -- Email associated with the rating
+    app_rating INT NOT NULL,                          -- App rating (e.g., 1-5 stars)
+    FOREIGN KEY (uemail) REFERENCES sign_up(uemail),  -- Foreign key referencing uemail in sign_up
+    UNIQUE KEY (uemail)                               -- Ensures each user can only rate once
+);
+```
+
+Ok now bug report database
+```sql
+CREATE TABLE bug_report (
+    bug_report_id INT AUTO_INCREMENT PRIMARY KEY,   -- Primary key with auto-increment
+    uemail VARCHAR(40) NOT NULL,                    -- Email of the user reporting the bug
+    issue_description TEXT NOT NULL,                -- Description of the reported issue
+    FOREIGN KEY (uemail) REFERENCES sign_up(uemail) -- Foreign key referencing uemail in sign_up
+);
 ```
 
 # Working
