@@ -54,6 +54,7 @@ class _ProfilePageState extends State<ProfilePage> {
       final profileProvider = Provider.of<ProfileProvider>(context, listen: false);
       profileProvider.updateImage(null);
       profileProvider.updateName("No", "Name");
+      profileProvider.storeEmail("");
 
       Navigator.of(context, rootNavigator: true).pushReplacement(
         MaterialPageRoute(builder: (context) => const login()),
