@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+import 'package:learners/api/api_root.dart';
+import 'package:provider/provider.dart';
+
+import '../profile/profile_provider.dart';
 
 class enroll extends StatefulWidget {
   final String title;
   final String image;
   final String stars;
   final String discount;
+  final int courseId;
 
   const enroll({
     super.key,
@@ -13,6 +20,7 @@ class enroll extends StatefulWidget {
     required this.image,
     required this.stars,
     required this.discount,
+    required this.courseId,
   });
 
   @override
@@ -28,11 +36,33 @@ class _enrollState extends State<enroll> with TickerProviderStateMixin {
   late final AnimationController animationController;
   late final Animation<double> animation;
 
+
+  Future<void> addEnrollment(String email, int courseId) async {
+    final Uri apiUrl = Uri.parse('${api_root}/enroll.php');
+
+    final Map<String, dynamic> requestBody = {
+      'uemail': email,
+      'course_id': courseId,
+    };
+    final http.Response response = await http.post(
+      apiUrl,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode(requestBody),
+    );
+    if (response.statusCode == 201) {
+      print('Enrollment added successfully');
+    } else {
+      print('Failed to add enrollment: ${response.body}');
+    }
+  }
+
+
   @override
   void initState() {
     super.initState();
-    animationController = AnimationController(
-        duration: const Duration(milliseconds: 1000), vsync: this);
+    animationController = AnimationController(duration: const Duration(milliseconds: 1000), vsync: this);
     animation = Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
         parent: animationController,
         curve: const Interval(0, 1.0, curve: Curves.fastOutSlowIn)));
@@ -69,9 +99,11 @@ class _enrollState extends State<enroll> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    final profileProvider = Provider.of<ProfileProvider>(context, listen: false);
+    final email = profileProvider.email;
+
     final double tempHeight = MediaQuery.of(context).size.height -
-        (MediaQuery.of(context).size.width / 1.2) +
-        24.0;
+        (MediaQuery.of(context).size.width / 1.2) + 24.0;
     return Material(
       color: Colors.white.withOpacity(0.2),
       child: Stack(
@@ -229,7 +261,8 @@ class _enrollState extends State<enroll> with TickerProviderStateMixin {
                                           minimumSize: const Size(1000, 48),
                                         ),
                                         onPressed: () {
-                                          Fluttertoast.showToast(msg: "Not done yet");
+                                          addEnrollment(email, widget.courseId);
+                                          Fluttertoast.showToast(msg: "Enrolled");
                                         },
                                         child: const Text(
                                           'Join Course',

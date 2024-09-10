@@ -148,6 +148,7 @@ class _Search_barState extends State<Search_bar> {
                                   image: api_root + course.image,
                                   stars: course.stars,
                                   discount: course.discount,
+                                  courseId: course.courseId,
                                   //duration: course.duration,
                                 ),
                               ),

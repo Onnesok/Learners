@@ -281,6 +281,7 @@ class _home_contentsState extends State<home_contents> {
                                   image: api_root + course.image,
                                   stars: course.stars,
                                   discount: course.discount,
+                                  courseId: course.courseId,
                                   //duration: course.duration,
                                 ),
                               ),

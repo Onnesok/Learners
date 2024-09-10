@@ -94,6 +94,7 @@ class _CourseListViewState extends State<CourseListView> {
                             image: api_root + course.image,
                             stars: course.stars,
                             discount: course.discount,
+                            courseId: course.courseId,
                             //duration: course.duration,
                           ),
                         ),
