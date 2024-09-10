@@ -24,7 +24,7 @@ class _home_pageState extends State<home_page> {
   Widget build(BuildContext context) {
     final List<Widget> widgetOptions = <Widget>[
       home_contents(onTabChange: _onItemTapped),
-      const dashboard(),
+      Dashboard(),
       const chat_ai(),
       const Profile(),
     ];

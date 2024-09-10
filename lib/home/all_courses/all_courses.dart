@@ -50,100 +50,108 @@ class _CourseListViewState extends State<CourseListView> {
         backgroundColor: default_theme.white,
       ),
 
-      body: filteredCourses.isEmpty
-          ? Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Lottie.asset(
-                    'assets/animation/empty.json',
-                    repeat: true,
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Text(
-                    "No courses available",
-                    style: default_theme.header_grey,
-                  ),
-                ],
-              ),
-            )
-          : ListView.builder(
-              itemCount: filteredCourses.length,
-              itemBuilder: (context, index) {
-                final course = filteredCourses[index];
-
-                return GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => enroll(
-                          title: course.title,
-                          image: api_root + course.image,
-                          stars: course.stars,
-                          discount: course.discount,
-                          //duration: course.duration,
-                        ),
-                      ),
-                    );
-                  },
-                  child: Card(
-                    margin: const EdgeInsets.symmetric(
-                        vertical: 8.0, horizontal: 16.0),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12.0),
+      body: Container(
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height,
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/images/s1.png'),
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: filteredCourses.isEmpty
+            ? Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Lottie.asset(
+                      'assets/animation/empty.json',
+                      repeat: true,
                     ),
-                    elevation: 4.0,
-                    color: default_theme.white,
-                    child: Row(
-                      children: [
-                        course.image.isNotEmpty
-                            ? ClipRRect(
-                                borderRadius: BorderRadius.circular(12),
-                                child: Image.network(
-                                  api_root + course.image,
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.4,
-                                  height:
-                                      MediaQuery.of(context).size.width * 0.25,
-                                  fit: BoxFit.cover,
-                                  errorBuilder: (context, error, stackTrace) {
-                                    return const Icon(Icons.broken_image,
-                                        size: 50);
-                                  },
-                                ),
-                              )
-                            : const Icon(Icons.image, size: 100),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Text(
+                      "No courses available",
+                      style: default_theme.header_grey,
+                    ),
+                  ],
+                ),
+              )
+            : ListView.builder(
+                itemCount: filteredCourses.length,
+                itemBuilder: (context, index) {
+                  final course = filteredCourses[index];
 
-                        SizedBox(width: 8.0), // Space between image and text
-
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(course.title,
-                                    style: const TextStyle(
-                                        fontWeight: FontWeight.bold)),
-                                SizedBox(height: 4.0),
-                                Text('Instructor: ${course.instructorName}'),
-                                Text('Category: ${course.categoryTitle}'),
-                                Text('Duration: ${course.duration}'),
-                                Text('Price: \$${course.price.toStringAsFixed(2)}'),
-                              ],
-                            ),
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => enroll(
+                            title: course.title,
+                            image: api_root + course.image,
+                            stars: course.stars,
+                            discount: course.discount,
+                            //duration: course.duration,
                           ),
                         ),
-                      ],
+                      );
+                    },
+                    child: Card(
+                      margin: const EdgeInsets.symmetric(
+                          vertical: 8.0, horizontal: 16.0),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12.0),
+                      ),
+                      elevation: 4.0,
+                      color: default_theme.white,
+                      child: Row(
+                        children: [
+                          course.image.isNotEmpty
+                              ? ClipRRect(
+                                  borderRadius: BorderRadius.circular(12),
+                                  child: Image.network(
+                                    api_root + course.image,
+                                    width:
+                                        MediaQuery.of(context).size.width * 0.4,
+                                    height:
+                                        MediaQuery.of(context).size.width * 0.25,
+                                    fit: BoxFit.cover,
+                                    errorBuilder: (context, error, stackTrace) {
+                                      return const Icon(Icons.broken_image,
+                                          size: 50);
+                                    },
+                                  ),
+                                )
+                              : const Icon(Icons.image, size: 100),
+
+                          SizedBox(width: 8.0), // Space between image and text
+
+                          Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(course.title, style: const TextStyle(fontWeight: FontWeight.bold)), //Reminder:  add maxlines 2 but in themes
+                                  SizedBox(height: 4.0),
+                                  Text('Instructor: ${course.instructorName}'),
+                                  Text('Category: ${course.categoryTitle}'),
+                                  Text('Duration: ${course.duration}'),
+                                  Text('Price: \$${course.price.toStringAsFixed(2)}'),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                );
-              },
-            ),
+                  );
+                },
+              ),
+      ),
     );
   }
 }
