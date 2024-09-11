@@ -4,9 +4,9 @@ import 'package:http/http.dart' as http;
 import 'package:learners/api/api_root.dart';
 
 class EnrolledCourseProvider with ChangeNotifier {
-  List<EnrolledCourse> _courses = [];
+  List<EnrolledCourse> courses = [];
 
-  List<EnrolledCourse> get courses => _courses;
+  List<EnrolledCourse> get Courses => courses;
 
   Future<void> fetchCourses(String email) async {
     final url = Uri.parse('${api_root}/get_enrollment.php?email=$email');
@@ -17,7 +17,7 @@ class EnrolledCourseProvider with ChangeNotifier {
         if (response.headers['content-type']?.contains('application/json') == true) {
           final data = jsonDecode(response.body);
           if (data is List) {
-            _courses = data.map((item) => EnrolledCourse.fromJson(item)).toList();
+            courses = data.map((item) => EnrolledCourse.fromJson(item)).toList();
           } else {
             print('Unexpected data format: ${data.runtimeType}');
             throw FormatException('Unexpected data format');
@@ -33,6 +33,11 @@ class EnrolledCourseProvider with ChangeNotifier {
       print('Error fetching courses: $error');
       throw error;
     }
+  }
+
+  void clearCourses() {
+    courses = [];
+    notifyListeners();
   }
 }
 

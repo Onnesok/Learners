@@ -9,6 +9,7 @@ import 'dart:io';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
+import '../dashboard/enrolled_course_provider.dart';
 import 'profile_provider.dart';
 
 class Profile extends StatefulWidget {
@@ -51,6 +52,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   void _signOut() async {
     try {
+      Provider.of<EnrolledCourseProvider>(context, listen: false).clearCourses();
       final profileProvider = Provider.of<ProfileProvider>(context, listen: false);
       profileProvider.updateImage(null);
       profileProvider.updateName("No", "Name");

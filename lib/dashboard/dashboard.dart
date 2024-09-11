@@ -5,6 +5,7 @@ import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
 import '../api/api_root.dart';
+import '../home/all_courses/all_courses.dart';
 import '../profile/profile_provider.dart';
 import '../themes/default_theme.dart';
 
@@ -13,7 +14,8 @@ class Dashboard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final profileProvider = Provider.of<ProfileProvider>(context, listen: false);
+    final profileProvider =
+        Provider.of<ProfileProvider>(context, listen: false);
     final email = profileProvider.email;
     final enrolledCourseProvider = Provider.of<EnrolledCourseProvider>(context);
 
@@ -46,9 +48,6 @@ class Dashboard extends StatelessWidget {
 
 
 
-
-
-
 class DashboardItem extends StatefulWidget {
   final String title;
 
@@ -64,8 +63,10 @@ class _DashboardItemState extends State<DashboardItem> {
   @override
   void initState() {
     super.initState();
-    final profileProvider = Provider.of<ProfileProvider>(context, listen: false);
-    final enrolledCourseProvider = Provider.of<EnrolledCourseProvider>(context, listen: false);
+    final profileProvider =
+        Provider.of<ProfileProvider>(context, listen: false);
+    final enrolledCourseProvider =
+        Provider.of<EnrolledCourseProvider>(context, listen: false);
     final email = profileProvider.email;
     _fetchCoursesFuture = enrolledCourseProvider.fetchCourses(email);
   }
@@ -78,22 +79,52 @@ class _DashboardItemState extends State<DashboardItem> {
       future: _fetchCoursesFuture,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        } else if (snapshot.hasError) {
           return Center(
-            child: Text('Error: ${snapshot.error}'),
+            child: SizedBox(
+              width: MediaQuery.of(context).size.width * 0.7,
+              height: MediaQuery.of(context).size.height * 0.7,
+              child: Lottie.asset(
+                "assets/animation/loader2.json",
+              ),
+            ),
           );
         } else if (enrolledCourseProvider.courses.isEmpty) {
           return Center(
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
+                Container(
+                  margin: EdgeInsets.all(10),
+                  child: Text(
+                    widget.title,
+                    style: default_theme.title,
+                  ),
+                ),
+                Divider(),
                 Lottie.asset(
                   'assets/animation/empty.json',
                   repeat: true,
                 ),
-                Text('No courses available.', style: default_theme.header_grey),
+                Text('No enrolled courses', style: default_theme.header_grey),
+                SizedBox(
+                  height: 50,
+                ),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.8,
+                  height: 60,
+                  child: ElevatedButton(
+                    onPressed: () => {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => CourseListView(category: "All"),
+                        ),
+                      ),
+                    },
+                    child: Text("See courses ?"),
+                  ),
+                ),
               ],
             ),
           );
@@ -109,8 +140,12 @@ class _DashboardItemState extends State<DashboardItem> {
             children: [
               Container(
                 margin: EdgeInsets.all(10),
-                child: Text(widget.title, style: default_theme.title,),
+                child: Text(
+                  widget.title,
+                  style: default_theme.title,
+                ),
               ),
+              Divider(),
               Container(
                 height: MediaQuery.of(context).size.height * 0.45,
                 decoration: const BoxDecoration(
@@ -129,7 +164,8 @@ class _DashboardItemState extends State<DashboardItem> {
                         Fluttertoast.showToast(msg: "Do something");
                       },
                       child: Card(
-                        margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                        margin: const EdgeInsets.symmetric(
+                            vertical: 8.0, horizontal: 16.0),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12.0),
                         ),
@@ -139,20 +175,26 @@ class _DashboardItemState extends State<DashboardItem> {
                           children: [
                             course.image.isNotEmpty
                                 ? ClipRRect(
-                              borderRadius: BorderRadius.circular(12),
-                              child: Image.network(
-                                api_root + course.image,
-                                width: MediaQuery.of(context).size.width * 0.4,
-                                height: MediaQuery.of(context).size.width * 0.25,
-                                fit: BoxFit.cover,
-                                errorBuilder: (context, error, stackTrace) {
-                                  return const Icon(Icons.broken_image, size: 50);
-                                },
-                              ),
-                            )
+                                    borderRadius: BorderRadius.circular(12),
+                                    child: Image.network(
+                                      api_root + course.image,
+                                      width: MediaQuery.of(context).size.width *
+                                          0.4,
+                                      height:
+                                          MediaQuery.of(context).size.width *
+                                              0.25,
+                                      fit: BoxFit.cover,
+                                      errorBuilder:
+                                          (context, error, stackTrace) {
+                                        return const Icon(Icons.broken_image,
+                                            size: 50);
+                                      },
+                                    ),
+                                  )
                                 : const Icon(Icons.image, size: 100),
 
-                            const SizedBox(width: 8.0), // Space between image and text
+                            const SizedBox(width: 8.0),
+                            // Space between image and text
 
                             Expanded(
                               child: Padding(
@@ -160,17 +202,30 @@ class _DashboardItemState extends State<DashboardItem> {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(course.title, style: const TextStyle(fontWeight: FontWeight.bold)),
+                                    Text(course.title,
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.bold)),
                                     const SizedBox(height: 4.0),
-                                    Text('Instructor: ${course.instructorName}'),
+                                    Text(
+                                        'Instructor: ${course.instructorName}'),
                                     Text('Duration: ${course.duration}'),
-                                    SizedBox(height: 16,),
+                                    SizedBox(
+                                      height: 16,
+                                    ),
                                     Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
                                       children: [
-                                        Text("Continue Course", style: default_theme.body_grey,),
-                                        Icon(Icons.arrow_forward_ios, color: Colors.grey,),
+                                        Text(
+                                          "Continue Course",
+                                          style: default_theme.body_grey,
+                                        ),
+                                        Icon(
+                                          Icons.arrow_forward_ios,
+                                          color: Colors.grey,
+                                        ),
                                       ],
                                     ),
                                     SizedBox(height: 6),
@@ -185,16 +240,22 @@ class _DashboardItemState extends State<DashboardItem> {
                   },
                 ),
               ),
-
-              SizedBox(height: 40,),
+              SizedBox(
+                height: 40,
+              ),
               SizedBox(
                 width: MediaQuery.of(context).size.width * 0.8,
                 height: 60,
                 child: ElevatedButton(
-                    onPressed: () {
-                      Fluttertoast.showToast(msg: "Not done yet");
-                    },
-                    child: Text("See Popular courses ?"),
+                  onPressed: () => {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => CourseListView(category: "All"),
+                      ),
+                    ),
+                  },
+                  child: Text("See courses ?"),
                 ),
               ),
             ],
@@ -204,4 +265,3 @@ class _DashboardItemState extends State<DashboardItem> {
     );
   }
 }
-
