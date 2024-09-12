@@ -44,17 +44,29 @@ class _enrollState extends State<enroll> with TickerProviderStateMixin {
       'uemail': email,
       'course_id': courseId,
     };
-    final http.Response response = await http.post(
-      apiUrl,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: jsonEncode(requestBody),
-    );
-    if (response.statusCode == 201) {
-      print('Enrollment added successfully');
-    } else {
-      print('Failed to add enrollment: ${response.body}');
+
+    try {
+      final http.Response response = await http.post(
+        apiUrl,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode(requestBody),
+      );
+
+      if (response.statusCode == 201) {
+        Fluttertoast.showToast(msg: 'Enrollment added successfully');
+      } else if (response.statusCode == 409) {
+        Fluttertoast.showToast(msg: 'You are already enrolled in this course');
+      } else if (response.statusCode == 400) {
+        Fluttertoast.showToast(msg: 'Bad request: ${response.body}');
+      } else if (response.statusCode == 500) {
+        Fluttertoast.showToast(msg: "Server error 500");
+      } else {
+        Fluttertoast.showToast(msg: 'Unexpected error: ${response.statusCode} - ${response.body}');
+      }
+    } catch (e) {
+      Fluttertoast.showToast(msg: "An error occurred");
     }
   }
 
@@ -262,7 +274,6 @@ class _enrollState extends State<enroll> with TickerProviderStateMixin {
                                         ),
                                         onPressed: () {
                                           addEnrollment(email, widget.courseId);
-                                          Fluttertoast.showToast(msg: "Enrolled");
                                         },
                                         child: const Text(
                                           'Join Course',
