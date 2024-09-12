@@ -80,12 +80,21 @@ class _DashboardItemState extends State<DashboardItem> {
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(
-            child: SizedBox(
-              width: MediaQuery.of(context).size.width * 0.7,
-              height: MediaQuery.of(context).size.height * 0.7,
-              child: Lottie.asset(
-                "assets/animation/loader2.json",
-              ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(height: 30,),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.5,
+                  height: MediaQuery.of(context).size.width * 0.5,   // width for making it square :)
+                  child: Lottie.asset(
+                    "assets/animation/loader2.json",
+                  ),
+                ),
+                SizedBox(height: 30,),
+                Text("Loading....", style: default_theme.body_grey,),
+              ],
             ),
           );
         } else if (enrolledCourseProvider.courses.isEmpty) {

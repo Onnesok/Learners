@@ -70,10 +70,10 @@ class _chat_aiState extends State<chat_ai> {
           if (isLoading)
             Center(
               child: SizedBox(
-                width: MediaQuery.of(context).size.width * 0.5,
-                height: MediaQuery.of(context).size.width * 0.5,
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.width,
                 child: Lottie.asset(
-                  'assets/animation/loader3.json',
+                  'assets/animation/cube_loader.json',
                   repeat: true,
                 ),
               ),
