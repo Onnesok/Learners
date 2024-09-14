@@ -277,12 +277,16 @@ class _home_contentsState extends State<home_contents> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) => enroll(
+                                  courseId: course.courseId,
                                   title: course.title,
                                   image: api_root + course.image,
                                   stars: course.stars,
-                                  discount: course.discount,
-                                  courseId: course.courseId,
-                                  //duration: course.duration,
+                                  instructorName: course.instructorName,
+                                  duration: course.duration,
+                                  price: course.price,
+                                  releaseDate: course.releaseDate,
+                                  content: course.content,
+                                  introVideo: course.introVideo,
                                 ),
                               ),
                             );

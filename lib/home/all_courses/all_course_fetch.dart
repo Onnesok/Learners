@@ -19,7 +19,7 @@ class AllCourse {
   final String content;
   final String prerequisite;
   final int ratingCount;
-  final bool certificate;
+  final String certificate;
   final String introVideo;
 
   AllCourse({
@@ -59,7 +59,7 @@ class AllCourse {
       content: json['content'] ?? '',
       prerequisite: json['prerequisite'] ?? 'None',
       ratingCount: int.parse(json['rating_count'].toString()) ?? 0,
-      certificate: json['certificate'] == '1',
+      certificate: json['certificate'] ?? 'No',
       introVideo: json['intro_video'] ?? '',
     );
   }

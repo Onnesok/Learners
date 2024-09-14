@@ -10,19 +10,37 @@ import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import '../profile/profile_provider.dart';
 
 class enroll extends StatefulWidget {
+  final int courseId;
   final String title;
   final String image;
   final String stars;
   final String discount;
-  final int courseId;
+  final String instructorName;
+  final String duration;
+  final double price;
+  final String releaseDate;
+  final String content;  /// video id here and separated with coma ","
+  final String prerequisite;
+  final int ratingCount;
+  final String certificate;
+  final String introVideo;
 
   const enroll({
     super.key,
+    required this.courseId,   /// Most important ... yo
     required this.title,
     required this.image,
     required this.stars,
-    required this.discount,
-    required this.courseId,
+    this.discount = "No",
+    required this.instructorName,
+    required this.duration,
+    required this.price,
+    required this.releaseDate,
+    required this.content,
+    this.prerequisite = "No prerequisite",
+    this.ratingCount = 0000,
+    this.certificate = "No",
+    this.introVideo = "lxRwEPvL-mQ",
   });
 
   @override
@@ -275,14 +293,7 @@ class _enrollState extends State<enroll> with TickerProviderStateMixin {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 16),
-
-                  // Course Image (Optional)
-                  // widget.image.isNotEmpty
-                  //     ? Image.network(widget.image, height: 180, fit: BoxFit.cover)
-                  //     : const SizedBox(),
-
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 24),
 
                   // Description
                   AnimatedOpacity(
@@ -303,13 +314,39 @@ class _enrollState extends State<enroll> with TickerProviderStateMixin {
                   const SizedBox(height: 16),
 
                   // Course Details (Classes, Time, Seats)
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: <Widget>[
-                      getTimeBoxUI('24', 'Classes'),
-                      getTimeBoxUI('2 hours', 'Time'),
-                      getTimeBoxUI('24', 'Seats'),
-                    ],
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: <Widget>[
+                        getTimeBoxUI("Duration:", "${widget.duration}"),
+                        getTimeBoxUI("Release Date:", "${widget.releaseDate}"),
+                          getTimeBoxUI("Certificate:", "${widget.certificate}"),
+                      ],
+                    ),
+                  ),
+
+                  const SizedBox(height: 16),
+
+                  Container(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Instructor:",
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                            color: Colors.deepOrangeAccent,
+                          ),
+                        ),
+
+                        Text(
+                          " ${widget.instructorName}",
+                          style: default_theme.body_grey,
+                        ),
+                      ],
+                    ),
                   ),
 
                   const SizedBox(height: 16),
