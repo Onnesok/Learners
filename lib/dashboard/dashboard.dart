@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:learners/dashboard/course_video.dart';
 import 'package:learners/dashboard/enrolled_course_provider.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
@@ -170,7 +171,16 @@ class _DashboardItemState extends State<DashboardItem> {
 
                     return GestureDetector(
                       onTap: () {
-                        Fluttertoast.showToast(msg: "Do something");
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => CourseVideo(
+                              videoContent: course.title,
+                              videoTitle: course.title,
+                            ),
+
+                          ),
+                        );
                       },
                       child: Card(
                         margin: const EdgeInsets.symmetric(
