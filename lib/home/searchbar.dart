@@ -152,7 +152,7 @@ class _Search_barState extends State<Search_bar> {
                                   duration: course.duration,
                                   price: course.price,
                                   releaseDate: course.releaseDate,
-                                  content: course.content,
+                                  content: course.videoContent,
                                   introVideo: course.introVideo,
                                 ),
                               ),

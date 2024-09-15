@@ -16,7 +16,9 @@ class AllCourse {
   final String duration;
   final double price;
   final String releaseDate;
-  final String content;
+  final String videoContent;    // video contents
+  final String description;
+  final String videoTitle;
   final String prerequisite;
   final int ratingCount;
   final String certificate;
@@ -35,7 +37,9 @@ class AllCourse {
     required this.duration,
     required this.price,
     required this.releaseDate,
-    required this.content,
+    required this.videoContent,
+    required this.description,
+    required this.videoTitle,
     required this.prerequisite,
     required this.ratingCount,
     required this.certificate,
@@ -56,7 +60,9 @@ class AllCourse {
       duration: json['duration'] ?? 'Unknown Duration',
       price: double.tryParse(json['price'].toString()) ?? 0.0,
       releaseDate: json['release_date'] ?? 'Unknown Release Date',
-      content: json['content'] ?? '',
+      videoContent: json['video_content'] ?? 'No content available',
+      description: json['description'] ?? 'No description',
+      videoTitle: json['video_title'] ?? 'No title available',
       prerequisite: json['prerequisite'] ?? 'None',
       ratingCount: int.parse(json['rating_count'].toString()) ?? 0,
       certificate: json['certificate'] ?? 'No',

@@ -98,7 +98,7 @@ class _CourseListViewState extends State<CourseListView> {
                             duration: course.duration,
                             price: course.price,
                             releaseDate: course.releaseDate,
-                            content: course.content,
+                            content: course.videoContent,
                             introVideo: course.introVideo,
                           ),
                         ),
