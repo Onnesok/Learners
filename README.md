@@ -70,15 +70,17 @@ CREATE TABLE courses (
     duration VARCHAR(255) NOT NULL, 
     price DECIMAL(10, 2) DEFAULT 0.00,         
     release_date DATE, 
-    content TEXT,                              -- Content of the course
+    video_content TEXT,                          -- Multiple video links, comma-separated
+    description TEXT,                            -- Course description
+    video_title VARCHAR(255),                    -- Title for the video content
     prerequisite TEXT, 
-    rating_count INT DEFAULT 0,                 -- Number of ratings received
-    certificate BOOLEAN DEFAULT FALSE,          -- Indicates if a certificate is provided
-    intro_video VARCHAR(255),                   -- URL of the introductory video
-    image VARCHAR(255),                        -- Course banner
-    stars DECIMAL(2, 1) NOT NULL,              -- Average rating in stars
-    discount VARCHAR(255),                     -- Discount applied to the course
-    category_id INT,                           -- Foreign key referencing the category
+    rating_count INT DEFAULT 0,                  -- Number of ratings received
+    certificate BOOLEAN DEFAULT FALSE,           -- Indicates if a certificate is provided
+    intro_video VARCHAR(255),                    -- URL of the introductory video
+    image VARCHAR(255),                          -- Course banner
+    stars DECIMAL(2, 1) NOT NULL,                -- Average rating in stars
+    discount VARCHAR(255),                       -- Discount applied to the course
+    category_id INT,                             -- Foreign key referencing the category
     FOREIGN KEY (category_id) REFERENCES categories(category_id)  -- Foreign key constraint
 );
 
@@ -86,13 +88,15 @@ CREATE TABLE courses (
 
 sample inserts
 ```sql
-INSERT INTO courses (title, instructor_name, duration, price, release_date, content, prerequisite, rating_count, certificate, intro_video, image, stars, discount, category_id) VALUES
-('Introduction to Flutter', 'John Doe', '10 hours', 0.00, '2024-08-01', 'Course content for Flutter development', 'Basic programming knowledge', 0, FALSE, 'https://youtu.be/df1MDyeAJ_Q?si=at0i7-7aDUW0lfI2', '/assets/images/iron_man.jpg', 5.0, '10%', 1),
-('Advanced App Development', 'Jane Smith', '12 hours', 0.00, '2024-09-01', 'Advanced topics in app development', 'Completion of Introduction to Flutter', 0, FALSE, 'https://youtu.be/df1MDyeAJ_Q?si=at0i7-7aDUW0lfI2', '/assets/images/iron_man.jpg', 4.8, '15%', 1),
-('UX Principles', 'Emily Davis', '8 hours', 0.00, '2024-07-15', 'Basics of UX design', 'None', 0, FALSE, 'https://youtu.be/df1MDyeAJ_Q?si=at0i7-7aDUW0lfI2', '/assets/images/apex.jpg', 4.5, 'No', 2),
-('Digital Marketing Basics', 'Alex Johnson', '6 hours', 0.00, '2024-05-20', 'Introduction to digital marketing', 'Basic understanding of social media', 0, FALSE, 'https://youtu.be/df1MDyeAJ_Q?si=at0i7-7aDUW0lfI2', '/assets/images/league1.jpg', 4.7, '10%', 3),
-('Intro to data entry', 'Tony stark', '3 hours', 0.00, '2024-08-01', 'Course content for Data Entry', 'Basic Computer knowledge', 0, FALSE, 'https://youtu.be/df1MDyeAJ_Q?si=at0i7-7aDUW0lfI2', '/assets/images/dataentry.jpg', 5.0, '10%', 5),
-('Introduction to Robotics', 'Ratul Hasan', '60 hours', 0.00, '2024-08-01', 'Course content for Robotics', 'Basic programming knowledge', 0, FALSE, 'https://youtu.be/df1MDyeAJ_Q?si=at0i7-7aDUW0lfI2', '/assets/images/robotics1.jpg', 5.0, '10%', 4);
+INSERT INTO courses 
+(title, instructor_name, duration, price, release_date, video_content, description, video_title, prerequisite, rating_count, certificate, intro_video, image, stars, discount, category_id) VALUES
+('Introduction to Flutter', 'John Doe', '10 hours', 0.00, '2024-08-01', 'video1_id,video2_id', 'Learn Flutter from scratch with hands-on examples.', 'Introduction to Flutter,Flutter Setup', 'Basic programming knowledge', 0, FALSE, 'intro_video_id1', '/assets/images/iron_man.jpg', 5.0, '10%', 1),
+('Advanced App Development', 'Jane Smith', '12 hours', 0.00, '2024-09-01', 'video3_id,video4_id', 'Take your app development skills to the next level.', 'App Development Introduction,App Optimization', 'Completion of Introduction to Flutter', 0, FALSE, 'intro_video_id2', '/assets/images/iron_man.jpg', 4.8, '15%', 1),
+('UX Principles', 'Emily Davis', '8 hours', 0.00, '2024-07-15', 'video5_id,video6_id', 'Understand the key principles of user experience design.', 'UX Introduction,User Research', 'None', 0, FALSE, 'intro_video_id3', '/assets/images/apex.jpg', 4.5, 'No', 2),
+('Digital Marketing Basics', 'Alex Johnson', '6 hours', 0.00, '2024-05-20', 'video7_id,video8_id', 'Learn the fundamentals of digital marketing strategies.', 'Digital Marketing Introduction,Social Media Strategy', 'Basic understanding of social media', 0, FALSE, 'intro_video_id4', '/assets/images/league1.jpg', 4.7, '10%', 3),
+('Intro to Data Entry', 'Tony Stark', '3 hours', 0.00, '2024-08-01', 'video9_id,video10_id', 'Learn the basics of data entry operations.', 'Data Entry Introduction,Data Entry Practices', 'Basic Computer knowledge', 0, FALSE, 'intro_video_id5', '/assets/images/dataentry.jpg', 5.0, '10%', 5),
+('Introduction to Robotics', 'Ratul Hasan', '60 hours', 0.00, '2024-08-01', 'video11_id,video12_id', 'An introduction to robotics and its applications.', 'Robotics Introduction,Robotics Assembly', 'Basic programming knowledge', 0, FALSE, 'intro_video_id6', '/assets/images/robotics1.jpg', 5.0, '10%', 4);
+
 ```
 Create enrollment table
 ```sql
