@@ -156,6 +156,7 @@ class _Search_barState extends State<Search_bar> {
                                   videoTitle: course.videoTitle,
                                   description: course.description,
                                   introVideo: course.introVideo,
+                                  prerequisite: course.prerequisite,
                                 ),
                               ),
                             );

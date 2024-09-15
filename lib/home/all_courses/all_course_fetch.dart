@@ -63,7 +63,7 @@ class AllCourse {
       videoContent: json['video_content'] ?? 'No content available',
       description: json['description'] ?? 'No description',
       videoTitle: json['video_title'] ?? 'No title available',
-      prerequisite: json['prerequisite'] ?? 'None',
+      prerequisite: json['prerequisite'] ?? 'No prerequisites',
       ratingCount: int.parse(json['rating_count'].toString()) ?? 0,
       certificate: json['certificate'] ?? 'No',
       introVideo: json['intro_video'] ?? '',

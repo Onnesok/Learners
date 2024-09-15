@@ -289,6 +289,7 @@ class _home_contentsState extends State<home_contents> {
                                   videoTitle: course.videoTitle,
                                   description: course.description,
                                   introVideo: course.introVideo,
+                                  prerequisite: course.prerequisite,
                                 ),
                               ),
                             );

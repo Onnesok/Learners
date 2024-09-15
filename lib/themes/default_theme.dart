@@ -22,6 +22,15 @@ class default_theme {
     overflow: TextOverflow.ellipsis,
   );
 
+  ////// Header green for course enroll page
+  static TextStyle header_green = TextStyle(
+    color: Colors.green,
+    fontWeight: FontWeight.normal,
+    fontSize: 18,
+    letterSpacing: 1,
+    fontFamily: "anton",
+    overflow: TextOverflow.ellipsis,
+  );
 
   // header_grey is not available screens texts... "no course available"
   static TextStyle header_grey = TextStyle(
@@ -36,6 +45,14 @@ class default_theme {
     fontSize: 16,
     color: black,
     fontWeight: FontWeight.bold,
+    overflow: TextOverflow.ellipsis,
+  );
+
+  /// title green for course enrollment page
+  static const TextStyle title_green = TextStyle(
+    fontSize: 16,
+    color: Colors.green,
+    fontWeight: FontWeight.w500,
     overflow: TextOverflow.ellipsis,
   );
 

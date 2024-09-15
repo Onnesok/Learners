@@ -102,6 +102,7 @@ class _CourseListViewState extends State<CourseListView> {
                             videoTitle: course.videoTitle,
                             description: course.description,
                             introVideo: course.introVideo,
+                            prerequisite: course.prerequisite,
                           ),
                         ),
                       );

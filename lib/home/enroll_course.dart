@@ -41,7 +41,7 @@ class enroll extends StatefulWidget {
     required this.videoContent,
     required this.description,
     required this.videoTitle,
-    this.prerequisite = "No prerequisite",
+    required this.prerequisite,
     this.ratingCount = 0000,
     this.certificate = "No",
     this.introVideo = "lxRwEPvL-mQ",
@@ -289,22 +289,34 @@ class _enrollState extends State<enroll> with TickerProviderStateMixin {
                       // Discount (will be removed)
                       Text(
                         widget.discount.isNotEmpty ? 'Discount: ${widget.discount}' : '',
-                        style: const TextStyle(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 16,
-                          color: Colors.green,
-                        ),
+                        style: default_theme.title_green,
                       ),
                     ],
                   ),
                   const SizedBox(height: 24),
 
+                  // Course Details (Classes, Time, Seats)
+                  SingleChildScrollView(
+                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: <Widget>[
+                        getTimeBoxUI("Duration:", "${widget.duration}"),
+                        getTimeBoxUI("Release Date:", "${widget.releaseDate}"),
+                        getTimeBoxUI("Certificate:", "${widget.certificate}"),
+                      ],
+                    ),
+                  ),
+
+                  const SizedBox(height: 16),
+
                   // Description
                   AnimatedOpacity(
                     duration: const Duration(milliseconds: 500),
                     opacity: opacity2,
-                    child: const Text(
-                      'This course provides comprehensive knowledge on the topic. It is designed to help you master the subject with ease and gain practical insights.',
+                    child: Text(
+                      widget.description,
                       textAlign: TextAlign.justify,
                       style: TextStyle(
                         fontWeight: FontWeight.w200,
@@ -317,22 +329,22 @@ class _enrollState extends State<enroll> with TickerProviderStateMixin {
 
                   const SizedBox(height: 16),
 
-                  // Course Details (Classes, Time, Seats)
-                  SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: <Widget>[
-                        getTimeBoxUI("Duration:", "${widget.duration}"),
-                        getTimeBoxUI("Release Date:", "${widget.releaseDate}"),
-                          getTimeBoxUI("Certificate:", "${widget.certificate}"),
-                      ],
-                    ),
-                  ),
-
-                  const SizedBox(height: 16),
-
                   Container(
+                    width: MediaQuery.of(context).size.width,
+                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+                    margin: EdgeInsets.symmetric(vertical: 10),
+                    decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: const BorderRadius.all(Radius.circular(16.0)),
+                    boxShadow: <BoxShadow>[
+                      BoxShadow(
+                          color: Colors.grey.withOpacity(0.2),
+                          offset: const Offset(4, 4),
+                          spreadRadius: 10,
+                          blurRadius: 24,
+                      ),
+                    ],
+                  ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
@@ -352,8 +364,64 @@ class _enrollState extends State<enroll> with TickerProviderStateMixin {
                       ],
                     ),
                   ),
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: const BorderRadius.all(Radius.circular(16.0)),
+                      boxShadow: <BoxShadow>[
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.2),
+                          offset: const Offset(4, 4),
+                          spreadRadius: 10,
+                          blurRadius: 24,
+                        ),
+                      ],
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Prerequisites",
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                            color: Colors.deepOrangeAccent,
+                          ),
+                        ),
+
+                        Text(
+                          " ${widget.prerequisite}",
+                          style: default_theme.body_grey,
+                        ),
+                      ],
+                    ),
+                  ),
 
                   const SizedBox(height: 16),
+
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                    margin: EdgeInsets.only(bottom: 10),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: const BorderRadius.all(Radius.circular(16.0)),
+                      boxShadow: <BoxShadow>[
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.2),
+                          offset: const Offset(4, 4),
+                          spreadRadius: 10,
+                          blurRadius: 24,
+                        ),
+                      ],
+                    ),
+                    child: Image.network(
+                        widget.image,
+                    ),
+                  ),
 
 
                   // Extra spacing to ensure the button stays at the bottom
@@ -376,25 +444,50 @@ class _enrollState extends State<enroll> with TickerProviderStateMixin {
         duration: const Duration(milliseconds: 500),
         opacity: opacity3,
         child: Container(
-          margin: EdgeInsets.only(bottom: 20, top: 10),
-          width: MediaQuery.of(context).size.width * 0.6,
-          height: 60,
-          child: ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              elevation: 20,
-              backgroundColor: default_theme.orangeButton,
-            ),
-            onPressed: () {
-              addEnrollment(email, widget.courseId);
-            },
-            child: const Text(
-              'Join Course',
-              style: TextStyle(
-                fontWeight: FontWeight.w600,
-                fontSize: 18,
-                color: Colors.white,
+          width: MediaQuery.of(context).size.width,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: const BorderRadius.all(Radius.circular(16)),
+            boxShadow: <BoxShadow>[
+              BoxShadow(
+                  color: Colors.grey.withOpacity(0.4),
+                  offset: const Offset(0, 0),
+                  spreadRadius: 4,
+                  blurRadius: 10,
               ),
-            ),
+            ],
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Container(
+                margin: EdgeInsets.only(left: 4),
+                child: Text("Price : ${widget.price}", style: default_theme.header_green,),
+              ),
+              Container(
+                margin: EdgeInsets.only(bottom: 20, top: 10, right: 10),
+                width: MediaQuery.of(context).size.width * 0.6,
+                height: 60,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    elevation: 20,
+                    backgroundColor: default_theme.orangeButton,
+                  ),
+                  onPressed: () {
+                    addEnrollment(email, widget.courseId);
+                  },
+                  child: const Text(
+                    'Join Course',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 18,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
       ),

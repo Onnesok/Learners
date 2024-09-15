@@ -85,3 +85,9 @@ flutter:
     - family: PermanentMarker
       fonts:
         - asset: assets/fonts/Permanent_Marker/PermanentMarker-Regular.ttf
+    - family: fascinate
+      fonts:
+        - asset: assets/fonts/fascinate/FascinateInline-Regular.ttf
+    - family: anton
+      fonts:
+        - asset: assets/fonts/anton/Anton-Regular.ttf
