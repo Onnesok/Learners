@@ -19,7 +19,9 @@ class enroll extends StatefulWidget {
   final String duration;
   final double price;
   final String releaseDate;
-  final String content;  /// video id here and separated with coma ","
+  final String videoContent;  /// video id here and separated with coma ","
+  final String description;
+  final String videoTitle;
   final String prerequisite;
   final int ratingCount;
   final String certificate;
@@ -36,7 +38,9 @@ class enroll extends StatefulWidget {
     required this.duration,
     required this.price,
     required this.releaseDate,
-    required this.content,
+    required this.videoContent,
+    required this.description,
+    required this.videoTitle,
     this.prerequisite = "No prerequisite",
     this.ratingCount = 0000,
     this.certificate = "No",

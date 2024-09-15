@@ -16,10 +16,12 @@ class PopularCourse {
   final String duration;
   final double price;
   final String releaseDate;
-  final String content;
+  final String videoContent;
+  final String description;
+  final String videoTitle;
   final String prerequisite;
   final int ratingCount;
-  final bool certificate;
+  final String certificate;
   final String introVideo;
 
   PopularCourse({
@@ -35,7 +37,9 @@ class PopularCourse {
     required this.duration,
     required this.price,
     required this.releaseDate,
-    required this.content,
+    required this.videoContent,
+    required this.description,
+    required this.videoTitle,
     required this.prerequisite,
     required this.ratingCount,
     required this.certificate,
@@ -48,23 +52,24 @@ class PopularCourse {
       categoryTitle: json['category_title'] ?? 'Unknown Category',
       categoryImage: json['category_image'] ?? '',
       courseId: int.parse(json['course_id'].toString()),
-      title: json['course_title'] ?? 'Unknown Title',
-      image: json['course_image'] ?? '',
+      title: json['title'] ?? 'Unknown Title',
+      image: json['image'] ?? '',
       stars: json['stars']?.toString() ?? '5',
       discount: json['discount'] ?? 'No',
       instructorName: json['instructor_name'] ?? 'Unknown Instructor',
       duration: json['duration'] ?? 'Unknown Duration',
       price: double.tryParse(json['price'].toString()) ?? 0.0,
       releaseDate: json['release_date'] ?? 'Unknown Release Date',
-      content: json['content'] ?? '',
+      videoContent: json['video_content'] ?? 'No content available',
+      description: json['description'] ?? 'No description',
+      videoTitle: json['video_title'] ?? 'No title available',
       prerequisite: json['prerequisite'] ?? 'None',
       ratingCount: int.parse(json['rating_count'].toString()) ?? 0,
-      certificate: json['certificate'] == '1',
+      certificate: json['certificate'] ?? 'No',
       introVideo: json['intro_video'] ?? '',
     );
   }
 }
-
 
 class PopularCourseProvider with ChangeNotifier {
   List<PopularCourse> _courses = [];
