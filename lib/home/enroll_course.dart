@@ -4,6 +4,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:learners/api/api_root.dart';
+import 'package:learners/dashboard/course_video.dart';
 import 'package:learners/themes/default_theme.dart';
 import 'package:provider/provider.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
@@ -97,12 +98,51 @@ class _enrollState extends State<enroll> with TickerProviderStateMixin {
   }
 
 
+
+
+  Future<void> checkEnrollment(String email, int courseId, String video_title, String videoId) async {
+    final url = Uri.parse('${api_root}/check_enrollment.php');
+
+    try {
+      final response = await http.get(url.replace(queryParameters: {
+        'email': email,
+        'courseId': courseId.toString(),
+      }));
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        if (data['enrolled'] == 'yes') {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => CourseVideo(
+                videoContent: videoId,
+                videoTitle: video_title,
+              ),
+
+            ),
+          );
+        } else {
+          print("Not enrolled");  // Dont do anything
+        }
+      } else {
+        Fluttertoast.showToast(msg: 'Failed to check enrollment: ${response.statusCode}');
+        print('Error: ${response.statusCode} - ${response.body}');
+      }
+    } catch (e) {
+      Fluttertoast.showToast(msg: 'An error occurred: $e');
+      print('Exception: $e');
+    }
+  }
+
+
+
   @override
   void initState() {
     super.initState();
 
     _controller = YoutubePlayerController(
-      initialVideoId: 'lxRwEPvL-mQ', // Youtube video ID for bionic arm df1MDyeAJ_Q
+      initialVideoId: widget.introVideo, // Youtube video ID for bionic arm df1MDyeAJ_Q
       flags: const YoutubePlayerFlags(
         autoPlay: false,
         mute: false,
@@ -133,11 +173,18 @@ class _enrollState extends State<enroll> with TickerProviderStateMixin {
   }
 
   @override
-  void dispose() async {
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final profileProvider = Provider.of<ProfileProvider>(context);
+    final email = profileProvider.email;
+    checkEnrollment(email, widget.courseId, widget.videoTitle, widget.videoContent);
+  }
+
+  @override
+  void dispose(){
     if (_controller.value.isFullScreen) {
       _controller.toggleFullScreenMode();
     } else {
-      await Future.delayed(const Duration(milliseconds: 200));
       _controller.dispose();
     }
 
@@ -245,196 +292,192 @@ class _enrollState extends State<enroll> with TickerProviderStateMixin {
       left: 0,
       right: 0,
       child: Column(
+        mainAxisSize: MainAxisSize.min,  // Change from max to min
         children: <Widget>[
           Container(
-            child: Container(
-              constraints: BoxConstraints(
-                  minHeight: MediaQuery.of(context).size.height * 0.4,
-              ),
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  // Course Title
-                  Padding(
-                    padding: const EdgeInsets.only(top: 32.0),
-                    child: Text(
-                      widget.title,
-                      textAlign: TextAlign.left,
+            constraints: BoxConstraints(
+              minHeight: MediaQuery.of(context).size.height * 0.4,
+            ),
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                // Course Title
+                Padding(
+                  padding: const EdgeInsets.only(top: 32.0),
+                  child: Text(
+                    widget.title,
+                    textAlign: TextAlign.left,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 22,
+                      letterSpacing: 0.27,
+                      color: Colors.black87,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 8),
+
+                // Rating and Stars
+                Row(
+                  children: [
+                    Icon(Icons.star, color: Colors.orange, size: 20),
+                    const SizedBox(width: 4),
+                    Text(
+                      widget.stars,
                       style: const TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 22,
-                        letterSpacing: 0.27,
-                        color: Colors.black87,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-
-                  // Rating and Stars
-                  Row(
-                    children: [
-                      Icon(Icons.star, color: Colors.orange, size: 20),
-                      const SizedBox(width: 4),
-                      Text(
-                        widget.stars,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
-                          color: Colors.grey,
-                        ),
-                      ),
-                      const Spacer(),
-                      // Discount (will be removed)
-                      Text(
-                        widget.discount.isNotEmpty ? 'Discount: ${widget.discount}' : '',
-                        style: default_theme.title_green,
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 24),
-
-                  // Course Details (Classes, Time, Seats)
-                  SingleChildScrollView(
-                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: <Widget>[
-                        getTimeBoxUI("Duration:", "${widget.duration}"),
-                        getTimeBoxUI("Release Date:", "${widget.releaseDate}"),
-                        getTimeBoxUI("Certificate:", "${widget.certificate}"),
-                      ],
-                    ),
-                  ),
-
-                  const SizedBox(height: 16),
-
-                  // Description
-                  AnimatedOpacity(
-                    duration: const Duration(milliseconds: 500),
-                    opacity: opacity2,
-                    child: Text(
-                      widget.description,
-                      textAlign: TextAlign.justify,
-                      style: TextStyle(
-                        fontWeight: FontWeight.w200,
-                        fontSize: 14,
-                        letterSpacing: 0.27,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
                         color: Colors.grey,
                       ),
                     ),
+                    const Spacer(),
+                    // Discount (will be removed)
+                    Text(
+                      widget.discount.isNotEmpty ? 'Discount: ${widget.discount}' : '',
+                      style: default_theme.title_green,
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 24),
+
+                // Course Details (Classes, Time, Seats)
+                SingleChildScrollView(
+                  padding: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: <Widget>[
+                      getTimeBoxUI("Duration:", "${widget.duration}"),
+                      getTimeBoxUI("Release Date:", "${widget.releaseDate}"),
+                      getTimeBoxUI("Certificate:", "${widget.certificate}"),
+                    ],
                   ),
+                ),
 
-                  const SizedBox(height: 16),
+                const SizedBox(height: 16),
 
-                  Container(
-                    width: MediaQuery.of(context).size.width,
-                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                    margin: EdgeInsets.symmetric(vertical: 10),
-                    decoration: BoxDecoration(
+                // Description
+                AnimatedOpacity(
+                  duration: const Duration(milliseconds: 500),
+                  opacity: opacity2,
+                  child: Text(
+                    widget.description,
+                    textAlign: TextAlign.justify,
+                    style: TextStyle(
+                      fontWeight: FontWeight.w200,
+                      fontSize: 14,
+                      letterSpacing: 0.27,
+                      color: Colors.grey,
+                    ),
+                  ),
+                ),
+
+                const SizedBox(height: 16),
+
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+                  margin: EdgeInsets.symmetric(vertical: 10),
+                  decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: const BorderRadius.all(Radius.circular(16.0)),
                     boxShadow: <BoxShadow>[
                       BoxShadow(
-                          color: Colors.grey.withOpacity(0.2),
-                          offset: const Offset(4, 4),
-                          spreadRadius: 10,
-                          blurRadius: 24,
+                        color: Colors.grey.withOpacity(0.2),
+                        offset: const Offset(4, 4),
+                        spreadRadius: 10,
+                        blurRadius: 24,
                       ),
                     ],
                   ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Instructor:",
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                            color: Colors.deepOrangeAccent,
-                          ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Instructor:",
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                          color: Colors.deepOrangeAccent,
                         ),
-
-                        Text(
-                          " ${widget.instructorName}",
-                          style: default_theme.body_grey,
-                        ),
-                      ],
-                    ),
+                      ),
+                      Text(
+                        " ${widget.instructorName}",
+                        style: default_theme.body_grey,
+                      ),
+                    ],
                   ),
-                  Container(
-                    width: MediaQuery.of(context).size.width,
-                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: const BorderRadius.all(Radius.circular(16.0)),
-                      boxShadow: <BoxShadow>[
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.2),
-                          offset: const Offset(4, 4),
-                          spreadRadius: 10,
-                          blurRadius: 24,
-                        ),
-                      ],
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Prerequisites",
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                            color: Colors.deepOrangeAccent,
-                          ),
-                        ),
-
-                        Text(
-                          " ${widget.prerequisite}",
-                          style: default_theme.body_grey,
-                        ),
-                      ],
-                    ),
+                ),
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: const BorderRadius.all(Radius.circular(16.0)),
+                    boxShadow: <BoxShadow>[
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.2),
+                        offset: const Offset(4, 4),
+                        spreadRadius: 10,
+                        blurRadius: 24,
+                      ),
+                    ],
                   ),
-
-                  const SizedBox(height: 16),
-
-                  Container(
-                    width: MediaQuery.of(context).size.width,
-                    padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-                    margin: EdgeInsets.only(bottom: 10),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: const BorderRadius.all(Radius.circular(16.0)),
-                      boxShadow: <BoxShadow>[
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.2),
-                          offset: const Offset(4, 4),
-                          spreadRadius: 10,
-                          blurRadius: 24,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Prerequisites",
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                          color: Colors.deepOrangeAccent,
                         ),
-                      ],
-                    ),
-                    child: Image.network(
-                        widget.image,
-                    ),
+                      ),
+                      Text(
+                        " ${widget.prerequisite}",
+                        style: default_theme.body_grey,
+                      ),
+                    ],
                   ),
+                ),
 
+                const SizedBox(height: 16),
 
-                  // Extra spacing to ensure the button stays at the bottom
-                  SizedBox(height: MediaQuery.of(context).padding.bottom + 100),
-                ],
-              ),
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                  margin: EdgeInsets.only(bottom: 10),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: const BorderRadius.all(Radius.circular(16.0)),
+                    boxShadow: <BoxShadow>[
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.2),
+                        offset: const Offset(4, 4),
+                        spreadRadius: 10,
+                        blurRadius: 24,
+                      ),
+                    ],
+                  ),
+                  child: Image.network(
+                    widget.image,
+                  ),
+                ),
+
+                // Extra spacing to ensure the button stays at the bottom
+                SizedBox(height: MediaQuery.of(context).padding.bottom + 100),
+              ],
             ),
           ),
-          //////////////
         ],
       ),
     );
   }
+
 
 
   Widget buildJoinCourse(String email)  {
