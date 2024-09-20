@@ -5,7 +5,7 @@ import '../themes/default_theme.dart';
 import 'all_courses/all_course_fetch.dart';
 import 'package:provider/provider.dart';
 
-import 'enroll_course.dart';
+import 'enroll/enroll_course.dart';
 
 class Search_bar extends StatefulWidget {
   @override

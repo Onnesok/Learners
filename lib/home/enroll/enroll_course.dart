@@ -6,9 +6,11 @@ import 'package:http/http.dart' as http;
 import 'package:learners/api/api_root.dart';
 import 'package:learners/dashboard/course_video.dart';
 import 'package:learners/themes/default_theme.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
-import '../profile/profile_provider.dart';
+import '../../profile/profile_provider.dart';
+import 'addEnrollment.dart';
 
 class enroll extends StatefulWidget {
   final int courseId;
@@ -64,44 +66,6 @@ class _enrollState extends State<enroll> with TickerProviderStateMixin {
   late final Animation<double> animation;
   bool isEnrolled = false;
 
-
-
-  Future<void> addEnrollment(String email, int courseId) async {
-    final Uri apiUrl = Uri.parse('${api_root}/enroll.php');
-
-    final Map<String, dynamic> requestBody = {
-      'uemail': email,
-      'course_id': courseId,
-    };
-
-    try {
-      final http.Response response = await http.post(
-        apiUrl,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: jsonEncode(requestBody),
-      );
-
-      if (response.statusCode == 201) {
-        Fluttertoast.showToast(msg: 'Enrollment added successfully',gravity: ToastGravity.CENTER, backgroundColor: Colors.orange);
-      } else if (response.statusCode == 409) {
-        Fluttertoast.showToast(msg: 'You are already enrolled in this course',gravity: ToastGravity.CENTER, backgroundColor: Colors.orange);
-      } else if (response.statusCode == 400) {
-        Fluttertoast.showToast(msg: 'Bad request: ${response.body}');
-      } else if (response.statusCode == 500) {
-        Fluttertoast.showToast(msg: "Server error 500",gravity: ToastGravity.CENTER, backgroundColor: Colors.orange);
-      } else {
-        Fluttertoast.showToast(msg: 'Unexpected error: ${response.statusCode} - ${response.body}',gravity: ToastGravity.CENTER, backgroundColor: Colors.orange);
-      }
-    } catch (e) {
-      Fluttertoast.showToast(msg: "An error occurred");
-    }
-  }
-
-
-
-
   Future<void> checkEnrollment(String email, int courseId, String video_title, String videoId) async {
     final url = Uri.parse('${api_root}/check_enrollment.php');
 
@@ -114,9 +78,11 @@ class _enrollState extends State<enroll> with TickerProviderStateMixin {
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
         if (data['enrolled'] == 'yes') {
-          setState(() {
-            isEnrolled = true;
-          });
+          if (mounted) {
+            setState(() {
+              isEnrolled = true;
+            });
+          }
         } else {
           print("Not enrolled");  // Dont do anything
         }
@@ -157,7 +123,9 @@ class _enrollState extends State<enroll> with TickerProviderStateMixin {
           DeviceOrientation.landscapeRight,
         ]);
       }
-      setState(() {});
+      if (mounted) {
+        setState(() {});
+      }
     });
 
     animationController = AnimationController(duration: const Duration(milliseconds: 800), vsync: this);
@@ -176,13 +144,13 @@ class _enrollState extends State<enroll> with TickerProviderStateMixin {
   }
 
   @override
-  void dispose(){
+  void dispose() {
     if (_controller.value.isFullScreen) {
       _controller.toggleFullScreenMode();
-    } else {
-      _controller.dispose();
     }
 
+    _controller.removeListener(() {});
+    _controller.dispose();
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
       DeviceOrientation.landscapeLeft,
@@ -191,6 +159,7 @@ class _enrollState extends State<enroll> with TickerProviderStateMixin {
 
     super.dispose();
   }
+
 
 
 
@@ -245,19 +214,7 @@ class _enrollState extends State<enroll> with TickerProviderStateMixin {
             SingleChildScrollView(
               child: Column(
                 children: <Widget>[
-                  Container(
-                    width: double.infinity,
-                    height: _controller.value.isFullScreen
-                        ? MediaQuery.of(context).size.height
-                        : MediaQuery.of(context).size.height * 0.4,
-                    child: YoutubePlayer(
-                      controller: _controller,
-                      showVideoProgressIndicator: true,
-                      progressIndicatorColor: default_theme.orange,
-                      onReady: () {},
-                      width: double.infinity,
-                    ),
-                  ),
+                  videoPlayer(),
                   // scrollable.
                   buildDescription(email),
                   if (_controller.value.isFullScreen)
@@ -274,202 +231,206 @@ class _enrollState extends State<enroll> with TickerProviderStateMixin {
   }
 
 
-
-
-
-
-  Widget buildDescription(String email) {
-    return Positioned(
-      top: _controller.value.isFullScreen
+  Widget videoPlayer() {
+    return Container(
+      width: double.infinity,
+      height: _controller.value.isFullScreen
           ? MediaQuery.of(context).size.height
           : MediaQuery.of(context).size.height * 0.4,
-      bottom: 0,
-      left: 0,
-      right: 0,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,  // Change from max to min
-        children: <Widget>[
-          Container(
-            constraints: BoxConstraints(
-              minHeight: MediaQuery.of(context).size.height * 0.4,
-            ),
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                // Course Title
-                Padding(
-                  padding: const EdgeInsets.only(top: 32.0),
-                  child: Text(
-                    widget.title,
-                    textAlign: TextAlign.left,
+      child: YoutubePlayer(
+        controller: _controller,
+        showVideoProgressIndicator: true,
+        progressIndicatorColor: default_theme.orange,
+        onReady: () {},
+        width: double.infinity,
+      ),
+    );
+  }
+
+  Widget buildDescription(String email) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,  // Change from max to min
+      children: <Widget>[
+        Container(
+          constraints: BoxConstraints(
+            minHeight: MediaQuery.of(context).size.height * 0.4,
+          ),
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              // Course Title
+              Padding(
+                padding: const EdgeInsets.only(top: 32.0),
+                child: Text(
+                  widget.title,
+                  textAlign: TextAlign.left,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 22,
+                    letterSpacing: 0.27,
+                    color: Colors.black87,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 8),
+
+              // Rating and Stars
+              Row(
+                children: [
+                  Icon(Icons.star, color: Colors.orange, size: 20),
+                  const SizedBox(width: 4),
+                  Text(
+                    widget.stars,
                     style: const TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 22,
-                      letterSpacing: 0.27,
-                      color: Colors.black87,
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 8),
-
-                // Rating and Stars
-                Row(
-                  children: [
-                    Icon(Icons.star, color: Colors.orange, size: 20),
-                    const SizedBox(width: 4),
-                    Text(
-                      widget.stars,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                        color: Colors.grey,
-                      ),
-                    ),
-                    const Spacer(),
-                    // Discount (will be removed)
-                    Text(
-                      widget.discount.isNotEmpty ? 'Discount: ${widget.discount}' : '',
-                      style: default_theme.title_green,
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 24),
-
-                // Course Details (Classes, Time, Seats)
-                SingleChildScrollView(
-                  padding: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: <Widget>[
-                      getTimeBoxUI("Duration:", "${widget.duration}"),
-                      getTimeBoxUI("Release Date:", "${widget.releaseDate}"),
-                      getTimeBoxUI("Certificate:", "${widget.certificate}"),
-                    ],
-                  ),
-                ),
-
-                const SizedBox(height: 16),
-
-                // Description
-                AnimatedOpacity(
-                  duration: const Duration(milliseconds: 500),
-                  opacity: opacity2,
-                  child: Text(
-                    widget.description,
-                    textAlign: TextAlign.justify,
-                    style: TextStyle(
-                      fontWeight: FontWeight.w200,
-                      fontSize: 14,
-                      letterSpacing: 0.27,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
                       color: Colors.grey,
                     ),
                   ),
-                ),
+                  const Spacer(),
+                  // Discount (will be removed)
+                  Text(
+                    widget.discount.isNotEmpty ? 'Discount: ${widget.discount}' : '',
+                    style: default_theme.title_green,
+                  ),
+                ],
+              ),
+              const SizedBox(height: 24),
 
-                const SizedBox(height: 16),
-
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                  margin: EdgeInsets.symmetric(vertical: 10),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: const BorderRadius.all(Radius.circular(16.0)),
-                    boxShadow: <BoxShadow>[
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.2),
-                        offset: const Offset(4, 4),
-                        spreadRadius: 10,
-                        blurRadius: 24,
-                      ),
-                    ],
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Instructor:",
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
-                          color: Colors.deepOrangeAccent,
-                        ),
-                      ),
-                      Text(
-                        " ${widget.instructorName}",
-                        style: default_theme.body_grey,
-                      ),
-                    ],
-                  ),
+              // Course Details (Classes, Time, Seats)
+              SingleChildScrollView(
+                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+                    getTimeBoxUI("Duration:", "${widget.duration}"),
+                    getTimeBoxUI("Release Date:", "${widget.releaseDate}"),
+                    getTimeBoxUI("Certificate:", "${widget.certificate}"),
+                  ],
                 ),
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: const BorderRadius.all(Radius.circular(16.0)),
-                    boxShadow: <BoxShadow>[
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.2),
-                        offset: const Offset(4, 4),
-                        spreadRadius: 10,
-                        blurRadius: 24,
-                      ),
-                    ],
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Prerequisites",
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
-                          color: Colors.deepOrangeAccent,
-                        ),
-                      ),
-                      Text(
-                        " ${widget.prerequisite}",
-                        style: default_theme.body_grey,
-                      ),
-                    ],
+              ),
+
+              const SizedBox(height: 16),
+
+              // Description
+              AnimatedOpacity(
+                duration: const Duration(milliseconds: 500),
+                opacity: opacity2,
+                child: Text(
+                  widget.description,
+                  textAlign: TextAlign.justify,
+                  style: TextStyle(
+                    fontWeight: FontWeight.w200,
+                    fontSize: 14,
+                    letterSpacing: 0.27,
+                    color: Colors.grey,
                   ),
                 ),
+              ),
 
-                const SizedBox(height: 16),
+              const SizedBox(height: 16),
 
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-                  margin: EdgeInsets.only(bottom: 10),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: const BorderRadius.all(Radius.circular(16.0)),
-                    boxShadow: <BoxShadow>[
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.2),
-                        offset: const Offset(4, 4),
-                        spreadRadius: 10,
-                        blurRadius: 24,
-                      ),
-                    ],
-                  ),
-                  child: Image.network(
-                    widget.image,
-                  ),
+              Container(
+                width: MediaQuery.of(context).size.width,
+                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+                margin: EdgeInsets.symmetric(vertical: 10),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: const BorderRadius.all(Radius.circular(16.0)),
+                  boxShadow: <BoxShadow>[
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.2),
+                      offset: const Offset(4, 4),
+                      spreadRadius: 10,
+                      blurRadius: 24,
+                    ),
+                  ],
                 ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Instructor:",
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                        color: Colors.deepOrangeAccent,
+                      ),
+                    ),
+                    Text(
+                      " ${widget.instructorName}",
+                      style: default_theme.body_grey,
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                width: MediaQuery.of(context).size.width,
+                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: const BorderRadius.all(Radius.circular(16.0)),
+                  boxShadow: <BoxShadow>[
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.2),
+                      offset: const Offset(4, 4),
+                      spreadRadius: 10,
+                      blurRadius: 24,
+                    ),
+                  ],
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Prerequisites",
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                        color: Colors.deepOrangeAccent,
+                      ),
+                    ),
+                    Text(
+                      " ${widget.prerequisite}",
+                      style: default_theme.body_grey,
+                    ),
+                  ],
+                ),
+              ),
 
-                // Extra spacing to ensure the button stays at the bottom
-                SizedBox(height: MediaQuery.of(context).padding.bottom + 100),
-              ],
-            ),
+              const SizedBox(height: 16),
+
+              Container(
+                width: MediaQuery.of(context).size.width,
+                padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                margin: EdgeInsets.only(bottom: 10),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: const BorderRadius.all(Radius.circular(16.0)),
+                  boxShadow: <BoxShadow>[
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.2),
+                      offset: const Offset(4, 4),
+                      spreadRadius: 10,
+                      blurRadius: 24,
+                    ),
+                  ],
+                ),
+                child: Image.network(
+                  widget.image,
+                ),
+              ),
+
+              // Extra spacing to ensure the button stays at the bottom
+              SizedBox(height: MediaQuery.of(context).padding.bottom + 100),
+            ],
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
@@ -588,9 +549,7 @@ class _enrollState extends State<enroll> with TickerProviderStateMixin {
                       await addEnrollment(email, widget.courseId);
                       await checkEnrollment(email, widget.courseId, widget.videoTitle, widget.videoContent);
                       if (isEnrolled) {
-                        setState(() {
-                          isEnrolled = true;
-                        });
+                        setState(() {});
                       }
                     },
                     child: const Text(

@@ -4,7 +4,7 @@ import 'package:learners/api/api_root.dart';
 import 'package:learners/home/all_courses/all_courses.dart';
 import 'package:learners/home/category/category_ui.dart';
 import 'package:learners/home/custom_appbar.dart';
-import 'package:learners/home/enroll_course.dart';
+import 'package:learners/home/enroll/enroll_course.dart';
 import 'package:learners/themes/default_theme.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';

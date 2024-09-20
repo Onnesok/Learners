@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:learners/home/all_courses/all_course_fetch.dart';
-import 'package:learners/home/enroll_course.dart';
+import 'package:learners/home/enroll/enroll_course.dart';
 import 'package:learners/themes/default_theme.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
