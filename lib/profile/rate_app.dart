@@ -1,6 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:learners/api/api_root.dart';
+import 'package:learners/profile/profile_provider.dart';
 import 'package:lottie/lottie.dart';
+import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 
 class RatingPage extends StatefulWidget {
   const RatingPage({Key? key}) : super(key: key);
@@ -12,6 +18,30 @@ class RatingPage extends StatefulWidget {
 class _RatingPageState extends State<RatingPage> {
   int _rating = 0;
 
+  Future<void> submitRating(String uemail, int appRating) async {
+    final url = '${api_root}/submitAppRating.php';
+    final response = await http.post(
+      Uri.parse(url),
+      body: {
+        'uemail': uemail,
+        'app_rating': appRating.toString(),
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> responseData = json.decode(response.body);
+
+      if (responseData['status'] == 'success') {
+        Fluttertoast.showToast(msg: "Thank you for giving us: $_rating stars");
+      } else {
+        Fluttertoast.showToast(msg: '${responseData['message']}');
+      }
+    } else {
+      Fluttertoast.showToast(msg: "Error occured : ${response.statusCode}");
+      print('Failed to submit rating. Server responded: ${response.statusCode}');
+    }
+  }
+
   void _rate(int rating) {
     setState(() {
       _rating = rating;
@@ -19,8 +49,10 @@ class _RatingPageState extends State<RatingPage> {
     });
   }
 
+
   @override
   Widget build(BuildContext context) {
+    final profileProvider = Provider.of<ProfileProvider>(context, listen: false);
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -82,8 +114,7 @@ class _RatingPageState extends State<RatingPage> {
                 elevation: 8,
               ),
                 onPressed: () {
-                Fluttertoast.showToast(msg: "Thank you for giving us: $_rating stars");
-                Fluttertoast.showToast(msg: "NOT functional yet");
+                submitRating(profileProvider.email, _rating);
                 },
                 child: Text(
                   "Send",
