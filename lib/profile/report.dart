@@ -1,8 +1,11 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:learners/profile/profile_provider.dart';
 import 'package:learners/themes/default_theme.dart';
-
-
+import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
+import '../api/api_root.dart';
 
 class ReportBugScreen extends StatefulWidget {
   const ReportBugScreen({super.key});
@@ -12,49 +15,72 @@ class ReportBugScreen extends StatefulWidget {
 }
 
 class _ReportBugScreenState extends State<ReportBugScreen> {
-  late TextEditingController _feedback_controller;
+  late TextEditingController _issueController;
 
+  Future<void> submitBugReport(String email) async {
+    final url = '${api_root}/bugReport.php';
+    try {
+      final response = await http.post(
+        Uri.parse(url),
+        body: {
+          'uemail': email,
+          'issue_description': _issueController.text,
+        },
+      );
+
+      final jsonResponse = json.decode(response.body);
+      if (jsonResponse['status'] == 'success') {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(jsonResponse['message']),
+        ));
+        _issueController.clear();
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(jsonResponse['message']),
+        ));
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Failed to submit bug report. Please try again.'),
+      ));
+    }
+  }
 
   @override
   void initState() {
     super.initState();
-    _feedback_controller = TextEditingController();
+    _issueController = TextEditingController();
   }
 
   @override
   void dispose() {
-    _feedback_controller.dispose();
+    _issueController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    final profileProvider = Provider.of<ProfileProvider>(context, listen: false);
 
     return Scaffold(
       backgroundColor: default_theme.white,
-
       appBar: AppBar(
-        title: Text("Issues"),
+        title: Text("Report an Issue"),
         centerTitle: true,
         backgroundColor: default_theme.white,
         scrolledUnderElevation: 0,
       ),
-
       body: SingleChildScrollView(
         child: SizedBox(
           height: MediaQuery.of(context).size.height,
-
           child: Column(
             children: <Widget>[
-
               Container(
-                //padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top, left: 16, right: 16),
                 child: Image.asset(
                   'assets/images/share.png',
                   height: 250,
                 ),
               ),
-
               Container(
                 padding: const EdgeInsets.only(top: 8),
                 child: Text(
@@ -62,31 +88,24 @@ class _ReportBugScreenState extends State<ReportBugScreen> {
                   style: default_theme.header,
                 ),
               ),
-
               Container(
                 padding: const EdgeInsets.only(top: 16),
                 child: const Text(
                   'Please describe your issue as clearly as possible',
                   textAlign: TextAlign.center,
-                  //style: AppTheme.body1,
                 ),
               ),
-
               _buildComposer(),
-
               const SizedBox(height: 50,),
-
               Container(
                 width: MediaQuery.of(context).size.width * 0.7,
                 margin: EdgeInsets.only(bottom: 60),
                 child: ElevatedButton(
                   onPressed: () {
-                    print(_feedback_controller.text);
-                    Fluttertoast.showToast(msg: "Issue screen not integrated for dev version");
-                    _feedback_controller.clear();
+                    submitBugReport(profileProvider.email);
                   },
                   style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(vertical: 15,),
+                    padding: const EdgeInsets.symmetric(vertical: 15),
                     backgroundColor: default_theme.orangeButton,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30),
@@ -126,7 +145,6 @@ class _ReportBugScreenState extends State<ReportBugScreen> {
   Widget _buildComposer() {
     return Padding(
       padding: const EdgeInsets.only(top: 16, left: 16, right: 16),
-
       child: Container(
         decoration: BoxDecoration(
           color: default_theme.white,
@@ -139,10 +157,8 @@ class _ReportBugScreenState extends State<ReportBugScreen> {
             ),
           ],
         ),
-
         child: ClipRRect(
           borderRadius: BorderRadius.circular(25),
-
           child: Container(
             padding: const EdgeInsets.all(4.0),
             constraints: const BoxConstraints(
@@ -150,24 +166,21 @@ class _ReportBugScreenState extends State<ReportBugScreen> {
               maxHeight: 200,
             ),
             color: default_theme.white,
-
             child: SingleChildScrollView(
               padding: const EdgeInsets.only(left: 10, right: 10),
               child: TextField(
-                controller: _feedback_controller,
+                controller: _issueController,
                 maxLines: null,
-                onChanged: (String txt) {},
                 textInputAction: TextInputAction.done,
                 style: const TextStyle(
                   fontSize: 16,
                   color: default_theme.darkGrey,
                 ),
-
                 cursorColor: Colors.blue,
-
                 decoration: const InputDecoration(
-                    border: InputBorder.none,
-                    hintText: 'Enter your Issue...'),
+                  border: InputBorder.none,
+                  hintText: 'Enter your Issue...',
+                ),
               ),
             ),
           ),
