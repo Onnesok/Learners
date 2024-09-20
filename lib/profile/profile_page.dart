@@ -180,7 +180,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
             ListTileItem(icon: Icons.person_outline_rounded, text: 'Edit Profile', onTap: () => _navigateTo(const edit_profile())),
             ListTileItem(icon: Icons.lock_outline, text: 'Change Password', onTap: () => _navigateTo(const ChangePassword())),
-            ListTileItem(icon: Icons.school_outlined, text: 'Become Instructor', onTap: () => _showToast('Not done yet')),
+            ListTileItem(icon: Icons.school_outlined, text: 'Become Instructor', onTap: () => _showToast('Not Applicable right now')),
             ListTileItem(icon: Icons.share_outlined, text: 'Share app', color: Colors.orange[800], onTap: () => _shareApp() ),
             ListTileItem(icon: Icons.star_border_outlined, text: 'Rate Us', onTap: () => _navigateTo(const RatingPage()) ),
             ListTileItem(icon: Icons.contact_page_outlined, text: 'Contact us', onTap: () => _showToast('Not done yet')),

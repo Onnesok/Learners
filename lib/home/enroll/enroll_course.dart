@@ -160,9 +160,6 @@ class _enrollState extends State<enroll> with TickerProviderStateMixin {
     super.dispose();
   }
 
-
-
-
   Future<void> setData() async {
     animationController.forward();
     await Future<dynamic>.delayed(const Duration(milliseconds: 200));
