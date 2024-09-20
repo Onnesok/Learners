@@ -4,6 +4,7 @@ class default_theme {
   default_theme._();
 
   static const Color orange = Colors.orange; //Color(0xFFFF7817);
+  static const Color green = Colors.green;
   static const Color orangeButton = Color(0xFFDA5C00);
   static const Color orangeHomeBar = Color(0xFFC35300);
   static const Color greyDescription = Color(0xFF464646);

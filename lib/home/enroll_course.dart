@@ -62,6 +62,8 @@ class _enrollState extends State<enroll> with TickerProviderStateMixin {
   late YoutubePlayerController _controller;
   late final AnimationController animationController;
   late final Animation<double> animation;
+  bool isEnrolled = false;
+
 
 
   Future<void> addEnrollment(String email, int courseId) async {
@@ -82,15 +84,15 @@ class _enrollState extends State<enroll> with TickerProviderStateMixin {
       );
 
       if (response.statusCode == 201) {
-        Fluttertoast.showToast(msg: 'Enrollment added successfully');
+        Fluttertoast.showToast(msg: 'Enrollment added successfully',gravity: ToastGravity.CENTER, backgroundColor: Colors.orange);
       } else if (response.statusCode == 409) {
-        Fluttertoast.showToast(msg: 'You are already enrolled in this course');
+        Fluttertoast.showToast(msg: 'You are already enrolled in this course',gravity: ToastGravity.CENTER, backgroundColor: Colors.orange);
       } else if (response.statusCode == 400) {
         Fluttertoast.showToast(msg: 'Bad request: ${response.body}');
       } else if (response.statusCode == 500) {
-        Fluttertoast.showToast(msg: "Server error 500");
+        Fluttertoast.showToast(msg: "Server error 500",gravity: ToastGravity.CENTER, backgroundColor: Colors.orange);
       } else {
-        Fluttertoast.showToast(msg: 'Unexpected error: ${response.statusCode} - ${response.body}');
+        Fluttertoast.showToast(msg: 'Unexpected error: ${response.statusCode} - ${response.body}',gravity: ToastGravity.CENTER, backgroundColor: Colors.orange);
       }
     } catch (e) {
       Fluttertoast.showToast(msg: "An error occurred");
@@ -112,16 +114,9 @@ class _enrollState extends State<enroll> with TickerProviderStateMixin {
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
         if (data['enrolled'] == 'yes') {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => CourseVideo(
-                videoContent: videoId,
-                videoTitle: video_title,
-              ),
-
-            ),
-          );
+          setState(() {
+            isEnrolled = true;
+          });
         } else {
           print("Not enrolled");  // Dont do anything
         }
@@ -479,64 +474,142 @@ class _enrollState extends State<enroll> with TickerProviderStateMixin {
   }
 
 
-
-  Widget buildJoinCourse(String email)  {
+  Widget buildJoinCourse(String email) {
     return Align(
       alignment: Alignment.bottomCenter,
-      child: AnimatedOpacity(
-        duration: const Duration(milliseconds: 500),
-        opacity: opacity3,
-        child: Container(
-          width: MediaQuery.of(context).size.width,
+      child: AnimatedSwitcher(
+        duration: const Duration(milliseconds: 300),
+        transitionBuilder: (Widget child, Animation<double> animation) {
+          return SlideTransition(
+            position: Tween<Offset>(
+              begin: const Offset(1, 0), // Slide from right to left
+              end: Offset.zero,
+            ).animate(animation),
+            child: child,
+          );
+        },
+        child: isEnrolled
+            ? Container(
+          key: ValueKey(1),
+          width: MediaQuery.of(context).size.width * 0.8, // More compact width
+          margin: const EdgeInsets.only(bottom: 16), // Space from the bottom
+          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20), // Padding for spacing
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: const BorderRadius.all(Radius.circular(16)),
-            boxShadow: <BoxShadow>[
+            boxShadow: [
               BoxShadow(
-                  color: Colors.grey.withOpacity(0.4),
-                  offset: const Offset(0, 0),
-                  spreadRadius: 4,
-                  blurRadius: 10,
+                color: Colors.grey.withOpacity(0.4),
+                offset: const Offset(0, 3),
+                spreadRadius: 4,
+                blurRadius: 10,
               ),
             ],
           ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Container(
-                margin: EdgeInsets.only(left: 4),
-                child: Text("Price : ${widget.price}", style: default_theme.header_green,),
+          child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.green[800],
+              padding: const EdgeInsets.symmetric(vertical: 15),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(14),
               ),
-              Container(
-                margin: EdgeInsets.only(bottom: 20, top: 10, right: 10),
-                width: MediaQuery.of(context).size.width * 0.6,
-                height: 60,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    elevation: 20,
-                    backgroundColor: default_theme.orangeButton,
+            ),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => CourseVideo(
+                    videoContent: widget.videoContent,
+                    videoTitle: widget.videoTitle,
                   ),
-                  onPressed: () {
-                    addEnrollment(email, widget.courseId);
-                  },
-                  child: const Text(
-                    'Join Course',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 18,
-                      color: Colors.white,
+                ),
+              );
+            },
+            child: const Text(
+              'See Course',
+              style: TextStyle(
+                fontWeight: FontWeight.w600,
+                fontSize: 18,
+                color: Colors.white,
+              ),
+            ),
+          ),
+        )
+            : AnimatedOpacity(
+          key: ValueKey(2),
+          duration: const Duration(milliseconds: 500),
+          opacity: opacity3,
+          child: Container(
+            width: MediaQuery.of(context).size.width,
+            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: const BorderRadius.all(Radius.circular(16)),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.4),
+                  offset: const Offset(0, 3),
+                  spreadRadius: 4,
+                  blurRadius: 10,
+                ),
+              ],
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  margin: const EdgeInsets.only(left: 8),
+                  child: widget.price != 0.0 ? Text(
+                    "Price: ${widget.price}",
+                    style: default_theme.header_green.copyWith(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ) : Text(
+                    "Free",
+                    style: default_theme.header_green.copyWith(
+                      letterSpacing: 2,
+                    ),
+                  )
+                ),
+                Container(
+                  margin: const EdgeInsets.only(bottom: 10, top: 10),
+                  width: MediaQuery.of(context).size.width * 0.5,
+                  height: 50,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      elevation: 10,
+                      backgroundColor: default_theme.orangeButton,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                    onPressed: () async{
+                      await addEnrollment(email, widget.courseId);
+                      await checkEnrollment(email, widget.courseId, widget.videoTitle, widget.videoContent);
+                      if (isEnrolled) {
+                        setState(() {
+                          isEnrolled = true;
+                        });
+                      }
+                    },
+                    child: const Text(
+                      'Join Course',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 18,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
     );
   }
-
 
   Widget wishlist() {
     return Positioned(
