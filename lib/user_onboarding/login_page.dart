@@ -6,6 +6,7 @@ import 'package:learners/profile/profile_provider.dart';
 import 'package:learners/user_onboarding/registration.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../api/api_root.dart';
 
@@ -50,6 +51,9 @@ class _loginState extends State<login> {
         await profileProvider.updateName(firstName, lastName);
         await profileProvider.storeEmail(userEmail);
         Fluttertoast.showToast(msg: "welcome $firstName");
+
+        LogInStatus("None");
+
         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const home_page()));
       } else {
         Fluttertoast.showToast(msg: "${jsonResponse['message']}");
@@ -60,6 +64,15 @@ class _loginState extends State<login> {
       print('Failed to login. Status code: ${response.statusCode}');
     }
   }
+
+  Future<void> LogInStatus(String userId) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    await prefs.setBool('isLoggedIn', true);
+    //await prefs.setString('userId', userId); // samne lagte pare
+  }
+
+
 
   void _togglePasswordVisibility() {
     setState(() {
