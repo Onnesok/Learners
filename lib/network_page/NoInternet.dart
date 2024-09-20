@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:learners/home_page.dart';
+import 'package:learners/user_onboarding/login_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class NoInternet extends StatefulWidget {
   const NoInternet({super.key});
@@ -43,10 +45,19 @@ class _NoInternetState extends State<NoInternet> with TickerProviderStateMixin {
 
   Future<void> _checkInternetConnection() async {
     var connectivityResult = await (Connectivity().checkConnectivity());
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
     if (connectivityResult != ConnectivityResult.none) {
-      Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => const home_page())
-      );
+      if (isLoggedIn) {
+        Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (context) => const home_page())
+        );
+      } else {
+        Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (context) => const login())
+        );
+      }
+
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
