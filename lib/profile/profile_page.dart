@@ -9,6 +9,7 @@ import 'dart:io';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../dashboard/enrolled_course_provider.dart';
 import 'profile_provider.dart';
 
@@ -51,12 +52,14 @@ class _ProfilePageState extends State<ProfilePage> {
   final ImagePicker _imagePicker = ImagePicker();
 
   void _signOut() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
     try {
       Provider.of<EnrolledCourseProvider>(context, listen: false).clearCourses();
       final profileProvider = Provider.of<ProfileProvider>(context, listen: false);
       profileProvider.updateImage(null);
       profileProvider.updateName("No", "Name");
       profileProvider.storeEmail("");
+      await prefs.setBool('isLoggedIn', false);
 
       Navigator.of(context, rootNavigator: true).pushReplacement(
         MaterialPageRoute(builder: (context) => const login()),
