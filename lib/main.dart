@@ -9,6 +9,7 @@ import 'package:learners/home/all_courses/all_course_fetch.dart';
 import 'package:learners/home/category/category_fetch.dart';
 import 'package:learners/chat/consts.dart';
 import 'package:learners/home/popular_courses/popular_courses_fetch.dart';
+import 'package:learners/home_page.dart';
 import 'package:learners/network_page/NoInternet.dart';
 import 'package:learners/user_onboarding/login_page.dart';
 import 'package:learners/user_onboarding/onboarding.dart';
@@ -31,6 +32,7 @@ Future<void> main() async {
   // Preload SharedPreferences
   SharedPreferences prefs = await SharedPreferences.getInstance();
   bool onboardingShown = prefs.getBool('onboardingShown') ?? false;
+  bool isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
 
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
@@ -39,7 +41,7 @@ Future<void> main() async {
 
   Widget initialPage;
   if (connectivityResult != ConnectivityResult.none) {
-    initialPage = onboardingShown ? const login() : const Onboarding();
+    initialPage = onboardingShown ? (isLoggedIn ? home_page() : login() ) : const Onboarding();
   } else {
     initialPage = const NoInternet();
   }
