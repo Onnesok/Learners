@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:learners/themes/default_theme.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
@@ -103,9 +102,17 @@ class _CourseVideoState extends State<CourseVideo> {
         },
         child: Stack(
           children: <Widget>[
+            // Background Image
+            Positioned.fill(
+              child: Image.asset(
+                'assets/images/s1.png',
+                fit: BoxFit.cover,
+              ),
+            ),
             SingleChildScrollView(
               child: Column(
                 children: <Widget>[
+                  // Video Player
                   Container(
                     width: double.infinity,
                     height: _controller.value.isFullScreen
@@ -119,13 +126,40 @@ class _CourseVideoState extends State<CourseVideo> {
                       width: double.infinity,
                     ),
                   ),
-                  // Video list as tappable containers
-                  ...List.generate(videoTitles.length, (index) {
-                    return GestureDetector(
-                      onTap: () => _changeVideo(index),
-                      child: courseBlock(index, videoTitles[index]),
-                    );
-                  }),
+
+                  // Current Video Title
+                  Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(12.0),
+                    margin: EdgeInsets.only(
+                      top: _controller.value.isFullScreen ? 40 : 0,
+                    ),
+                    color: Colors.black.withOpacity(0.6),
+                    child: Text(
+                      videoTitles[_currentVideoIndex],
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+
+
+                  const SizedBox(height: 10),
+
+
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                    child: Column(
+                      children: List.generate(videoTitles.length, (index) {
+                        return GestureDetector(
+                          onTap: () => _changeVideo(index),
+                          child: courseBlock(index, videoTitles[index]),
+                        );
+                      }),
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -135,41 +169,62 @@ class _CourseVideoState extends State<CourseVideo> {
     );
   }
 
-
-
   Widget courseBlock(int index, String videoTitle) {
+    bool isPlaying = _currentVideoIndex == index;
+
     return Container(
-      width: MediaQuery.of(context).size.width * 0.9,
-      padding: EdgeInsets.all(15),
-      margin: EdgeInsets.only(top: 10),
+      margin: const EdgeInsets.symmetric(vertical: 4.0),
+      padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12.0),
+        color: isPlaying ? default_theme.orange.withOpacity(0.1) : Colors.white.withOpacity(0.9),
+        borderRadius: BorderRadius.circular(10.0),
+        border: Border.all(
+          color: isPlaying
+              ? default_theme.orange.withOpacity(0.7)
+              : Colors.grey.withOpacity(0.3),
+        ),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.3),
-            offset: Offset(0, 4),
-            blurRadius: 6,
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 8,
+            offset: const Offset(0, 4),
           ),
         ],
       ),
-      child: Row(
-        children: [
-          CircleAvatar(
-            backgroundColor: default_theme.orange.withOpacity(0.6),
-            child: Text(
-              '${index + 1}',
-              style: TextStyle(color: Colors.white),
+      child: ListTile(
+        contentPadding: EdgeInsets.zero,
+        leading: Container(
+          width: 30,
+          height: 30,
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+            color: isPlaying
+                ? default_theme.orange
+                : default_theme.orange.withOpacity(0.5),
+            borderRadius: BorderRadius.circular(6),
+          ),
+          child: Text(
+            '${index + 1}',
+            style: const TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+              fontSize: 16,
             ),
           ),
-          SizedBox(width: 10),
-          Expanded(
-            child: Text(
-              videoTitle,
-              style: default_theme.body_grey,
-            ),
+        ),
+        title: Text(
+          videoTitle,
+          style: default_theme.body_grey.copyWith(
+            fontSize: 14,
+            fontWeight: isPlaying ? FontWeight.bold : FontWeight.w500,
+            color: isPlaying ? default_theme.orange : default_theme.body_grey.color,
           ),
-        ],
+        ),
+        trailing: Icon(
+          isPlaying ? Icons.pause_circle_filled : Icons.play_circle_fill,
+          color: default_theme.orange,
+          size: 24,
+        ),
       ),
     );
   }

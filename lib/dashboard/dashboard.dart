@@ -175,8 +175,8 @@ class _DashboardItemState extends State<DashboardItem> {
                           context,
                           MaterialPageRoute(
                             builder: (context) => CourseVideo(
-                              videoContent: course.title,
-                              videoTitle: course.title,
+                              videoContent: course.videoContent,
+                              videoTitle: course.videoTitle,
                             ),
 
                           ),

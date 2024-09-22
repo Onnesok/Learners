@@ -44,11 +44,13 @@ class EnrolledCourseProvider with ChangeNotifier {
 class EnrolledCourse {
   final int courseId;
   final String title;
+  final String description;
   final String instructorName;
   final String duration;
   final double price;
   final DateTime releaseDate;
-  final String content;
+  final String videoContent;
+  final String videoTitle;
   final String prerequisite;
   final int ratingCount;
   final int certificate;
@@ -61,11 +63,13 @@ class EnrolledCourse {
   EnrolledCourse({
     required this.courseId,
     required this.title,
+    required this.description,
     required this.instructorName,
     required this.duration,
     required this.price,
     required this.releaseDate,
-    required this.content,
+    required this.videoContent,
+    required this.videoTitle,
     required this.prerequisite,
     required this.ratingCount,
     required this.certificate,
@@ -80,11 +84,13 @@ class EnrolledCourse {
     return EnrolledCourse(
       courseId: json['course_id'] ?? 0,
       title: json['title'] ?? '',
+      description: json['description'] ?? '',
       instructorName: json['instructor_name'] ?? '',
       duration: json['duration'] ?? '',
       price: json['price'] != null ? double.tryParse(json['price'].toString()) ?? 0.0 : 0.0,
       releaseDate: json['release_date'] != null ? DateTime.tryParse(json['release_date']) ?? DateTime.now() : DateTime.now(),
-      content: json['content'] ?? '',
+      videoContent: json['video_content'] ?? '',
+      videoTitle: json['video_title'] ?? '',
       prerequisite: json['prerequisite'] ?? '',
       ratingCount: json['rating_count'] ?? 0,
       certificate: json['certificate'] ?? 0,
