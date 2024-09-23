@@ -138,71 +138,94 @@ class _home_contentsState extends State<home_contents> {
               height: MediaQuery.of(context).size.height * 0.12,
               child: categoryProvider.categories.isEmpty
                   ? Center(
-                      child: Text(
-                        "No categories available",
-                        style: default_theme.header_grey,
-                      ),
-                    )
+                child: Text(
+                  "No categories available",
+                  style: default_theme.header_grey,
+                ),
+              )
                   : SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Row(
-                        children: categoryProvider.categories.map((category) {
-                          return GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      CourseListView(category: category.title),
-                                ),
-                              );
-                            },
-                            child: Container(
-                              width: MediaQuery.of(context).size.width * 0.24,
-                              margin: const EdgeInsets.symmetric(
-                                horizontal: 10,
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: categoryProvider.categories.map((category) {
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                CourseListView(category: category.title),
+                          ),
+                        );
+                      },
+                      child: Container(
+                        width: MediaQuery.of(context).size.width * 0.24,
+                        margin: const EdgeInsets.symmetric(horizontal: 10),
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: Colors.grey.withOpacity(0.8),
+                          ),
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              // Stack to handle both loading and loaded image states
+                              Stack(
+                                alignment: Alignment.center,
+                                children: [
+                                  // The actual image with a loadingBuilder yo....loaddddd
+                                  Image.network(
+                                    api_root + category.image,
+                                    width: MediaQuery.of(context).size.width * 0.1,
+                                    height: MediaQuery.of(context).size.width * 0.1,
+                                    fit: BoxFit.cover,
+                                    loadingBuilder: (context, child, loadingProgress) {
+                                      if (loadingProgress == null) {
+                                        return child; //fully loaded
+                                      } else {
+                                        return Center(
+                                          child: SizedBox(
+                                            width: 30,
+                                            height: 30,
+                                            child: CircularProgressIndicator(
+                                              value: loadingProgress.expectedTotalBytes != null
+                                                  ? loadingProgress.cumulativeBytesLoaded /
+                                                  loadingProgress.expectedTotalBytes!
+                                                  : null,
+                                              valueColor: AlwaysStoppedAnimation<Color>(
+                                                  default_theme.orange),
+                                              strokeWidth: 3,
+                                            ),
+                                          ),
+                                        );
+                                      }
+                                    },
+                                  ),
+                                ],
                               ),
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: Colors.grey.withOpacity(0.8),
-                                ),
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: Center(
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Image.network(
-                                      api_root + category.image,
-                                      //layout builder seems messy at this point and thats why used all the available screen of the device * 1 or 10% of the entire screen
-                                      // Made it same for square value
-                                      width: MediaQuery.of(context).size.width *
-                                          0.1,
-                                      height:
-                                          MediaQuery.of(context).size.width *
-                                              0.1,
-                                      fit: BoxFit.cover,
-                                    ),
-                                    const SizedBox(height: 4),
-                                    Text(
-                                      category.title,
-                                      style: const TextStyle(
-                                        color: Colors.black87,
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w400,
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                    ),
-                                  ],
+                              const SizedBox(height: 4),
+                              Text(
+                                category.title,
+                                style: const TextStyle(
+                                  color: Colors.black87,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w400,
+                                  overflow: TextOverflow.ellipsis,
                                 ),
                               ),
-                            ),
-                          );
-                        }).toList(),
+                            ],
+                          ),
+                        ),
                       ),
-                    ),
+                    );
+                  }).toList(),
+                ),
+              ),
             ),
+
+
 
             const SizedBox(
               height: 10,
@@ -301,22 +324,48 @@ class _home_contentsState extends State<home_contents> {
                                 ClipRRect(
                                   borderRadius: BorderRadius.circular(10),
                                   child: LayoutBuilder(
-                                    builder: (BuildContext context,
-                                        BoxConstraints constraints) {
+                                    builder: (BuildContext context, BoxConstraints constraints) {
                                       double imageWidth = constraints.maxWidth;
-                                      // for the maxheight and api image is giving mismatch kinda result...
-                                      // so using 50% of the available width as the height
-                                      double imageHeight =
-                                          constraints.maxWidth * 0.5;
+                                      double imageHeight = constraints.maxWidth * 0.5;
 
                                       return Container(
                                         width: imageWidth,
                                         height: imageHeight,
-                                        child: Image.network(
-                                          api_root + course.image,
-                                          width: imageWidth,
-                                          height: imageHeight,
-                                          fit: BoxFit.cover,
+                                        child: Stack(
+                                          children: [
+                                            Center(
+                                              child: SizedBox(
+                                                width: 40,
+                                                height: 40,
+                                                child: CircularProgressIndicator(
+                                                  valueColor: AlwaysStoppedAnimation<Color>(default_theme.orange),
+                                                  strokeWidth: 4,
+                                                ),
+                                              ),
+                                            ),
+                                            Image.network(
+                                              api_root + course.image,
+                                              width: imageWidth,
+                                              height: imageHeight,
+                                              fit: BoxFit.cover,
+                                              loadingBuilder: (context, child, loadingProgress) {
+                                                if (loadingProgress == null) {
+                                                  return child; // Image is fully loaded
+                                                } else {
+                                                  return Center(
+                                                    child: SizedBox(
+                                                      width: 40,
+                                                      height: 40,
+                                                      child: CircularProgressIndicator(
+                                                        valueColor: AlwaysStoppedAnimation<Color>(default_theme.orange),
+                                                        strokeWidth: 4,
+                                                      ),
+                                                    ),
+                                                  );
+                                                }
+                                              },
+                                            ),
+                                          ],
                                         ),
                                       );
                                     },
@@ -363,6 +412,7 @@ class _home_contentsState extends State<home_contents> {
                             ),
                           ),
                         );
+
                       },
                     ),
                   ),

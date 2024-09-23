@@ -108,8 +108,7 @@ class _CourseListViewState extends State<CourseListView> {
                       );
                     },
                     child: Card(
-                      margin: const EdgeInsets.symmetric(
-                          vertical: 8.0, horizontal: 16.0),
+                      margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12.0),
                       ),
@@ -119,24 +118,54 @@ class _CourseListViewState extends State<CourseListView> {
                         children: [
                           course.image.isNotEmpty
                               ? ClipRRect(
-                                  borderRadius: BorderRadius.circular(12),
-                                  child: Image.network(
-                                    api_root + course.image,
-                                    width:
-                                        MediaQuery.of(context).size.width * 0.4,
-                                    height:
-                                        MediaQuery.of(context).size.width * 0.25,
-                                    fit: BoxFit.cover,
-                                    errorBuilder: (context, error, stackTrace) {
-                                      return const Icon(Icons.broken_image,
-                                          size: 50);
-                                    },
+                            borderRadius: BorderRadius.circular(12),
+                            child: Stack(
+                              children: [
+                                Center(
+                                  child: SizedBox(
+                                    width: 40,
+                                    height: 40,
+                                    child: CircularProgressIndicator(
+                                      valueColor: AlwaysStoppedAnimation<Color>(default_theme.orange),
+                                      strokeWidth: 4,
+                                    ),
                                   ),
-                                )
+                                ),
+                                Image.network(
+                                  api_root + course.image,
+                                  width: MediaQuery.of(context).size.width * 0.4,
+                                  height: MediaQuery.of(context).size.width * 0.25,
+                                  fit: BoxFit.cover,
+                                  errorBuilder: (context, error, stackTrace) {
+                                    return const Icon(Icons.broken_image, size: 50);
+                                  },
+                                  loadingBuilder: (context, child, loadingProgress) {
+                                    if (loadingProgress == null) {
+                                      return child;
+                                    } else {
+                                      return Container(
+                                        width: MediaQuery.of(context).size.width * 0.4,
+                                        height: MediaQuery.of(context).size.width * 0.25,
+                                        color: Colors.grey.shade200,
+                                        child: Center(
+                                          child: SizedBox(
+                                            width: 40,
+                                            height: 40,
+                                            child: CircularProgressIndicator(
+                                              valueColor: AlwaysStoppedAnimation<Color>(default_theme.orange),
+                                              strokeWidth: 4,
+                                            ),
+                                          ),
+                                        ),
+                                      );
+                                    }
+                                  },
+                                ),
+                              ],
+                            ),
+                          )
                               : const Icon(Icons.image, size: 100),
-
                           SizedBox(width: 8.0), // Space between image and text
-
                           Expanded(
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
@@ -157,6 +186,7 @@ class _CourseListViewState extends State<CourseListView> {
                       ),
                     ),
                   );
+
                 },
               ),
       ),
