@@ -175,13 +175,13 @@ class _loginState extends State<login> {
                         child: TextButton(
                           onPressed: () {
                             Fluttertoast.showToast(
-                                msg: 'Not implemented yet',
+                                msg: 'Not Applicable right now',
                                 gravity: ToastGravity.TOP);
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const home_page()),
-                            );
+                            // Navigator.pushReplacement(
+                            //   context,
+                            //   MaterialPageRoute(
+                            //       builder: (context) => const home_page()),
+                            // );
                           },
                           child: const Text(
                             'Forgot password',
