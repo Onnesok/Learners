@@ -29,7 +29,7 @@ Learners is a LMS or learning management system app designed for students to mak
 
 ## Demo
 
-| Home | All  courses | Course page | AI | Profile | Video play |
+| Home | All  courses | Course page | AI Screen | Profile | Video play |
 |-----------|----------------|--------------------|--------------------|--------------------|--------------------|
 |![Home](https://github.com/Onnesok/Learners/blob/main/assets/ss/s4.jpg) | ![All Courses](https://github.com/Onnesok/Learners/blob/main/assets/ss/s2.jpg) | ![After enrollment](https://github.com/Onnesok/Learners/blob/main/assets/ss/s3.jpg) | ![AI](https://github.com/Onnesok/Learners/blob/main/assets/ss/s9.jpg) |![Profile](https://github.com/Onnesok/Learners/blob/main/assets/ss/s8.jpg) | ![Video](https://github.com/Onnesok/Learners/blob/main/assets/ss/s6.jpg) |
 
