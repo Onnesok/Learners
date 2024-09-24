@@ -43,12 +43,19 @@ cd Learners
 flutter pub get
 flutter run
    ```
+Now create ``.env`` file in the root directory and store api key there... environment file name can be found on ``pubspec.yaml``
+
+## Now setup backend.......
 
 For backend go to: [Learners API](https://github.com/Onnesok/Learners-api)
+
+For ``api`` get api endpoint and in ``lib/api/api_root`` update api hosting directory.....
 
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Follow me ?
 
 [![Follow](https://img.shields.io/github/followers/Onnesok?label=Follow&style=social)](https://github.com/Onnesok)
 
